@@ -1,0 +1,153 @@
+/* Header */
+.eng-wrap .eng-head {
+  margin: 8px 2px 12px;
+}
+
+.eng-wrap .eng-title {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+  color: #0f172a;
+}
+.eng-wrap .eng-subtitle {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: #64748b; /* slate-500 */
+}
+
+/* Surface */
+.eng-wrap .eng-surface {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(2, 6, 23, 0.06);
+  overflow: hidden;
+}
+
+/* Grid base */
+.eng-wrap .dx-datagrid {
+  background: transparent;
+}
+/* Alternating rows & hover */
+.eng-wrap .dx-datagrid-rowsview .dx-row:nth-child(odd) > td {
+  background: #ffffff;
+}
+.eng-wrap .dx-datagrid-rowsview .dx-row:nth-child(even) > td {
+  background: #f8fafc;
+}
+.eng-wrap .dx-datagrid .dx-row.dx-state-hover > td {
+  background: #eef2ff !important; /* indigo-50 hint */
+}
+
+/* Compact filter row inputs */
+.eng-wrap .dx-datagrid .dx-editor-cell .dx-texteditor-input {
+  font-size: 13px;
+}
+
+/* Pager */
+.eng-wrap .dx-datagrid .dx-pager {
+  background: #ffffff;
+  border-top: 1px solid #e5e7eb;
+  padding: 12px 14px;
+  color: #334155;
+}
+.eng-wrap .dx-pages .dx-page.dx-selection,
+.eng-wrap .dx-page-sizes .dx-selection {
+  background: #111827;
+  color: #ffffff;
+  border-radius: 8px;
+}
+.eng-wrap .dx-pages .dx-page,
+.eng-wrap .dx-page-sizes .dx-page-size {
+  border-radius: 8px;
+}
+
+/* Custom cells */
+.eng-wrap .eng-engine-cell .eng-name {
+  font-weight: 800;
+  color: #0f172a;
+  font-size: 15px;
+  line-height: 1.2;
+}
+.eng-wrap .eng-engine-cell .eng-sub {
+  margin-top: 4px;
+  color: #475569;
+  font-size: 12px;
+}
+.eng-wrap .mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+.eng-wrap .eng-address-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.eng-wrap .eng-dot {
+  color: #94a3b8;
+}
+
+/* Chips */
+.eng-wrap .eng-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  border: 1px solid transparent;
+}
+.eng-wrap .eng-db {
+  color: #1e3a8a;
+  background: #dbeafe;
+  border-color: #60a5fa55;
+}
+.eng-wrap .eng-ip {
+  color: #0f766e;
+  background: #ccfbf1;
+  border-color: #14b8a655;
+}
+.eng-wrap .eng-port {
+  color: #92400e;
+  background: #fef3c7;
+  border-color: #f59e0b55;
+}
+
+/* Actions cell layout */
+.eng-wrap .eng-actions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* Make DevExtreme icon buttons compact & circular */
+.eng-wrap .eng-actions .dx-button {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  padding: 0;
+}
+
+/* Primary connect */
+.eng-wrap .eng-actions .dx-button-mode-contained.dx-button-type-default {
+  background-color: #111827; /* Neutral dark */
+  color: #fff;
+}
+
+/* Optional style (if you add a danger button later) */
+.eng-wrap .eng-actions .dx-button-mode-outlined.dx-button-type-danger {
+  border-color: #ef4444;
+  color: #b91c1c;
+}
+
+/* Subtle loading spin when icon='refresh' and disabled */
+.eng-wrap .eng-actions .dx-state-disabled .dx-icon-refresh {
+  animation: eng-spin 0.9s linear infinite;
+  opacity: 0.85;
+}
+@keyframes eng-spin {
+  0% { transform: rotate(0); }
+  100% { transform: rotate(360deg); }
+}

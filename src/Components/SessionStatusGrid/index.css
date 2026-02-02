@@ -1,0 +1,208 @@
+.session-status-datagrid.dxl-wrap {
+    padding: 15px;
+
+    /* Header (scoped) */
+    .dxl-head {
+        margin: 8px 2px 12px;
+    }
+
+    .dxl-h2 {
+        margin: 0;
+        font-size: 17px;
+        font-weight: 700;
+        color: #0f172a;
+    }
+
+    .dxl-subtitle {
+        margin: 4px 0 0;
+        font-size: 12px;
+        color: #64748b;
+        /* slate-500 */
+    }
+
+    /* Surface/card container for the grid */
+    .dxl-surface {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        /* neutral stroke */
+        border-radius: 14px;
+        box-shadow: 0 8px 24px rgba(2, 6, 23, 0.06);
+        overflow: hidden;
+    }
+
+    /* DataGrid base (scoped via ancestor) */
+    .dx-datagrid {
+        background: transparent;
+    }
+
+    /* Hide row background to let our card style shine */
+    .dx-datagrid-rowsview .dx-row {
+        background: transparent;
+    }
+
+    /* Card-like row styling */
+    .dxl-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 14px 16px;
+        margin: 10px 10px;
+        border-radius: 12px;
+        border: 1px solid #e5e7eb;
+        /* light border */
+        background: linear-gradient(180deg, #ffffff, #f9fafb);
+        transition: box-shadow 160ms ease, transform 160ms ease, border-color 160ms ease;
+    }
+
+    .dxl-card:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 10px 24px rgba(2, 6, 23, 0.08);
+        border-color: #d1d5db;
+        /* slightly darker on hover */
+    }
+
+    .dxl-left {
+        min-width: 0;
+        display: grid;
+        gap: 6px;
+    }
+
+    .dxl-title .dxl-conn-id {
+        color: #0f172a;
+        font-weight: 800;
+        font-size: 16px;
+        letter-spacing: 0.2px;
+    }
+
+    .dxl-sub {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 3px;
+        color: #64748b;
+        font-size: 13px;
+    }
+
+    .dxl-sub .dxl-label {
+        color: #475569;
+        font-weight: 600;
+    }
+
+    .dxl-sub .dxl-value {
+        color: #0f172a;
+    }
+
+    .dxl-sub .dxl-mono {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    .dxl-sub .dxl-divider {
+        color: #94a3b8;
+    }
+
+    /* Right side chips */
+    .dxl-right {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex: none;
+    }
+
+    /* Status badge (soft, accessible) */
+    .dxl-status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 10px;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.3px;
+        border-radius: 999px;
+        border: 1px solid transparent;
+    }
+
+    .dxl-status-badge .dxl-dot {
+        font-size: 12px;
+        line-height: 1;
+    }
+
+    /* Status colors */
+    .dxl-badge-connected {
+        color: #065f46;
+        background: #d1fae5;
+        /* emerald-100 */
+        border-color: #10b98155;
+    }
+
+    .dxl-badge-disconnected {
+        color: #7f1d1d;
+        background: #fee2e2;
+        /* red-100 */
+        border-color: #ef444455;
+    }
+
+    .dxl-badge-unavailable {
+        color: #92400e;
+        background: #fef3c7;
+        /* amber-100 */
+        border-color: #f59e0b55;
+    }
+
+    .dxl-badge-default {
+        color: #334155;
+        background: #e2e8f0;
+        border-color: #cbd5e1;
+    }
+
+    /* Mode chip */
+    .dxl-mode-chip {
+        display: inline-flex;
+        align-items: center;
+        padding: 6px 12px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 800;
+        border: 1px solid #e5e7eb;
+        color: #1f2937;
+        background: #f8fafc;
+    }
+
+    .dxl-mode-initiator {
+        box-shadow: 0 0 0 1px #93c5fd inset;
+        /* blue hint */
+    }
+
+    .dxl-mode-acceptor {
+        box-shadow: 0 0 0 1px #c4b5fd inset;
+        /* violet hint */
+    }
+
+    /* Pager, scoped */
+    .dx-datagrid .dx-pager {
+        background: #ffffff;
+        border-top: 1px solid #e5e7eb;
+        padding: 12px 14px;
+        color: #334155;
+    }
+
+    .dx-pages .dx-page.dx-selection,
+    .dx-page-sizes .dx-selection {
+        background: #111827;
+        /* neutral dark */
+        color: #ffffff;
+        border-radius: 8px;
+    }
+
+    .dx-pages .dx-page,
+    .dx-page-sizes .dx-page-size {
+        border-radius: 8px;
+    }
+
+    .dxl-card {
+        cursor: pointer;
+    }
+
+    .dx-datagrid .dx-row>td {
+        padding: 0px 16px;
+    }
+}

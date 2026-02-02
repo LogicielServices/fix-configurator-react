@@ -1,0 +1,197 @@
+
+/* two-pane.css — scoped container */
+.fx-dashboard .fx-two-pane {
+  display: flex;
+  gap: 18px;
+}
+.fx-dashboard .fx-pane-left {
+  width: 65%;
+  min-width: 0;
+}
+.fx-dashboard .fx-pane-right {
+  width: 35%;
+  min-width: 588px;
+}
+@media (max-width: 1100px) {
+  .fx-dashboard .fx-two-pane {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  .fx-dashboard .fx-pane-left,
+  .fx-dashboard .fx-pane-right {
+    width: auto;
+  }
+}
+
+/* Tabs area wrapper (scoped) */
+.fx-dashboard .fx-tabs-area {
+  margin-top: 20px;
+}
+
+/* Sessions tabs (scoped under .sess-wrap) */
+.sess-wrap .sess-head {
+  margin: 6px 2px 10px;
+}
+.sess-wrap .sess-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+  color: #0f172a;
+}
+.sess-wrap .sess-sub {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: #64748b;
+}
+
+.sess-wrap .sess-surface {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(2, 6, 23, 0.06);
+  overflow: hidden;
+}
+
+/* TabPanel title with close button */
+.sess-wrap .sess-tab-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 560px;
+}
+.sess-wrap .sess-tab-text {
+  display: inline-block;
+  max-width: 520px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.sess-wrap .sess-tab-close {
+  appearance: none;
+  border: 1px solid transparent;
+  background: #f1f5f9;
+  color: #0f172a;
+  border-radius: 8px;
+  width: 22px;
+  height: 22px;
+  line-height: 20px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.sess-wrap .sess-tab-close:hover {
+  background: #e2e8f0;
+}
+
+/* Empty state container for sessions tab panel */
+.sess-empty-wrapper {
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+}
+
+.sess-empty {
+  color: #64748b;
+  font-size: 16px;
+  font-weight: 600;
+  opacity: 0.8;
+}
+
+/* Sessions grid surface */
+.sess-wrap .sg-surface .dx-datagrid {
+  background: transparent;
+}
+.sess-wrap .dx-datagrid-rowsview .dx-row:nth-child(even) > td {
+  background: #f8fafc;
+}
+.sess-wrap .dx-datagrid .dx-row.dx-state-hover > td {
+  background: #eef2ff !important; /* indigo hint */
+}
+.sess-wrap .dx-datagrid .dx-row.dx-selection > td {
+  background: #eef2ff !important; /* indigo hint */
+}
+
+/* ── Mode chip with Font Awesome icon (scoped) ───────────────────────── */
+.sess-wrap .sg-mode {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 800;
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
+  color: #1f2937;
+  background: #f8fafc;
+  line-height: 1;
+}
+
+.sess-wrap .sg-mode-initiator {
+  box-shadow: 0 0 0 1px #93c5fd inset;
+  /* blue hint */
+}
+
+.sess-wrap .sg-mode-acceptor {
+  box-shadow: 0 0 0 1px #c4b5fd inset;
+  /* violet hint */
+}
+
+.sess-wrap .sg-mode-initiator .sg-mode-icon {
+  color: #6cb1ff;
+}
+
+.sess-wrap .sg-mode-acceptor .sg-mode-icon {
+  color: #957bff;
+}
+
+/* Icon sizing/alignment */
+.sess-wrap .sg-mode-icon {
+  font-size: 14px;
+  /* FA icon size */
+  color: inherit;
+}
+
+.sess-wrap .sg-mode-text {
+  letter-spacing: .2px;
+}
+
+/* ── Colored row backgrounds by status (scoped) ───────────────────────── */
+/* Base background (light tint) + a slim left accent using inset shadow */
+.sess-wrap .dx-datagrid-rowsview .sg-row-connected > td {
+  background: #ecfdf5 !important; /* emerald-50 */
+  box-shadow: inset 3px 0 0 0 #10b981; /* emerald-500 */
+}
+.sess-wrap .dx-datagrid-rowsview .sg-row-disconnected > td {
+  background: #fef2f2 !important; /* red-50 */
+  box-shadow: inset 3px 0 0 0 #ef4444; /* red-500 */
+}
+.sess-wrap .dx-datagrid-rowsview .sg-row-unavailable > td {
+  background: #f1f5f9 !important; /* slate-100 */
+  box-shadow: inset 3px 0 0 0 #94a3b8; /* slate-400 */
+}
+
+/* Hover states (slightly stronger tint, keep the accent) */
+.sess-wrap .dx-datagrid-rowsview .sg-row-connected.dx-row.dx-state-hover > td {
+  background: #d1fae5 !important; /* emerald-100 */
+}
+.sess-wrap .dx-datagrid-rowsview .sg-row-disconnected.dx-row.dx-state-hover > td {
+  background: #fee2e2 !important; /* red-100 */
+}
+.sess-wrap .dx-datagrid-rowsview .sg-row-unavailable.dx-row.dx-state-hover > td {
+  background: #e2e8f0 !important; /* slate-200 */
+}
+
+/* Selection states (clear and readable) */
+.sess-wrap .dx-datagrid-rowsview .sg-row-connected.dx-row.dx-selection > td {
+  background: #a7f3d0 !important; /* emerald-200 */
+}
+.sess-wrap .dx-datagrid-rowsview .sg-row-disconnected.dx-row.dx-selection > td {
+  background: #fecaca !important; /* red-200 */
+}
+.sess-wrap .dx-datagrid-rowsview .sg-row-unavailable.dx-row.dx-selection > td {
+  background: #cbd5e1 !important; /* slate-300 */
+}

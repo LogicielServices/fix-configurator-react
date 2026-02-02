@@ -1,0 +1,156 @@
+/* shared monospace for FIX lines */
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+/* space under sessions grid */
+.sg-surface .sg-messages-block {
+  margin-top: 12px;
+}
+
+/* messages panel layout */
+.fx-msgs {
+  display: grid;
+  gap: 12px;
+}
+
+/* card */
+.fx-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  padding: 10px 12px 12px;
+}
+
+/* headers */
+.fx-card-head {
+  display: grid;
+  gap: 4px;
+  margin: 2px 2px 8px;
+}
+.fx-card-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 800;
+  color: #0f172a;
+}
+.fx-card-sub {
+  font-size: 12px;
+  color: #64748b;
+}
+
+/* message column */
+.fx-msg {
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* empty states */
+.fx-empty {
+  min-height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed #e5e7eb;
+  border-radius: 10px;
+  color: #64748b;
+  background: #fafafa;
+}
+.fx-empty-text {
+  font-weight: 600;
+}
+
+/* datagrid polish inside cards only */
+.fx-card .dx-datagrid {
+  background: transparent;
+}
+.fx-card .dx-datagrid-rowsview .dx-row:nth-child(even) > td {
+  background: #f8fafc;
+}
+.fx-card .dx-datagrid .dx-row.dx-state-hover > td {
+  background: #eef2ff !important;
+}
+
+/* ───────── Responsive two‑pane layout for the messages section ───────── */
+.fx-msgs {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); /* two equal columns by default */
+  gap: 12px;
+  align-items: start;         /* keep cards top-aligned */
+}
+
+/* Slightly bias width to the Messages grid on wider screens (optional) */
+@media (min-width: 1200px) {
+  .fx-msgs {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+  }
+}
+
+/* Stack vertically on tablets/phones */
+@media (max-width: 992px) {
+  .fx-msgs {
+    grid-template-columns: 1fr;   /* one column */
+  }
+}
+
+/* Prevent overflow & ensure proper shrink on narrow viewports */
+.fx-msgs > .fx-card {
+  min-width: 0;
+  height: 100%;
+}
+
+.sess-wrap .sg-actions-col {
+    height: 59px; /* match row height */;
+}
+
+/* Command column spacing */
+.sess-wrap .sg-actions-col .dx-command-buttons {
+  /* keeps the whole row of buttons centered */
+  justify-content: center;
+}
+
+/* Compact icon buttons */
+.sess-wrap .sg-action-btn {
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  color: #334155;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+  transition: background-color 120ms ease, box-shadow 120ms ease, border-color 120ms ease, transform 80ms ease;
+}
+
+
+.sess-wrap .sg-row-connected .sg-action-btn,
+.sess-wrap .sg-row-connected .sg-status-btn {
+  color: #065f46;
+}
+.sess-wrap .sg-row-disconnected .sg-action-btn,
+.sess-wrap .sg-row-disconnected .sg-status-btn {
+  color: #7f1d1d;
+}
+.sess-wrap .sg-row-unavailable .sg-action-btn,
+.sess-wrap .sg-row-unavailable .sg-status-btn {
+  color: #92400e;
+}
+
+.sess-wrap .sg-action-btn:hover {
+  box-shadow: 0 1px 4px rgba(2,6,23,0.06);
+}
+
+.sess-wrap .sg-action-btn:active {
+  transform: translateY(0.5px);
+}
+
+/* FA icon size */
+.sess-wrap .sg-action-btn i,
+.sess-wrap .sg-status-btn i {
+  font-size: 12px;
+  line-height: 1;
+}
