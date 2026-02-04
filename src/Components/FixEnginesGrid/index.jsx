@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import {
   DataGrid,
   Column,
@@ -9,6 +9,9 @@ import {
   ColumnChooser,
   ColumnFixing,
   Editing,
+  Toolbar,
+  Item,
+  SearchPanel,
 } from "devextreme-react/data-grid";
 import Button from "devextreme-react/button";
 import {
@@ -21,7 +24,10 @@ import {
 import "./index.css";
 import NumberBox from "devextreme-react/number-box";
 import TextBox from "devextreme-react/text-box";
-import Form, { SimpleItem } from "devextreme-react/form";
+import Form, { ButtonItem, EmptyItem, GroupItem, SimpleItem } from "devextreme-react/form";
+import { confirm } from "devextreme/ui/dialog";
+import { textMessages } from "../../utils/constants";
+import { Popup } from "devextreme-react";
 
 // Small chips
 const DbChip = ({ db }) => <span className="eng-chip eng-db">DB {db}</span>;
@@ -52,14 +58,26 @@ const PortCell = ({ data }) => (
 
 const DbCell = ({ data }) => <DbChip db={data.redisDB} />;
 
+const addFormDefaultData = Object.entries({
+  engineName: "",
+  redisIpAddress: "",
+  redisIpPort: 0,
+  redisDB: 0,
+})
+
 export default function EnginesGrid({ handleEngineConnected }) {
   const [rows, setRows] = useState([]);
   const [actionLoading, setActionLoading] = useState({});
   const fixEngineRef = useRef();
+  const [isFormLoading, setIsFormLoading] = useState(false);
+  const [popupVisible, setPopupVisible] = useState(false);
+  const [addFormData, setAddFormData] = useState({ ...addFormDefaultData });
 
   const getData = async () => {
+    fixEngineRef?.current?.instance?.beginCustomLoading?.();
     const response = await getAllEngines();
     setRows(response || []);
+    fixEngineRef?.current?.instance?.endCustomLoading?.();
   };
 
   useEffect(() => {
@@ -105,21 +123,34 @@ export default function EnginesGrid({ handleEngineConnected }) {
     }
   };
 
-  const ActionCell = ({ data }) => {
+  const handleFormConnectClick = async (isSave = false) => {
+    setIsFormLoading(true);
+    const editingData = { ...addFormData };
+    editingData.engineID = editingData?.redisIpAddress + ":" + (editingData?.redisIpPort || '0') + "::" + (editingData?.redisDB || '0');
+    await handleConnect(editingData, isSave);
+    setPopupVisible(false);
+    setIsFormLoading(false);
+  }
+
+  
+  const ActionCell = useCallback(({ data }) => {
     const key = data?.engineID;
     const isBusy = !!actionLoading?.[key];
-
     const handleDelete = async () => {
-      await deleteFixEngine(data?.engineID);
-      getData();
+      const result = await confirm(textMessages?.areYouSure, "Delete Engine");
+      if (result) {
+        await deleteFixEngine(data?.engineID);
+        getData();
+      }
     }
-
     const handleConnectEngine = async () => {
       setActionLoading((s) => ({ ...s, [key]: true }));
-      await handleConnect(data);
+      const result = await confirm(textMessages?.areYouSure, "Connect Engine");
+      if (result) {
+        await handleConnect(data);
+      }
       setActionLoading((s) => ({ ...s, [key]: false }));
     }
-
     return (
       <div className="eng-actions">
         <Button
@@ -143,7 +174,117 @@ export default function EnginesGrid({ handleEngineConnected }) {
         />
       </div>
     );
-  };
+  }, [actionLoading]);
+
+  const enginesConfGrid = useMemo(() => {
+    return (
+      <DataGrid
+        dataSource={rows}
+        keyExpr="engineID"
+        showBorders
+        ref={fixEngineRef}
+        rowAlternationEnabled={true}
+        hoverStateEnabled={true}
+        columnAutoWidth={true}
+        wordWrapEnabled={true}
+        repaintChangesOnly
+        renderAsync
+        allowColumnReordering={true}
+        allowColumnResizing={true}
+        columnResizingMode="widget"
+        showColumnLines={false}
+        height="63.7vh"
+        width="100%"
+        style={{ padding: "10px" }}
+        showRowLines={false}
+        noDataText="No engines to display"
+      >
+        {/* Filters */}
+        <SearchPanel width={240} visible />
+        <FilterRow visible={true} applyFilter="auto" />
+        <HeaderFilter visible={true} />
+        <ColumnChooser enabled={true} mode="select" />
+        <ColumnFixing enabled={true} />
+        <Toolbar>
+          <Item>
+            <Button
+              id="add-row-button"
+              icon="add"
+              name="addRowButton"
+              location="after"
+              onClick={() => setPopupVisible(true)}
+            />
+          </Item>
+          <Item name="searchPanel" location="after" />
+        </Toolbar>
+
+        {/* Columns */}
+        <Column
+          dataField="engineName"
+          caption="Engine"
+          width="25%"
+          allowSorting={true}
+          cellRender={(cell) => <EngineCell data={cell?.data} />}
+        />
+        <Column
+          dataField="engineID"
+          caption="Engine ID"
+          visible={false}
+          allowFiltering
+        />
+        <Column
+          dataField="redisIpAddress"
+          caption="Redis IP"
+          width="25%"
+          cellRender={(cell) => <AddressCell data={cell?.data} />}
+          calculateFilterExpression={(value, _) => [
+            "redisIpAddress",
+            "contains",
+            value,
+          ]}
+          allowSorting={true}
+        />
+        <Column
+          dataField="redisIpPort"
+          caption="Port"
+          width="20%"
+          alignment="center"
+          allowSorting={true}
+          cellRender={(cell) => <PortCell data={cell?.data} />}
+        />
+        <Column
+          dataField="redisDB"
+          caption="DB"
+          width="20%"
+          alignment="center"
+          cellRender={(cell) => <DbCell data={cell?.data} />}
+          allowSorting={true}
+          dataType="number"
+        />
+        <Column
+          caption="Actions"
+          width={120}
+          alignment="center"
+          cellRender={(cell) => <ActionCell data={cell?.data} />}
+          allowFiltering={false}
+          allowSorting={false}
+          fixedPosition="right"
+          fixed={true}
+        />
+
+        {/* Paging */}
+        <Paging defaultPageSize={5} />
+        <Pager
+          showInfo={true}
+          showNavigationButtons={true}
+          showPageSizeSelector={true}
+          allowedPageSizes={[5, 10, 15]}
+          visible={true}
+          infoText="Page {0} of {1} ({2} items)"
+        />
+      </DataGrid>
+    )
+  }, [rows, ActionCell])
 
   return (
     <div id="fix-engines-dialog">
@@ -151,202 +292,82 @@ export default function EnginesGrid({ handleEngineConnected }) {
         <div className="eng-head">
           <h3 className="eng-title">Engine Configurations</h3>
         </div>
-
-        <div className="eng-surface">
-          <DataGrid
-            dataSource={rows}
-            keyExpr="engineID"
-            showBorders
-            ref={fixEngineRef}
-            rowAlternationEnabled={true}
-            hoverStateEnabled={true}
-            columnAutoWidth={true}
-            wordWrapEnabled={true}
-            allowColumnReordering={true}
-            allowColumnResizing={true}
-            columnResizingMode="widget"
-            showColumnLines={false}
-            height="63.7vh"
-            width="100%"
-            style={{ padding: "10px" }}
-            showRowLines={false}
-            noDataText="No engines to display"
-            // Nice, compact search across key fields
-            onInitialized={(e) => {
-              const grid = e.component;
-              grid.option("searchPanel", {
-                visible: true,
-                width: 240,
-                placeholder: "Search engines…",
-                highlightCaseSensitive: false,
-              });
+        <Popup
+          title="Add or Connect Engines"
+          visible={popupVisible}
+          minWidth={320}
+          width="auto"
+          height="auto"
+          showCloseButton
+          onHiding={() => {
+            setPopupVisible(false);
+            setIsFormLoading(false);
+            setAddFormData({ ...addFormDefaultData });
+          }}
+        >
+          <form
+            onSubmit={(e) => {
+              e?.preventDefault?.();
+              handleFormConnectClick(true);
             }}
           >
-            {/* Filters */}
-            <FilterRow visible={true} applyFilter="auto" />
-            <HeaderFilter visible={true} />
-            <ColumnChooser enabled={true} mode="select" />
-            <ColumnFixing enabled={true} />
-            <Editing
-              allowAdding
-              allowUpdating={false}
-              allowDeleting={false}
-              mode="popup"
-              popup={{
-                focusStateEnabled: true,
-                activeStateEnabled: true,
-                hoverStateEnabled: true,
-                disabled: false,
-                width: 500,
-                height: "auto",
-                title: "Add or connect Engine",
-                showTitle: true,
-                dragEnabled: true,
-                container: '#fix-engines-dialog',
-                closeOnOutsideClick: false,
-                showCloseButton: true,
-                toolbarItems: [
-                  {
-                    widget: "dxButton",
-                    location: "after",
-                    toolbar: "bottom",
-                    options: {
-                      text: 'Connect',
-                      type: 'default',
-                      stylingMode: 'text',
-                      useSubmitBehavior: true,
-                      onClick: () => {
-                        const visibleRowsData = fixEngineRef?.current?.instance?.getVisibleRows?.();
-                        const editingData = visibleRowsData?.find?.(x => !!x?.isEditing)?.data;
-                        editingData.engineID = editingData?.redisIpAddress + ":" + editingData?.redisIpPort + "::" + editingData?.redisDB;
-                        handleConnect(editingData);
-                      },
-                    }
-                  },
-                  {
-                    widget: "dxButton",
-                    location: "after",
-                    toolbar: "bottom",
-                    options: {
-                      text: 'Save',
-                      type: 'default',
-                      stylingMode: 'text',
-                      useSubmitBehavior: true,
-                      onClick: () => {
-                        const visibleRowsData = fixEngineRef?.current?.instance?.getVisibleRows?.()
-                        const editingData = visibleRowsData?.find?.(x => !!x?.isEditing)?.data
-                        editingData.engineID = editingData?.redisIpAddress + ":" + editingData?.redisIpPort + "::" + editingData?.redisDB;
-                        handleConnect(editingData, true);
-                      },
-                    }
-                  }
-                ]
-              }}
-              form={{
-                focusStateEnabled: true,
-                activeStateEnabled: true,
-                hoverStateEnabled: true,
-                showRequiredMark: true,
-                items: [
-                  {
-                    itemType: "simple",
-                    dataField: "engineName",
-                    editorType: "dxTextBox",
-                    label: { text: "Name" },
-                    isRequired: true,
-                  },
-                  {
-                    itemType: "simple",
-                    dataField: "redisIpAddress",
-                    editorType: "dxTextBox",
-                    label: { text: "Redis IP Address" },
-                    isRequired: true,
-                  },
-                  {
-                    itemType: "simple",
-                    dataField: "redisIpPort",
-                    editorType: "dxNumberBox",
-                    label: { text: "Redis Port" },
-                    editorOptions: { min: 0 },
-                    isRequired: true,
-                  },
-                  {
-                    itemType: "simple",
-                    dataField: "redisDB",
-                    editorType: "dxNumberBox",
-                    label: { text: "Redis DB" },
-                    editorOptions: { min: 0 },
-                    isRequired: true,
-                  },
-                ],
-              }}
-            />
-
-            {/* Columns */}
-            <Column
-              dataField="engineName"
-              caption="Engine"
-              width="25%"
-              allowSorting={true}
-              cellRender={(cell) => <EngineCell data={cell?.data} />}
-            />
-            <Column
-              dataField="engineID"
-              caption="Engine ID"
-              visible={false}
-              allowFiltering
-            />
-            <Column
-              dataField="redisIpAddress"
-              caption="Redis IP"
-              width="25%"
-              cellRender={(cell) => <AddressCell data={cell?.data} />}
-              calculateFilterExpression={(value, _) => [
-                "redisIpAddress",
-                "contains",
-                value,
-              ]}
-              allowSorting={true}
-            />
-            <Column
-              dataField="redisIpPort"
-              caption="Port"
-              width="20%"
-              alignment="center"
-              allowSorting={true}
-              cellRender={(cell) => <PortCell data={cell?.data} />}
-            />
-            <Column
-              dataField="redisDB"
-              caption="DB"
-              width="20%"
-              alignment="center"
-              cellRender={(cell) => <DbCell data={cell?.data} />}
-              allowSorting={true}
-              dataType="number"
-            />
-            <Column
-              caption="Actions"
-              width={120}
-              alignment="center"
-              cellRender={(cell) => <ActionCell data={cell?.data} />}
-              allowFiltering={false}
-              allowSorting={false}
-              fixedPosition="right"
-              fixed={true}
-            />
-
-            {/* Paging */}
-            <Paging defaultPageSize={5} />
-            <Pager
-              showInfo={true}
-              showNavigationButtons={true}
-              showPageSizeSelector={true}
-              allowedPageSizes={[5, 10, 15]}
-              visible={true}
-              infoText="Page {0} of {1} ({2} items)"
-            />
-          </DataGrid>
+            <Form
+              formData={addFormData}
+              id="form"
+              focusStateEnabled
+              activeStateEnabled
+              hoverStateEnabled
+              showRequiredMark
+              width="auto"
+            >
+              <SimpleItem
+                dataField="engineName"
+                editorType="dxTextBox"
+                isRequired
+              />
+              <SimpleItem
+                dataField="redisIpAddress"
+                editorType="dxTextBox"
+                label={{ text: "Redis IP Address" }}
+                isRequired
+              />
+              <SimpleItem
+                dataField="redisIpPort"
+                editorType="dxNumberBox"
+                label={{ text: "Redis Port" }}
+                editorOptions={{ min: 0 }}
+                isRequired
+              />
+              <SimpleItem
+                dataField="redisDB"
+                editorType="dxNumberBox"
+                label={{ text: "Redis DB" }}
+                editorOptions={{ min: 0 }}
+                isRequired
+              />
+              <ButtonItem
+                buttonOptions={{
+                  disabled: isFormLoading,
+                  width: "100%",
+                  text: "Save",
+                  type: "default",
+                  useSubmitBehavior: true,
+                }}
+              />
+              <ButtonItem
+                buttonOptions={{
+                  disabled: isFormLoading,
+                  width: "100%",
+                  text: "Connect",
+                  type: "default",
+                  onClick: () => handleFormConnectClick(),
+                }}
+              />
+            </Form>
+          </form>
+        </Popup>
+        <div className="eng-surface">
+          {enginesConfGrid}
         </div>
       </div>
     </div>

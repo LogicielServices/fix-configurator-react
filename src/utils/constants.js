@@ -30,4 +30,5 @@ export const severities = Object.freeze({
 export const textMessages = Object.freeze({
   unableToCheckConnectivity: "Unable to check connectivity.",
   userCanNotBeCreated: "User can not be created.",
+  areYouSure: "<i>Are you sure?</i>",
 });

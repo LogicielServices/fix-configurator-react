@@ -1,11 +1,13 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { DataGrid, Column, Paging, Pager } from "devextreme-react/data-grid";
 import { getFixMessages } from "../../Services/FixSessionService";
 import { formatFixSendingTime } from "./handler";
+import useFixMsgs from "../../SignalR/useFixMsgs";
 
 export default function FixMessagesPanel({ engineID, sessionID }) {
   const [selectedMessagePairs, setSelectedMessagePairs] = useState([]);
   const [datasource, setDataSource] = useState([]);
+  const { fixMsgsRef } = useFixMsgs(engineID, sessionID);
 
   // Reset description panel upon session change
   useEffect(() => {
@@ -19,6 +21,7 @@ export default function FixMessagesPanel({ engineID, sessionID }) {
     }
     const response = await getFixMessages(engineID, sessionID);
     setDataSource(response);
+    console.log(fixMsgsRef);
   };
 
   useEffect(() => {
@@ -58,6 +61,7 @@ export default function FixMessagesPanel({ engineID, sessionID }) {
           </div>
         ) : (
           <DataGrid
+            ref={fixMsgsRef}
             dataSource={datasource}
             remoteOperations
             keyExpr="streamEntryId"

@@ -248,3 +248,10 @@ html[data-theme="dark"] .field input {
   color: #0f172a;
   font-weight: 700;
 }
+
+/* GLOBAL DATA GRIDS FREESPACE ROW ISSUE */
+.engine-sessions-data-grid {
+  .dx-freespace-row {
+    display: none;
+  }
+}

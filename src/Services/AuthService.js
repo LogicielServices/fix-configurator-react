@@ -5,7 +5,7 @@ import { Post } from "./ApiService.js";
 export const refreshAccessToken = async () => {
   const refreshToken = getRefreshToken();
   const body = { refreshToken };
-  const response = await Post('/refresh-token', body, null, true);
+  const response = await Post('/refresh', body, null, true);
   if (!response?.isSuccess) {
     logout();
     return;

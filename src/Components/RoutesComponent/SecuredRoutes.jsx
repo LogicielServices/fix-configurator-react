@@ -16,9 +16,9 @@ const SecuredRoutes = () => {
   }, []);
 
   return (
-    <div style={{ display: "flex" }}>
+    <div className="m-4 d-flex">
       <Suspense fallback={<Loader />}>
-        <Box className="m-4 w-100">
+        <Box className="w-100">
           <MenuBar />
           <Routes>
             <Route

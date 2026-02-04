@@ -49,6 +49,25 @@ export const Post = async (url, body, apiUrl = null, unauthorized = false) => {
   return response;
 };
 
+export const Put = async (url, body, apiUrl = null, unauthorized = false) => {
+  const defaultHeaders = {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  };
+  if (!unauthorized) {
+    defaultHeaders.headers.Authorization = `Bearer ${getAccessToken()}`;
+  }
+  const apiUrlEndPoint = apiUrl || getApiUrl()
+  const response = await fetch(`${apiUrlEndPoint}${url}`, defaultHeaders)
+    .then((res) => res.json())
+    .catch((err) => {
+      console.error("Fetch error:", err);
+      return null;
+    });
+  return response;
+};
+
 export const Delete = async (url) => {
   const defaultHeaders = {
     method: "DELETE",

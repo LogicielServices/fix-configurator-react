@@ -1,4 +1,4 @@
-import { ApiWithTextResponse, Delete, Get, Post } from "./ApiService";
+import { ApiWithTextResponse, Delete, Get, Put, Post } from "./ApiService";
 import { getRemoteDataSource } from "./DatasourceService";
 
 export const getSessionsConnectivityStatus = async () => {
@@ -41,4 +41,24 @@ export const getFixMessages = async (engineID, sessionID) => {
     isPageSize: true,
   });
   return response || {};
+}
+
+export const connectFixSession = async (engineID, sessionID) => {
+  const response = await Post(`/api/fixengines/${engineID}/fixSessions/connect/${sessionID}`);
+  return response;
+}
+
+export const disconnectFixSession = async (engineID, sessionID) => {
+  const response = await Post(`/api/fixengines/${engineID}/fixSessions/disconnect/${sessionID}`);
+  return response;
+}
+
+export const resetSequenceFixSession = async (engineID, sessionID) => {
+  const response = await Put(`/api/fixengines/${engineID}/fixSessions/resetSequence/${sessionID}`);
+  return response;
+}
+
+export const setSequenceFixSession = async (engineID, sessionID, inSeq, outSeq) => {
+  const response = await Put(`/api/fixengines/${engineID}/fixSessions/setSequence/${sessionID}/${inSeq}/${outSeq}`);
+  return response;
 }
