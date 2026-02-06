@@ -24,6 +24,7 @@ import {
   FaPen,
   StatusBadge,
   handleRowPrepared,
+  sessionStatusEnum,
 } from "./handler.js";
 import useClientUpdates from "../../SignalR/useClientUpdates.js";
 import {
@@ -34,7 +35,7 @@ import {
 } from "../../Services/FixSessionService.js";
 import { Form, Popup } from "devextreme-react";
 import { ButtonItem, SimpleItem } from "devextreme-react/form.js";
-import { confirm } from 'devextreme/ui/dialog';
+import { confirm } from "devextreme/ui/dialog";
 import { textMessages } from "../../utils/constants.js";
 
 export default function SessionsGrid({ sessions, engineID }) {
@@ -187,7 +188,7 @@ export default function SessionsGrid({ sessions, engineID }) {
             onClick={connectEngine}
             cssClass="sg-action-btn"
             render={FaPlug}
-            visible={({ row }) => row?.data?.status === "DISCONNECTED"}
+            visible={({ row }) => row?.data?.status === sessionStatusEnum.disconnected}
           />
 
           {/* Disconnect */}
@@ -196,7 +197,7 @@ export default function SessionsGrid({ sessions, engineID }) {
             onClick={disconnectEngine}
             cssClass="sg-action-btn"
             render={FaLinkSlash}
-            visible={({ row }) => row?.data?.status === "CONNECTED"}
+            visible={({ row }) => row?.data?.status === sessionStatusEnum?.connected}
           />
 
           {/* Set sequences */}
@@ -211,6 +212,7 @@ export default function SessionsGrid({ sessions, engineID }) {
             }
             cssClass="sg-action-btn"
             render={FaListOl}
+            visible={({ row }) => row?.data?.status === sessionStatusEnum.disconnected}
           />
 
           {/* Reset sequence */}
@@ -219,6 +221,7 @@ export default function SessionsGrid({ sessions, engineID }) {
             onClick={resetSequence}
             cssClass="sg-action-btn"
             render={FaRotateRight}
+            visible={({ row }) => row?.data?.status === sessionStatusEnum.disconnected}
           />
 
           {/* Edit session config */}

@@ -14,6 +14,7 @@ export const passwordValidation = {
   pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>~_\-=+[\]\\;'/]).*$/,
   message:
     "Password must be at least 8 characters long and contain a mix of uppercase and lowercase letters, digits, and special characters, with a maximum length of 50 characters.",
+  unmatchedPasswordAndConfirmPassword: "Password and confirm password must be matching.",
 };
 
 export const emailValidation = {
@@ -39,6 +40,8 @@ export const isRequiredValidationMessages = {
   lastName: `Last Name${isRequired}`,
   username: `Username${isRequired}`,
   email: `Email${isRequired}`,
+  password: `Password${isRequired}`,
+  confirmPassword: `Confirm Password${isRequired}`,
 };
 
 export const validateFields = (formType, fieldsData) => {
@@ -66,8 +69,21 @@ export const validateFields = (formType, fieldsData) => {
       }
       if (!fieldsData?.email?.trim()) {
         errors.email = isRequiredValidationMessages.email;
-      } else if (!emailValidation?.pattern?.test(fieldsData.email)) {
+      } else if (!emailValidation?.pattern?.test(fieldsData?.email)) {
         errors.email = emailValidation?.message;
+      }
+      if (!fieldsData?.password?.trim()) {
+        errors.password = isRequiredValidationMessages.password;
+      } else if (!passwordValidation?.pattern?.test(fieldsData?.password)) {
+        errors.password = passwordValidation?.message;
+      } else if (fieldsData?.password !== fieldsData?.confirmPassword) {
+        errors.password = passwordValidation?.unmatchedPasswordAndConfirmPassword;
+        errors.confirmPassword = passwordValidation?.unmatchedPasswordAndConfirmPassword;
+      }
+      if (!fieldsData?.confirmPassword?.trim()) {
+        errors.confirmPassword = isRequiredValidationMessages.confirmPassword;
+      } else if (!passwordValidation?.pattern?.test(fieldsData?.confirmPassword)) {
+        errors.confirmPassword = passwordValidation?.message;
       }
       break;
     case "Telnet":

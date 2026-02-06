@@ -1,3 +1,9 @@
+export const sessionStatusEnum = Object.freeze({
+  connected: 'CONNECTED',
+  disconnected: 'DISCONNECTED',
+  unavailable: 'UNAVAILABLE',
+});
+
 export const ModeChip = ({ value }) => {
   const v = (value || '').toLowerCase();
   const isInitiator = v === 'initiator';
@@ -24,11 +30,11 @@ export const FaUnavailable = () => <i className="fa-solid fa-ban" aria-hidden="t
 // Small helpers for visuals
 export const StatusBadge = ({ value }) => {
   const v = (value || '').toUpperCase();
-  if (v === 'CONNECTED') {
+  if (v === sessionStatusEnum?.connected) {
     return <div className="sg-status-btn"><FaPlug /></div>;
-  } else if (v === 'DISCONNECTED') {
+  } else if (v === sessionStatusEnum?.disconnected) {
     return <div className="sg-status-btn"><FaLinkSlash /></div>;
-  } else if (v === 'UNAVAILABLE') {
+  } else if (v === sessionStatusEnum?.unavailable) {
     return <div className="sg-status-btn"><FaUnavailable /></div>;
   }
 };
@@ -40,11 +46,11 @@ export const handleRowPrepared = ({ data, rowType, rowElement }) => {
   // Remove any old classes (when rows are re-rendered)
   rowElement?.classList?.remove?.('sg-row-connected', 'sg-row-disconnected', 'sg-row-unavailable');
 
-  if (value === 'CONNECTED') {
+  if (value === sessionStatusEnum?.connected) {
     rowElement?.classList?.add?.('sg-row-connected');
-  } else if (value === 'DISCONNECTED') {
+  } else if (value === sessionStatusEnum?.disconnected) {
     rowElement?.classList?.add?.('sg-row-disconnected');
-  } else if (value === 'UNAVAILABLE') {
+  } else if (value === sessionStatusEnum?.unavailable) {
     rowElement?.classList?.add?.('sg-row-unavailable');
   }
 };

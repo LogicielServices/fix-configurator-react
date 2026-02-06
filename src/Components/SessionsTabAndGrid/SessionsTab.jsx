@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import TabPanel from 'devextreme-react/tab-panel';
 import SessionsGrid from './SessionsGrid';
-import { Typography } from '@mui/material';
 import { Settings } from '@mui/icons-material';
 
 export default function SessionsTabs({ tabs, activeEngineID, onActivate, onCloseTab, showEnginesConfig }) {
   const [items, setItems] = useState([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const tabPanelRef = useRef();
 
   useEffect(() => {
     const newTabs = (tabs || [])?.map?.((t) => ({
@@ -20,7 +20,9 @@ export default function SessionsTabs({ tabs, activeEngineID, onActivate, onClose
 
   useEffect(() => {
     const idx = items?.findIndex?.((i) => i?.engineID === activeEngineID);
-    setSelectedIndex(idx >= 0 ? idx : 0);
+    const selectIdx = idx >= 0 ? idx : 0;
+    tabPanelRef?.current?.instance?.option?.('selectedIndex', selectIdx);
+    setSelectedIndex(selectIdx);
   }, [items, activeEngineID]);
 
   const onSelectionChanged = (e) => {
@@ -81,9 +83,10 @@ export default function SessionsTabs({ tabs, activeEngineID, onActivate, onClose
             <TabPanel
               items={items}
               deferRendering={false}
+              ref={tabPanelRef}
               itemRender={itemRender}
               itemTitleRender={titleRender}
-              selectedIndex={items?.length ? selectedIndex : -1}
+              selectedIndex={items?.length ? selectedIndex : 0}
               onSelectionChanged={onSelectionChanged}
               showNavButtons={true}
               loop={false}

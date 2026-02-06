@@ -2,6 +2,7 @@ import {
   forwardRef,
   useCallback,
   useContext,
+  useEffect,
   useImperativeHandle,
   useMemo,
   useState,
@@ -23,12 +24,21 @@ import {
   Grid,
   Divider,
   Slide,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  FormHelperText,
 } from "@mui/material";
 import { Close, PersonAddRounded } from "@mui/icons-material";
 import GlobalContext from "../../Provider/GlobalProvider.jsx";
 import { severities, textMessages } from "../../utils/constants.js";
 // import { addUser } from "../../services/userService.js";
 import { validateFields } from "../../utils/formValidator.jsx";
+import { getAllUserRoles, registerUser } from "../../Services/AccountService.js";
+import { showErrorToast, showSuccessToast } from "../../utils/toastsService.js";
+import { LoadIndicator } from "devextreme-react";
+import { GlobalLoaderComponent } from "../../utils/GlobalHandler.jsx";
 
 const defaultData = Object.freeze({
   firstName: "",
@@ -36,19 +46,23 @@ const defaultData = Object.freeze({
   username: "",
   email: "",
   allowTFA: false,
+  role: "",
+  password: "",
+  confirmPassword: "",
 });
 
 // Slide transition for dialog
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-const addUser = async () => {};
+
 const CreateUser = forwardRef((props, ref) => {
-  const { handleToastMessage } = useContext(GlobalContext);
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [fieldsData, setFieldsData] = useState({ ...defaultData });
+  const [roles, setRoles] = useState([]);
   const [errors, setErrors] = useState({});
+  const [dataLoading, setDataLoading] = useState({ roles: false });
 
   const closeDirPopup = () => setIsOpen(false);
 
@@ -60,25 +74,35 @@ const CreateUser = forwardRef((props, ref) => {
     },
   }));
 
+  const getRoles = async () => {
+    setDataLoading((dl) => ({ ...dl, roles: true }));
+    const response = await getAllUserRoles();
+    const roleDTOs = response?.roleDTOs?.map(x => x?.roleName);
+    setRoles(roleDTOs || []);
+    setDataLoading((dl) => ({ ...dl, roles: false }));
+  }
+
+  useEffect(() => {
+    if (isOpen) getRoles();
+  }, [isOpen])
+
   const handleSubmitData = useCallback(async () => {
     const newErrors = validateFields("Users", fieldsData);
     setErrors(newErrors);
     if (!Object.keys(newErrors)?.length) {
       setIsLoading(true);
-      const response = await addUser(fieldsData);
+      fieldsData.allowTFA = undefined;
+      const response = await registerUser(fieldsData);
       setIsLoading(false);
       if (response?.success) {
-        handleToastMessage(severities?.success, response?.message);
+        showSuccessToast(response?.message || textMessages?.userWasCreatedSuccessfully);
         closeDirPopup();
         return;
       } else {
-        handleToastMessage(
-          severities?.error,
-          response?.message || textMessages?.userCanNotBeCreated
-        );
+        showErrorToast(response?.message || textMessages?.userCanNotBeCreated);
       }
     }
-  }, [fieldsData, handleToastMessage]);
+  }, [fieldsData]);
 
   const handleChange = (field, value) =>
     setFieldsData((state) => ({ ...state, [field]: value }));
@@ -89,6 +113,8 @@ const CreateUser = forwardRef((props, ref) => {
     fieldsData?.username &&
     fieldsData?.email &&
     fieldsData?.role &&
+    fieldsData?.password &&
+    fieldsData?.confirmPassword &&
     !isLoading;
 
   const AddUserForm = useMemo(() => {
@@ -168,6 +194,60 @@ const CreateUser = forwardRef((props, ref) => {
             helperText={errors?.email}
             autoComplete="email"
           />
+          
+          <Grid container spacing={1.5}>
+            <Grid item size={{ xs: 12, sm: 6 }}>
+              <TextField
+                label="Password"
+                variant="outlined"
+                type="password"
+                size="small"
+                fullWidth
+                required
+                value={fieldsData?.password}
+                onChange={({ target }) => handleChange("password", target?.value)}
+                error={!!errors?.password}
+                helperText={errors?.password}
+                autoComplete="password"
+              />
+            </Grid>
+              
+            <Grid item size={{ xs: 12, sm: 6 }}>
+              <TextField
+                label="Confirm Password"
+                variant="outlined"
+                type="password"
+                size="small"
+                fullWidth
+                required
+                value={fieldsData?.confirmPassword}
+                onChange={({ target }) => handleChange("confirmPassword", target?.value)}
+                error={!!errors?.confirmPassword}
+                helperText={errors?.confirmPassword}
+                autoComplete="confirmPassword"
+              />
+            </Grid>
+          </Grid>
+
+          <FormControl sx={{ width: "100%" }} size="small" required error={!!errors?.role}>
+            <InputLabel>Role</InputLabel>
+            <Select
+              label="Role"
+              value={fieldsData?.role}
+              MenuProps={{ sx: { height: 300 } }}
+              onChange={({ target }) => handleChange("role", target?.value)}
+            >
+              {
+                dataLoading?.roles ? <GlobalLoaderComponent /> :
+                (roles || []).map((x) => (
+                  <MenuItem key={x} value={x}>
+                    {x}
+                  </MenuItem>
+                ))
+              }
+            </Select>
+            {!!errors?.role && <FormHelperText>{errors?.role}</FormHelperText>}
+          </FormControl>
 
           <FormControlLabel
             control={
@@ -230,7 +310,7 @@ const CreateUser = forwardRef((props, ref) => {
         </Stack>
       </Box>
     );
-  }, [handleSubmitData, fieldsData, isLoading, errors, allowSubmit]);
+  }, [handleSubmitData, fieldsData, isLoading, errors, allowSubmit, roles]);
 
   return (
     <Dialog

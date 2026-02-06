@@ -3,6 +3,8 @@ import FixEnginesGrid from "../Components/FixEnginesGrid/index.jsx";
 import SessionsTabs from "../Components/SessionsTabAndGrid/SessionsTab.jsx";
 import "../Components/Dashboard/index.css";
 import { Dialog } from "@mui/material";
+import { confirm } from "devextreme/ui/dialog";
+import { textMessages } from "../utils/constants.js";
 
 export default function FixDashboard() {
   const [tabs, setTabs] = useState([]);
@@ -26,12 +28,13 @@ export default function FixDashboard() {
       }
       return [...prev, { engineID, engineName, sessions }];
     });
-
     setActiveEngineID(engineID);
   }, []);
 
   const handleCloseTab = useCallback(
-    (engineIDToClose) => {
+    async (engineIDToClose) => {
+      const result = await confirm(textMessages?.areYouSure, "Disconnect Engine");
+      if (!result) return;
       setTabs((prev) => prev.filter((t) => t.engineID !== engineIDToClose));
       setActiveEngineID((current) => {
         if (current === engineIDToClose) {
@@ -68,7 +71,7 @@ export default function FixDashboard() {
         maxWidth="md"
         fullWidth={true}
       >
-        <FixEnginesGrid handleEngineConnected={handleEngineConnected} />
+        <FixEnginesGrid handleEngineConnected={handleEngineConnected} connectedEngines={tabs} />
       </Dialog>
       {/* Bottom: tabs for sessions of connected engines */}
       <div className="fx-tabs-area">

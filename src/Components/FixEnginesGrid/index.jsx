@@ -28,6 +28,7 @@ import Form, { ButtonItem, EmptyItem, GroupItem, SimpleItem } from "devextreme-r
 import { confirm } from "devextreme/ui/dialog";
 import { textMessages } from "../../utils/constants";
 import { Popup } from "devextreme-react";
+import { showErrorToast } from "../../utils/toastsService";
 
 // Small chips
 const DbChip = ({ db }) => <span className="eng-chip eng-db">DB {db}</span>;
@@ -65,7 +66,7 @@ const addFormDefaultData = Object.entries({
   redisDB: 0,
 })
 
-export default function EnginesGrid({ handleEngineConnected }) {
+export default function EnginesGrid({ handleEngineConnected, connectedEngines }) {
   const [rows, setRows] = useState([]);
   const [actionLoading, setActionLoading] = useState({});
   const fixEngineRef = useRef();
@@ -85,6 +86,10 @@ export default function EnginesGrid({ handleEngineConnected }) {
   }, []);
 
   const handleConnect = async (data, isSave = false) => {
+    if (connectedEngines?.some?.(x => x?.engineID === data?.engineID)) {
+      showErrorToast("Fix engine is already connected.");
+      return;
+    }
     const engineData = {
       engineID: data?.engineID,
       engineName: data?.engineName,
@@ -137,11 +142,13 @@ export default function EnginesGrid({ handleEngineConnected }) {
     const key = data?.engineID;
     const isBusy = !!actionLoading?.[key];
     const handleDelete = async () => {
+      setActionLoading((s) => ({ ...s, [key]: true }));
       const result = await confirm(textMessages?.areYouSure, "Delete Engine");
       if (result) {
         await deleteFixEngine(data?.engineID);
         getData();
       }
+      setActionLoading((s) => ({ ...s, [key]: false }));
     }
     const handleConnectEngine = async () => {
       setActionLoading((s) => ({ ...s, [key]: true }));
