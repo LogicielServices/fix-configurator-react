@@ -67,6 +67,7 @@ export default function FixMessagesPanel({ engineID, sessionID }) {
             keyExpr="streamEntryId"
             columnAutoWidth
             showBorders
+            width="100%"
             rowAlternationEnabled
             hoverStateEnabled
             activeStateEnabled
@@ -144,6 +145,7 @@ export default function FixMessagesPanel({ engineID, sessionID }) {
             noDataText="No fields"
             allowColumnResizing
             columnResizingMode="widget"
+            width="100%"
           >
             <Column
               dataField="item1"

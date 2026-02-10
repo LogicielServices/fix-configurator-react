@@ -1,0 +1,20 @@
+.telnet-classname {
+  /* For Chrome, Edge, Safari */
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
+  }
+
+  /* To style them (e.g., color) */
+  input[type="number"]::-webkit-inner-spin-button {
+    background-color: #1976d2; /* Your desired color */
+    border-radius: 50%;
+  }
+
+  /* For Firefox */
+  input[type="number"] {
+    -moz-appearance: textfield; /* Removes default spinner */
+  }
+}

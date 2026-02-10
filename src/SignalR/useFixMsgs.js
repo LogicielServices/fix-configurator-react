@@ -9,7 +9,7 @@ export default function useFixMsgs(defaultEngineID, defaultSessionID) {
   const start = async () => {
     try {
       await connectionRef?.current?.start();
-      console.log('Connected:', connectionRef?.current?.connectionId);
+      console.log('Connected Insert Fix Message:', connectionRef?.current?.connectionId);
     } catch (err) {
       console.error('SignalR start error:', err);
       setTimeout(start, 3000);

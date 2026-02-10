@@ -1,4 +1,45 @@
 /* LOGIN STYLES */
+* {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+  /* thumb | track */
+}
+
+*:hover {
+  /* Firefox */
+  scrollbar-color: rgba(148, 148, 148, 0.6) transparent !important;
+  /* thumb | track */
+}
+
+/* Chrome, Edge, Safari */
+*::-webkit-scrollbar {
+  width: 6px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+  transition: background 0.3s ease;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3);
+  /* subtle thumb */
+  border-radius: 3px;
+  transition: background 0.3s ease;
+}
+
+/* Hover effect */
+*:hover::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  /* light visible track */
+}
+
+*:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.6);
+  /* darker thumb */
+}
 
 :root {
   --bg: #f5f6f8;
@@ -37,6 +78,11 @@ body {
   background: var(--bg);
   color: var(--text);
   line-height: 1.5;
+}
+
+#root {
+  height: 100vh;
+  overflow: auto;
 }
 
 .auth-shell {
@@ -253,5 +299,14 @@ html[data-theme="dark"] .field input {
 .engine-sessions-data-grid {
   .dx-freespace-row {
     display: none;
+  }
+}
+
+/* GLOBAL POPUP TOOLBAR TITLE STYLE */
+.dx-toolbar.dx-popup-title {
+  background: linear-gradient(135deg, #1976d2, #42a5f5);
+  color: #fff;
+  .dx-icon {
+    color: #fff;
   }
 }

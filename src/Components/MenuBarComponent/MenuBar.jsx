@@ -2,12 +2,13 @@ import { Drawer, IconButton, Menu, MenuItem, Typography } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import BreadCrumbs from "../BreadCrumbsComponent/BreadCrumbs";
 import { authConstants } from "../../utils/constants";
-import { AccountCircle, ArrowDropDown, Logout, Notifications, Person } from "@mui/icons-material";
+import { AccountCircle, ArrowDropDown, Logout, Notifications, Person, Power } from "@mui/icons-material";
 import { useRef, useState } from "react";
 import { iconButtonOptions, menuOptions } from "./MenuBarHandler";
 import CreateUser from "../CreateUser";
 import { logout } from "../../utils/helper";
 import SessionStatusGrid from "../SessionStatusGrid";
+import TelnetComponent from "../TelnetComponent";
 
 const MenuBar = ({ handleDrawerToggle }) => {
   const [openSessionStatuses, setOpenSessionStatuses] = useState(false);
@@ -30,6 +31,7 @@ const MenuBar = ({ handleDrawerToggle }) => {
   };
   const handleClose = () => setAnchorEl(null);
   const createUserRef = useRef();
+  const telnetPopUpRef = useRef();
 
   const profileMenu = () => {
     return (
@@ -63,6 +65,7 @@ const MenuBar = ({ handleDrawerToggle }) => {
   return (
     <div className="row w-100 mb-2">
       <CreateUser ref={createUserRef} />
+      <TelnetComponent ref={telnetPopUpRef} />
       <Drawer
         animationDuration={300}
         anchor="right"
@@ -84,6 +87,13 @@ const MenuBar = ({ handleDrawerToggle }) => {
         <BreadCrumbs />
       </div>
       <div className="col-12 col-md-2 d-flex justify-content-end">
+        <IconButton
+          color="primary"
+          onClick={() => telnetPopUpRef?.current?.handleOpenTelnetDialog?.()}
+          aria-label="telnet"
+        >
+          <Power />
+        </IconButton>
         <IconButton
           color="primary"
           onClick={() => setOpenSessionStatuses(true)}

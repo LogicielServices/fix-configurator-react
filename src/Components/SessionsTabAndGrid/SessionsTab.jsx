@@ -1,11 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import TabPanel from 'devextreme-react/tab-panel';
-import SessionsGrid from './SessionsGrid';
-import { Settings } from '@mui/icons-material';
+import SessionsGrid from './SessionsGridsComponent';
+import { Monitor, Settings } from '@mui/icons-material';
+import Button from '@mui/material/Button';
+import { Popup } from 'devextreme-react';
+import SessionsDataGrid from './SessionsDataGrid';
 
 export default function SessionsTabs({ tabs, activeEngineID, onActivate, onCloseTab, showEnginesConfig }) {
   const [items, setItems] = useState([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [showSessionMonitorScreen, setShowSessionMonitorScreen] = useState(false);
   const tabPanelRef = useRef();
 
   useEffect(() => {
@@ -61,17 +65,39 @@ export default function SessionsTabs({ tabs, activeEngineID, onActivate, onClose
 
   return (
     <div className="sess-wrap">
-      <div className="d-flex align-items-center gap-4">
-        <div className="sess-head">
-          <h3 className="sess-title">Engine Sessions</h3>
-          <p className="sess-sub">Tabs appear as you connect engines</p>
+      <Popup
+        visible={showSessionMonitorScreen}
+        onHiding={() => setShowSessionMonitorScreen(false)}
+        fullScreen
+        title="Sessions Monitoring Screen"
+        showCloseButton
+      >
+        <div className="sess-wrap"><SessionsDataGrid /></div>
+      </Popup>
+      <div className="d-flex justify-content-between">
+        <div className="d-flex align-items-center gap-4">
+          <div className="sess-head">
+            <h3 className="sess-title">Engine Sessions</h3>
+            <p className="sess-sub">Tabs appear as you connect engines</p>
+          </div>
+          <Settings
+            color="primary"
+            style={{ cursor: 'pointer' }}
+            fontSize="large"
+            onClick={showEnginesConfig}
+          />
         </div>
-        <Settings
-          color="primary"
-          style={{ cursor: 'pointer' }}
-          fontSize="large"
-          onClick={showEnginesConfig}
-        />
+        <div className="align-content-center">
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<Monitor />}
+            onClick={() => setShowSessionMonitorScreen(true)}
+            sx={{ textTransform: "none", borderRadius: "6px" }}
+          >
+            Session Monitoring Screen
+          </Button>
+        </div>
       </div>
       {
         !tabs || !tabs?.length ? (
