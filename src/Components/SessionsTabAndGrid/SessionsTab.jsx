@@ -15,7 +15,7 @@ export default function SessionsTabs({ tabs, activeEngineID, onActivate, onClose
   useEffect(() => {
     const newTabs = (tabs || [])?.map?.((t) => ({
       key: t?.engineID,
-      title: `${t?.engineName} (${t?.engineID})`,
+      title: t?.engineName,
       engineID: t?.engineID,
       sessions: t?.sessions || [],
     }));
@@ -58,7 +58,11 @@ export default function SessionsTabs({ tabs, activeEngineID, onActivate, onClose
   const itemRender = (item) => {
     return (
       <div className="sess-tab-content">
-        <SessionsGrid sessions={item?.sessions} engineID={item?.engineID} />
+        <SessionsGrid
+          sessions={item?.sessions}
+          engineID={item?.engineID}
+          title={item?.title}
+        />
       </div>
     );
   };

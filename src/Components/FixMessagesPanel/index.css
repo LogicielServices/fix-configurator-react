@@ -50,7 +50,7 @@
 
 /* empty states */
 .fx-empty {
-  min-height: 140px;
+  min-height: 290px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -153,4 +153,30 @@
 .sess-wrap .sg-status-btn i {
   font-size: 12px;
   line-height: 1;
+}
+
+.custom-radio-button {
+  .custom-radio-item {
+    padding: 6px 14px;
+    border-radius: 8px;
+    background: #f4f6f9;
+    border: 1px solid #dfe4ea;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.25s ease;
+  }
+  .dx-radiogroup-horizontal .dx-item {
+    margin-right: 10px !important;
+  }
+  .dx-radiobutton .dx-radiobutton-icon {
+    border-color: #7d8cff !important; /* nice indigo */
+  }
+  .dx-radiobutton-checked .dx-radiobutton-icon {
+    background-color: #7d8cff !important;
+    border-color: #7d8cff !important;
+  }
+  .custom-radio-item:hover {
+    background: #eef1f7;
+    transform: translateY(-2px);
+  }
 }

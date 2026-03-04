@@ -66,7 +66,7 @@ const addFormDefaultData = Object.entries({
   redisDB: 0,
 })
 
-export default function EnginesGrid({ handleEngineConnected, connectedEngines }) {
+export default function EnginesGrid({ handleEngineConnected, connectedEngines, setShowPopup }) {
   const [rows, setRows] = useState([]);
   const [actionLoading, setActionLoading] = useState({});
   const fixEngineRef = useRef();
@@ -296,8 +296,9 @@ export default function EnginesGrid({ handleEngineConnected, connectedEngines })
   return (
     <div id="fix-engines-dialog">
       <div className="eng-wrap p-3">
-        <div className="eng-head">
+        <div className="eng-head d-flex flex-rows justify-content-between">
           <h3 className="eng-title">Engine Configurations</h3>
+          <div><Button type="back" icon="close" onClick={() => setShowPopup(false)} /></div>
         </div>
         <Popup
           title="Add or Connect Engines"

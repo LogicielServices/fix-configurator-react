@@ -3,7 +3,7 @@ import FixMessagesPanel from "../FixMessagesPanel/index.jsx";
 import SessionsDataGrid from "./SessionsDataGrid.jsx";
 import "../FixMessagesPanel/index.css";
 
-export default function SessionsGrid({ sessions, engineID }) {
+export default function SessionsGrid({ sessions, engineID, title }) {
   const [selectedSessionID, setSelectedSessionID] = useState(null);
 
   useEffect(() => {
@@ -15,6 +15,7 @@ export default function SessionsGrid({ sessions, engineID }) {
       <SessionsDataGrid
         engineID={engineID}
         sessions={sessions}
+        engineName={title}
         setSelectedSessionID={setSelectedSessionID}
       />
       <div className="sg-messages-block">

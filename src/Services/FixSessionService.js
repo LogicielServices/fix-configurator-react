@@ -16,6 +16,10 @@ export const connectToFixEngine = async (data) => {
   return response;
 }
 
+export const disconnectFixEngine = async (data) => {
+  const response = await Post(`/api/fixengines/disconnect`, data);
+  return response;
+}
 
 export const saveFixEngine = async (data) => {
   const props = {
@@ -60,5 +64,10 @@ export const resetSequenceFixSession = async (engineID, sessionID) => {
 
 export const setSequenceFixSession = async (engineID, sessionID, inSeq, outSeq) => {
   const response = await Put(`/api/fixengines/${engineID}/fixSessions/setSequence/${sessionID}/${inSeq}/${outSeq}`);
+  return response;
+}
+
+export const getConnectedEngines = async () => {
+  const response = await Get('/api/fixengines/connectedengines');
   return response;
 }

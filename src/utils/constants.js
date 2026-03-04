@@ -32,4 +32,9 @@ export const textMessages = Object.freeze({
   userWasCreatedSuccessfully: "User was created successfully.",
   userCanNotBeCreated: "User can not be created.",
   areYouSure: "<i>Are you sure?</i>",
+  sessionCreatedSuccessfully: "Session created successfully!",
+  unableToCreateSession: "Unable to create session!",
+  jenkinsConfigurationsWereSavedSuccessfully: "Jenkins configurations were saved successfully.",
+  errorInSavingJenkinsConfig: "There was an error in saving jenkins configurations.",
+  anErrorOccurred: "An error occurred.",
 });

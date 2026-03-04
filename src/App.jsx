@@ -3,7 +3,7 @@ import { GlobalProvider } from "./Provider/GlobalProvider";
 import RoutesComponent from "./Components/RoutesComponent/Routes.jsx";
 import { Toaster } from 'react-hot-toast';
 import 'devextreme/dist/css/dx.common.css';
-import 'devextreme/dist/css/dx.material.blue.light.css';
+import 'devextreme/dist/css/dx.material.blue.light.compact.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import './App.css';
 

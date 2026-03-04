@@ -1,6 +1,7 @@
 /* Header */
 .eng-wrap .eng-head {
   margin: 8px 2px 12px;
+  line-height: 1.9;
 }
 
 .eng-wrap .eng-title {
@@ -22,6 +23,10 @@
   border-radius: 14px;
   box-shadow: 0 8px 24px rgba(2, 6, 23, 0.06);
   overflow: hidden;
+}
+
+.eng-wrap .eng-surface .dx-datagrid-rowsview.dx-fixed-columns td {
+  height: 71px;
 }
 
 /* Grid base */
