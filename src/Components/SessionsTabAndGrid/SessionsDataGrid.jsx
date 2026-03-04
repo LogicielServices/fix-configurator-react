@@ -7,9 +7,6 @@ import {
 import useClientUpdates from "../../SignalR/useClientUpdates";
 import { confirm } from "devextreme/ui/dialog";
 import { textMessages } from "../../utils/constants.js";
-import { CheckBox, Form, Popup, RadioGroup, SelectBox, TextArea } from "devextreme-react";
-import { setSequenceFixSession } from "../../Services/FixSessionService.js";
-import { ButtonItem, GroupItem, SimpleItem } from "devextreme-react/form";
 import {
   DataGrid,
   Column,
@@ -39,16 +36,21 @@ import {
   cfgSessionsTypes,
   jenkinsConfigFormOptions,
   jobConfigFormOptions,
-  osList,
-  clonableGitFilesEnum,
   editSessionRowFields,
   cfgSessionsFilesEnum,
 } from "./handler.js";
-import { Button as DevBtn } from "devextreme-react/button";
 import CFGSessionFormPopup from "./PopupComponents/CFGSessionFormPopup.jsx";
-import { deleteJenkinsConfig, getJenkinsAgents, getJenkinsConfig, getJobStatus, triggerJenkins, upsertJenkinsConfig } from "../../Services/JenkinsConfigService.js";
-import { showErrorToast, showSuccessToast } from "../../utils/toastsService.js";
-import { getBranches, getConfigDetails, getSessionDetail, updateCfgIni } from "../../Services/GithubService.js";
+import SequenceNumbersPopup from "./PopupComponents/SequenceNumbersPopup.jsx";
+import JenkinsConfigPopup from "./PopupComponents/JenkinsConfigPopup.jsx";
+import JobDeploymentPopup from "./PopupComponents/JobDeploymentPopup.jsx";
+import GitHubConfigurationPopup from "./PopupComponents/GitHubConfigurationPopup.jsx";
+import { getJenkinsConfig, getJenkinsAgents } from "../../Services/JenkinsConfigService.js";
+import { showErrorToast } from "../../utils/toastsService.js";
+import {
+  getBranches,
+  getSessionDetail,
+} from "../../Services/GithubService.js";
+import { Button as DevBtn } from "devextreme-react/button";
 
 export default function SessionsDataGrid({
   engineID,
@@ -57,367 +59,111 @@ export default function SessionsDataGrid({
   setSelectedSessionID,
 }) {
   const { updates, dataGridRef } = useClientUpdates(engineID, sessions);
-  const [seqNumPopUp, setSeqNumPopUp] = useState(false);
+
+  // State Management
+  const [seqNumPopUpData, setSeqNumPopUpData] = useState(null);
   const [cfgPopUpVisible, setCfgPopUpVisible] = useState(false);
   const [jenkinsConfigPopUpVisible, setJenkinsConfigPopUpVisible] =
     useState(false);
-  const [cloneGitHubFilePopupVisible, setCloneGitHubFilePopupVisible] = useState(false);
+  const [cloneGitHubFilePopupVisible, setCloneGitHubFilePopupVisible] =
+    useState(false);
   const [jenkinsConfigFormData, setJenkinsConfigFormData] = useState({});
   const [jobConfigPopUpVisible, setJobConfigPopUpVisible] = useState(false);
   const [jobConfigFormData, setJobConfigFormData] = useState({});
   const [gitHubBranches, setGitHubBranches] = useState([]);
   const [jenkinsAgents, setJenkinsAgents] = useState([]);
-  const [configJson, setConfigJson] = useState('');
-  const [storeIni, setStoreIni] = useState('');
-  const cfgSessionFormPopupRef = useRef();
+  const [configJson, setConfigJson] = useState("");
+  const [storeIni, setStoreIni] = useState("");
   const [editSessionsRowState, setEditSessionsRowState] = useState({
     fields: [],
     data: {},
   });
+  const cfgSessionFormPopupRef = useRef();
+  const seqNumPopupRef = useRef();
 
-  const getGitHubBranchesData = async () => {
-    const data = await getBranches();
-    setGitHubBranches(data || []);
-  }
-
-  const getJenkinAgentsData = async () => {
-    const response = await getJenkinsAgents();
-    const data = response?.computer?.map?.(x => x?.displayName);
-    setJenkinsAgents(data || []);
-  }
-
+  // Fetch initial data on mount
   useEffect(() => {
-    getJenkinAgentsData();
-    getGitHubBranchesData();
-  }, [])
+    const loadInitialData = async () => {
+      const [branchesData, agentsResponse] = await Promise.all([
+        getBranches(),
+        getJenkinsAgents(),
+      ]);
+      setGitHubBranches(branchesData || []);
+      const agentNames =
+        agentsResponse?.computer?.map?.((x) => x?.displayName) || [];
+      setJenkinsAgents(agentNames);
+    };
+    loadInitialData();
+  }, []);
 
-  const addJenkinsConfig = async (e) => {
-    e?.preventDefault?.();
-    const response = await upsertJenkinsConfig({ ...jenkinsConfigFormData });
-    if (response?.isSuccess) {
-      showSuccessToast(
-        response?.message ||
-          textMessages?.jenkinsConfigurationsWereSavedSuccessfully,
-      );
-      setJenkinsConfigPopUpVisible(false);
-      return;
-    }
-    showErrorToast(
-      response?.message || textMessages?.errorInSavingJenkinsConfig,
-    );
-  };
-
-  const handleDeleteJenkinsConfig = async (e) => {
-    e?.preventDefault?.();
-    const response = await deleteJenkinsConfig(engineID);
-    if (response?.isSuccess) {
-      showSuccessToast(response?.message);
-      return;
-    }
-    showErrorToast(response?.message || textMessages?.anErrorOccurred);
-  }
-
-  const triggerJob = async (e) => {
-    e?.preventDefault?.();
-    const response = await triggerJenkins(jobConfigFormData?.githubBranch, jobConfigFormData?.environment, engineID);
-    console.log(jobConfigFormData, response)
-    if (response?.isSuccess) {
-      showSuccessToast(response?.message);
-      return;
-    }
-    showErrorToast(response?.message || textMessages?.anErrorOccurred);
-  }
-
-  const checkJobStatus = async () => {
-    const response = await getJobStatus(jobConfigFormData?.jenkinsAgentName);
-    console.log(response)
-    if (response?.isSuccess) {
-      showSuccessToast(response?.message);
-      return;
-    }
-    showErrorToast(response?.message || textMessages?.anErrorOccurred);
-  }
-
-  const seqInOutSubmit = async (e) => {
-    e?.preventDefault?.();
-    await setSequenceFixSession(
-      engineID,
-      seqNumPopUp?.connectionID,
-      seqNumPopUp?.inSeqNum,
-      seqNumPopUp?.outSeqNum,
-    );
-    setSeqNumPopUp(false);
-  };
-
-  const connectEngine = async ({ row }) => {
-    const result = await confirm(textMessages?.areYouSure, "Connect FIX");
-    if (result) connectFixSession(engineID, row?.data?.connectionID);
-  };
-  const disconnectEngine = async ({ row }) => {
-    const result = await confirm(textMessages?.areYouSure, "Disconnect FIX");
-    if (result) disconnectFixSession(engineID, row?.data?.connectionID);
-  };
-  const resetSequence = async ({ row }) => {
-    const result = await confirm(textMessages?.areYouSure, "Reset Sequence");
-    if (result) resetSequenceFixSession(engineID, row?.data?.connectionID);
-  };
-  const sequenceIdsFormPopUp = useMemo(() => {
-    return (
-      <Popup
-        visible={!!seqNumPopUp}
-        onHiding={() => setSeqNumPopUp(false)}
-        showCloseButton
-        title="Set Sequences"
-        width="auto"
-        height="auto"
-      >
-        <form action="your-action" onSubmit={seqInOutSubmit}>
-          <Form
-            id="form"
-            focusStateEnabled
-            activeStateEnabled
-            hoverStateEnabled
-            showRequiredMark
-          >
-            <SimpleItem
-              dataField="inSeqNum"
-              editorType="dxNumberBox"
-              editorOptions={{ min: 0 }}
-            />
-            <SimpleItem
-              dataField="outSeqNum"
-              editorType="dxNumberBox"
-              editorOptions={{ min: 0 }}
-            />
-            <ButtonItem
-              itemType="button"
-              buttonOptions={{
-                text: "Submit",
-                type: "default",
-                useSubmitBehavior: true,
-              }}
-            />
-          </Form>
-        </form>
-      </Popup>
-    );
-  }, [seqNumPopUp]);
-
-  const jenkinsConfigPopUp = useMemo(() => {
-    return (
-      <Popup
-        visible={!!jenkinsConfigPopUpVisible}
-        onHiding={() => {
-          setJenkinsConfigFormData({ ...jenkinsConfigFormOptions });
-          setJenkinsConfigPopUpVisible(false);
-        }}
-        title="JENKINS CONFIGURATION"
-        showCloseButton
-        width="800px"
-        maxWidth="70vw"
-        maxHeight="410px"
-      >
-        <form action="your-action" onSubmit={addJenkinsConfig}>
-          <Form colCount={2} formData={jenkinsConfigFormData}>
-            <SimpleItem
-              dataField="engineID"
-              visible={false}
-              editorOptions={{ disabled: true, value: engineID }}
-            />
-            <SimpleItem
-              dataField=""
-              label={{ text: 'Engine Name' }}
-              editorOptions={{ disabled: true, value: engineName }}
-            />
-            <SimpleItem
-              dataField="engineIP"
-              label={{ text: "Fix Engine" }}
-              editorOptions={{ disabled: true, value: engineID?.split?.(':')?.[0] }}
-            />
-            <SimpleItem isRequired dataField="fixEngineMachineUsername" />
-            <SimpleItem isRequired dataField="fixEngineMachinePassword" />
-            <SimpleItem
-              isRequired
-              dataField="jenkinsAgentName"
-              label={{ text: "Jenkins Agent" }}
-              editorType="dxSelectBox"
-              editorOptions={{
-                dataSource: jenkinsAgents,
-                searchEnabled: true,
-                dropDownOptions: { height: 400 }
-              }}
-            />
-            <SimpleItem
-              isRequired
-              dataField="path"
-              label={{ text: 'Fix Engine Path' }}
-            />
-            <SimpleItem
-              isRequired
-              dataField="fixEngineGitHubBranch"
-              label={{ text: "GitHub Branch" }}
-              editorType="dxSelectBox"
-              editorOptions={{
-                dataSource: gitHubBranches,
-                searchEnabled: true,
-                dropDownOptions: { height: 400 }
-              }}
-            />
-            <SimpleItem isRequired dataField="s3BucketLogPath" />
-            <GroupItem colSpan={2} colCount={12}>
-              <SimpleItem colSpan={6} />
-              <ButtonItem
-                itemType="button"
-                verticalAlignment="bottom"
-                colSpan={3}
-                cssClass="pr-0 pe-0"
-                buttonOptions={{
-                  text: "Save",
-                  type: "default",
-                  useSubmitBehavior: true,
-                  width: "100%",
-                }}
-              />
-              <ButtonItem
-                itemType="button"
-                verticalAlignment="bottom"
-                colSpan={3}
-                buttonOptions={{
-                  text: "Delete",
-                  type: "danger",
-                  useSubmitBehavior: false,
-                  width: "100%",
-                  onClick: handleDeleteJenkinsConfig,
-                }}
-              />
-            </GroupItem>
-          </Form>
-        </form>
-      </Popup>
-    )
-  }, [jenkinsConfigFormData, jenkinsConfigPopUpVisible]);
-
-  const triggerDeploymentPopUp = useMemo(() => {
-    return (
-      <Popup
-        visible={!!jobConfigPopUpVisible}
-        onHiding={() => {
-          setJobConfigFormData({ ...jobConfigFormOptions });
-          setJobConfigPopUpVisible(false);
-        }}
-        title="JOB CONFIGURATION"
-        showCloseButton
-        width="800px"
-        maxWidth="70vw"
-        maxHeight="410px"
-      >
-        <form action="your-action" onSubmit={triggerJob}>
-          <Form colCount={2} formData={jobConfigFormData}>
-            <SimpleItem
-              dataField="engineName"
-              editorOptions={{ disabled: true, value: engineName }}
-            />
-            <SimpleItem
-              dataField="engineIp"
-              label={{ text: 'Fix Engine' }}
-              editorOptions={{ disabled: true, value: engineID?.split?.(':')?.[0] }}
-            />
-            <SimpleItem
-              isRequired
-              editorOptions={{ disabled: true }}
-              dataField="fixEngineMachineUsername"
-            />
-            <SimpleItem
-              isRequired
-              dataField="jenkinsAgentName"
-              label={{ text: "Jenkins Agent" }}
-              editorType="dxSelectBox"
-              editorOptions={{
-                disabled: true,
-                dataSource: jenkinsAgents,
-                searchEnabled: true,
-                dropDownOptions: { height: 400 }
-              }}
-            />
-            <SimpleItem
-              isRequired
-              dataField="path"
-              label={{ text: "Configurations Path" }}
-              editorOptions={{ disabled: true }}
-            />
-            <SimpleItem
-              dataField="githubBranch"
-              editorType="dxSelectBox"
-              editorOptions={{
-                dataSource: gitHubBranches,
-                searchEnabled: true,
-                dropDownOptions: { height: 400 },
-                showClearButton: true,
-              }}
-            />
-            <SimpleItem
-              isRequired
-              dataField="environment"
-              label={{ text: "Select OS" }}
-              editorType="dxSelectBox"
-              editorOptions={{ dataSource: osList }}
-            />
-            <SimpleItem itemType="empty" />
-            <GroupItem colSpan={2} colCount={12}>
-              <SimpleItem colSpan={6} />
-              <ButtonItem
-                itemType="button"
-                verticalAlignment="bottom"
-                colSpan={3}
-                cssClass="pr-0 pe-0"
-                buttonOptions={{
-                  text: "Job Status",
-                  type: "default",
-                  useSubmitBehavior: false,
-                  onClick: checkJobStatus,
-                  width: "100%",
-                }}
-              />
-              <ButtonItem
-                itemType="button"
-                colSpan={3}
-                verticalAlignment="bottom"
-                buttonOptions={{
-                  text: "Trigger Job",
-                  type: "default",
-                  useSubmitBehavior: true,
-                  width: "100%",
-                }}
-              />
-            </GroupItem>
-          </Form>
-        </form>
-      </Popup>
-    )
-  }, [jobConfigFormData, jobConfigPopUpVisible]);
-
+  // Jenkins Configuration Handlers
   const handleJenkinsConfigPopUp = async () => {
     const data = await getJenkinsConfig(engineID);
     setJenkinsConfigPopUpVisible(true);
-    setJenkinsConfigFormData({ ...jenkinsConfigFormOptions, ...data });
-  }
+    setJenkinsConfigFormData({
+      ...jenkinsConfigFormOptions,
+      ...data,
+    });
+  };
 
   const handleTriggerDeploymentPopUp = async () => {
     const data = await getJenkinsConfig(engineID);
+    console.log(data)
     setJobConfigPopUpVisible(true);
-    setJobConfigFormData({ ...jobConfigFormOptions, ...data });
-  }
+    setJobConfigFormData({
+      ...jobConfigFormOptions,
+      ...data,
+    });
+  };
 
+  // Connection Handlers
+  const connectEngine = async ({ row }) => {
+    const result = await confirm(
+      textMessages?.areYouSure,
+      "Connect FIX"
+    );
+    if (result) connectFixSession(engineID, row?.data?.connectionID);
+  };
+
+  const disconnectEngine = async ({ row }) => {
+    const result = await confirm(
+      textMessages?.areYouSure,
+      "Disconnect FIX"
+    );
+    if (result) disconnectFixSession(engineID, row?.data?.connectionID);
+  };
+
+  const resetSequence = async ({ row }) => {
+    const result = await confirm(
+      textMessages?.areYouSure,
+      "Reset Sequence"
+    );
+    if (result) resetSequenceFixSession(engineID, row?.data?.connectionID);
+  };
+
+  // Session Edit Handler
   const handleEditSession = async ({ row }) => {
-    const response = await getSessionDetail(engineID, cfgSessionsFilesEnum[row?.data?.mode], engineName, row?.data?.senderCompID, row?.data?.targetCompID);
+    const response = await getSessionDetail(
+      engineID,
+      cfgSessionsFilesEnum[row?.data?.mode],
+      engineName,
+      row?.data?.senderCompID,
+      row?.data?.targetCompID
+    );
     if (response?.isError) {
       showErrorToast(textMessages?.anErrorOccurred);
       return;
     }
     cfgSessionFormPopupRef?.current?.handleSetFormData?.(response);
     setCfgPopUpVisible(row?.data?.mode);
-  }
+  };
 
+  // GitHub Configuration Handlers
+  const handleCloneGitHubFile = () => {
+    setCloneGitHubFilePopupVisible(true);
+  };
+
+  // Data Grid Component
   const sessionsDataGridComponent = useMemo(() => {
     return (
       <DataGrid
@@ -628,7 +374,7 @@ export default function SessionsDataGrid({
             <Button
               hint="Set sequences"
               onClick={({ row }) =>
-                setSeqNumPopUp({
+                seqNumPopupRef?.current?.handleSetFormData?.({
                   connectionID: row?.data?.connectionID,
                   inSeqNum: row?.data?.inSeqNum,
                   outSeqNum: row?.data?.outSeqNum,
@@ -690,99 +436,45 @@ export default function SessionsDataGrid({
     );
   }, [updates, editSessionsRowState]);
 
-  const handleSelectConfigJson = async () => {
-    const response = await getConfigDetails(engineID, clonableGitFilesEnum.config, engineName);
-    setConfigJson(JSON?.stringify?.(response) || '');
-    setCloneGitHubFilePopupVisible(clonableGitFilesEnum.config);
-  }
-
-  const handleSelectStoreIni = async () => {
-    const response = await getConfigDetails(engineID, clonableGitFilesEnum.store, engineName);
-    setStoreIni(JSON?.stringify?.(response) || '');
-    setCloneGitHubFilePopupVisible(clonableGitFilesEnum.store);
-  }
-
-  const handleConfigSubmit = async () => {
-    const response = await updateCfgIni(engineID, clonableGitFilesEnum.config, engineName, configJson);
-    if (response?.isSuccess) {
-      showSuccessToast(response?.message);
-      setCloneGitHubFilePopupVisible(false);
-      return;
-    }
-    showErrorToast(response?.message);
-  }
-
-  const handleStoreSubmit = async () => {
-    const response = await updateCfgIni(engineID, clonableGitFilesEnum.config, engineName, storeIni);
-    if (response?.isSuccess) {
-      showSuccessToast(response?.message);
-      setCloneGitHubFilePopupVisible(false);
-      return;
-    }
-    showErrorToast(response?.message);
-  }
-
-  const fixHubConfigurationCloneComponent = useMemo(() => {
-    let content = <></>;
-    switch (cloneGitHubFilePopupVisible) {
-      case clonableGitFilesEnum.config:
-        content = <div className="d-flex flex-column gap-3">
-          <TextArea defaultValue={configJson} width={500} minHeight={500} />
-          <DevBtn
-            type="default"
-            text={`SUBMIT ${clonableGitFilesEnum.config}`}
-            onClick={handleConfigSubmit}
-          />
-        </div>;
-        break;
-      case clonableGitFilesEnum.store:
-        content = <div className="d-flex flex-column gap-3">
-          <TextArea defaultValue={storeIni} width={500} minHeight={500} />
-          <DevBtn
-            type="default"
-            text={`SUBMIT ${clonableGitFilesEnum.store}`}
-            onClick={handleStoreSubmit}
-          />
-        </div>;
-        break;
-      case true:
-        content = <div className="d-flex flex-column gap-3 p-2">
-            <DevBtn
-              text={`ADD ${clonableGitFilesEnum.config}`}
-              type="default"
-              onClick={handleSelectConfigJson}
-            />
-            <DevBtn
-              text={`ADD ${clonableGitFilesEnum.store}`}
-              type="default"
-              onClick={handleSelectStoreIni}
-            />
-          </div>;
-        break;
-      default:
-        break;
-    }
-    return (
-      <Popup
-        visible={!!cloneGitHubFilePopupVisible}
-        onHiding={() => setCloneGitHubFilePopupVisible(false)}
-        title={`Fix Hub Configuration Clone`}
-        showCloseButton
-        height="auto"
-        width="auto"
-        maxHeight={665}
-        minWidth={300}
-      >
-        {content}
-      </Popup>
-    )
-  }, [cloneGitHubFilePopupVisible])
-
+  // Return JSX
   return (
     <div>
-      {fixHubConfigurationCloneComponent}
-      {jenkinsConfigPopUp}
-      {triggerDeploymentPopUp}
+      <SequenceNumbersPopup
+        ref={seqNumPopupRef}
+        engineID={engineID}
+        seqNumPopUpData={seqNumPopUpData}
+        setSeqNumPopUpData={setSeqNumPopUpData}
+      />
+      <JenkinsConfigPopup
+        engineID={engineID}
+        engineName={engineName}
+        jenkinsConfigPopUpVisible={jenkinsConfigPopUpVisible}
+        setJenkinsConfigPopUpVisible={setJenkinsConfigPopUpVisible}
+        jenkinsConfigFormData={jenkinsConfigFormData}
+        setJenkinsConfigFormData={setJenkinsConfigFormData}
+        jenkinsAgents={jenkinsAgents}
+        gitHubBranches={gitHubBranches}
+      />
+      <JobDeploymentPopup
+        engineID={engineID}
+        engineName={engineName}
+        jobConfigPopUpVisible={jobConfigPopUpVisible}
+        setJobConfigPopUpVisible={setJobConfigPopUpVisible}
+        jobConfigFormData={jobConfigFormData}
+        setJobConfigFormData={setJobConfigFormData}
+        jenkinsAgents={jenkinsAgents}
+        gitHubBranches={gitHubBranches}
+      />
+      <GitHubConfigurationPopup
+        engineID={engineID}
+        engineName={engineName}
+        cloneGitHubFilePopupVisible={cloneGitHubFilePopupVisible}
+        setCloneGitHubFilePopupVisible={setCloneGitHubFilePopupVisible}
+        configJson={configJson}
+        setConfigJson={setConfigJson}
+        storeIni={storeIni}
+        setStoreIni={setStoreIni}
+      />
       <CFGSessionFormPopup
         ref={cfgSessionFormPopupRef}
         engineID={engineID}
@@ -790,7 +482,6 @@ export default function SessionsDataGrid({
         cfgPopUpVisible={cfgPopUpVisible}
         setCfgPopUpVisible={setCfgPopUpVisible}
       />
-      {sequenceIdsFormPopUp}
       {sessionsDataGridComponent}
     </div>
   );
