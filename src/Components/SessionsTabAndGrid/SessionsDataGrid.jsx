@@ -48,6 +48,7 @@ import JenkinsConfigPopup from "./PopupComponents/JenkinsConfigPopup.jsx";
 import JobDeploymentPopup from "./PopupComponents/JobDeploymentPopup.jsx";
 import GitHubConfigurationPopup from "./PopupComponents/GitHubConfigurationPopup.jsx";
 import SessionEditConfigPopup from "./PopupComponents/SessionEditConfigPopup.jsx";
+import EngineDetailsPopup from "./PopupComponents/EngineDetailsPopup.jsx";
 import { getJenkinsConfig, getJenkinsAgents } from "../../Services/JenkinsConfigService.js";
 import { showErrorToast } from "../../utils/toastsService.js";
 import {
@@ -88,6 +89,9 @@ export default function SessionsDataGrid({
   const cfgSessionFormPopupRef = useRef();
   const seqNumPopupRef = useRef();
   const sessionEditConfigPopupRef = useRef();
+  const engineDetailsPopupRef = useRef();
+  const [engineDetailsPopupVisible, setEngineDetailsPopupVisible] = useState(false);
+  const [engineDetails, setEngineDetails] = useState(null);
 
   // Fetch initial data on mount
   useEffect(() => {
@@ -131,6 +135,20 @@ export default function SessionsDataGrid({
       setSessionEmailConfigFormData(data);
     }
     setSessionEmailConfigPopUpVisible(true);
+  };
+
+  // Engine Details Handler
+  const handleEngineDetailsPopUp = () => {
+    setEngineDetails({
+      engineName: engineName,
+      redisIpAddress: engineID?.split?.(":")?.[0],
+      redisIpPort: engineID?.split?.(":")?.[1],
+      redisDB: engineID?.split?.(":")?.[3] || "",
+      fixEngineIpAddress: engineID?.split?.(":")?.[0],
+      fixEngineIpPort: engineID?.split?.(":")?.[1],
+      fixEngineStatus: "Active",
+    });
+    engineDetailsPopupRef.current?.handleOpenPopup();
   };
 
   // Connection Handlers
@@ -279,6 +297,20 @@ export default function SessionsDataGrid({
               onClick={handleTriggerDeploymentPopUp}
             />
           </Item>
+          <Item
+            location="before"
+            visible={!!engineID || !!sessions}
+            locateInMenu="auto"
+          >
+            <DevBtn
+              icon="fa-solid fa-server"
+              name="Engine Details"
+              text="Engine Details"
+              stylingMode="contained"
+              type="default"
+              onClick={handleEngineDetailsPopUp}
+            />
+          </Item>
           <Item visible={!!engineID || !!sessions}>
             <DevBtn
               icon="add"
@@ -345,7 +377,7 @@ export default function SessionsDataGrid({
           <Column
             type="buttons"
             caption="Actions"
-            minWidth={220}
+            width={220}
             fixed
             fixedPosition="right"
             alignment="center"
@@ -504,6 +536,10 @@ export default function SessionsDataGrid({
         ref={sessionEditConfigPopupRef}
         editSessionsRowState={editSessionsRowState}
         setEditSessionsRowState={setEditSessionsRowState}
+      />
+      <EngineDetailsPopup
+        ref={engineDetailsPopupRef}
+        engineDetails={engineDetails}
       />
       {sessionsDataGridComponent}
     </div>

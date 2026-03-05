@@ -103,7 +103,7 @@ const SessionEditConfigPopup = forwardRef(
                 disabled: true,
                 ...(getFieldDataType(fieldName) === "datetime" && {
                   type: "datetime",
-                  displayFormat: "yyyy-MM-dd HH:mm:ss",
+                  displayFormat: "HH:mm:ss",
                 }),
                 ...(getFieldDataType(fieldName) === "number" && {
                   showSpinButtons: false,
