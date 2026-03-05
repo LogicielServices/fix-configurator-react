@@ -514,15 +514,21 @@ export default function SessionsDataGrid({
     );
   }, [updates]);
 
-  // Return JSX
-  return (
-    <div>
+  // Memoized Popup Components
+  const memoizedSequenceNumbersPopup = useMemo(
+    () => (
       <SequenceNumbersPopup
         ref={seqNumPopupRef}
         engineID={engineID}
         seqNumPopUpData={seqNumPopUpData}
         setSeqNumPopUpData={setSeqNumPopUpData}
       />
+    ),
+    [engineID, seqNumPopUpData]
+  );
+
+  const memoizedJenkinsConfigPopup = useMemo(
+    () => (
       <JenkinsConfigPopup
         engineID={engineID}
         engineName={engineName}
@@ -533,6 +539,19 @@ export default function SessionsDataGrid({
         jenkinsAgents={jenkinsAgents}
         gitHubBranches={gitHubBranches}
       />
+    ),
+    [
+      engineID,
+      engineName,
+      jenkinsConfigPopUpVisible,
+      jenkinsConfigFormData,
+      jenkinsAgents,
+      gitHubBranches,
+    ]
+  );
+
+  const memoizedJobDeploymentPopup = useMemo(
+    () => (
       <JobDeploymentPopup
         engineID={engineID}
         engineName={engineName}
@@ -543,6 +562,19 @@ export default function SessionsDataGrid({
         jenkinsAgents={jenkinsAgents}
         gitHubBranches={gitHubBranches}
       />
+    ),
+    [
+      engineID,
+      engineName,
+      jobConfigPopUpVisible,
+      jobConfigFormData,
+      jenkinsAgents,
+      gitHubBranches,
+    ]
+  );
+
+  const memoizedGitHubConfigPopup = useMemo(
+    () => (
       <GitHubConfigurationPopup
         engineID={engineID}
         engineName={engineName}
@@ -553,6 +585,18 @@ export default function SessionsDataGrid({
         storeIni={storeIni}
         setStoreIni={setStoreIni}
       />
+    ),
+    [
+      engineID,
+      engineName,
+      cloneGitHubFilePopupVisible,
+      configJson,
+      storeIni,
+    ]
+  );
+
+  const memoizedCFGSessionPopup = useMemo(
+    () => (
       <CFGSessionFormPopup
         ref={cfgSessionFormPopupRef}
         engineID={engineID}
@@ -560,6 +604,12 @@ export default function SessionsDataGrid({
         cfgPopUpVisible={cfgPopUpVisible}
         setCfgPopUpVisible={setCfgPopUpVisible}
       />
+    ),
+    [engineID, engineName, cfgPopUpVisible]
+  );
+
+  const memoizedSessionEmailConfigPopup = useMemo(
+    () => (
       <SequenceEmailConfigFormPopup
         engineID={engineID}
         engineName={engineName}
@@ -568,20 +618,59 @@ export default function SessionsDataGrid({
         sessionEmailConfigFormData={sessionEmailConfigFormData}
         setSessionEmailConfigFormData={setSessionEmailConfigFormData}
       />
+    ),
+    [
+      engineID,
+      engineName,
+      sessionEmailConfigPopUpVisible,
+      sessionEmailConfigFormData,
+    ]
+  );
+
+  const memoizedSessionEditConfigPopup = useMemo(
+    () => (
       <SessionEditConfigPopup
         ref={sessionEditConfigPopupRef}
         editSessionsRowState={editSessionsRowState}
         setEditSessionsRowState={setEditSessionsRowState}
       />
+    ),
+    [editSessionsRowState]
+  );
+
+  const memoizedEngineDetailsPopup = useMemo(
+    () => (
       <EngineDetailsPopup
         ref={engineDetailsPopupRef}
         engineDetails={engineDetails}
       />
+    ),
+    [engineDetails]
+  );
+
+  const memoizedEngineStartStopPopup = useMemo(
+    () => (
       <EngineStartStopPopup
         ref={engineStartStopPopupRef}
         action={engineStartStopAction}
         engineID={engineID}
       />
+    ),
+    [engineStartStopAction, engineID]
+  );
+
+  // Return JSX
+  return (
+    <div>
+      {memoizedSequenceNumbersPopup}
+      {memoizedJenkinsConfigPopup}
+      {memoizedJobDeploymentPopup}
+      {memoizedGitHubConfigPopup}
+      {memoizedCFGSessionPopup}
+      {memoizedSessionEmailConfigPopup}
+      {memoizedSessionEditConfigPopup}
+      {memoizedEngineDetailsPopup}
+      {memoizedEngineStartStopPopup}
       {sessionsDataGridComponent}
     </div>
   );
