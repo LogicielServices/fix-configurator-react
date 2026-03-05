@@ -349,6 +349,8 @@ export default function SessionsDataGrid({
             <DevBtn
               icon="add"
               name="Add New Session"
+              text="Add New Session"
+              type="default"
               location="after"
               onClick={() => {
                 setCfgPopUpVisible(cfgSessionsTypes.initiator);
