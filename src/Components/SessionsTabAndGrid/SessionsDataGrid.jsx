@@ -318,7 +318,7 @@ export default function SessionsDataGrid({
             />
           </Item>
           <Item
-            location="before"
+            location="after"
             visible={!!engineID || !!sessions}
             locateInMenu="auto"
           >
@@ -332,7 +332,7 @@ export default function SessionsDataGrid({
             />
           </Item>
           <Item
-            location="before"
+            location="after"
             visible={!!engineID || !!sessions}
             locateInMenu="auto"
           >
@@ -345,13 +345,12 @@ export default function SessionsDataGrid({
               onClick={handleStopEngine}
             />
           </Item>
-          <Item visible={!!engineID || !!sessions}>
+          <Item location="after" visible={!!engineID || !!sessions}>
             <DevBtn
               icon="add"
               name="Add New Session"
               text="Add New Session"
               type="default"
-              location="after"
               onClick={() => {
                 setCfgPopUpVisible(cfgSessionsTypes.initiator);
               }}

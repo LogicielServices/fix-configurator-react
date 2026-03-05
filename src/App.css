@@ -286,3 +286,7 @@ body {
     color: #fff;
   }
 }
+
+.dx-datagrid-search-panel {
+  margin: 0 0 0 2px !important;
+}

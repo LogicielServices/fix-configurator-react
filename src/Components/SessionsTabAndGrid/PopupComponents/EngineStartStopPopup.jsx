@@ -76,7 +76,7 @@ const EngineStartStopPopup = forwardRef(
         onHiding={handleClose}
         title={title}
         showCloseButton
-        width="450px"
+        width="350px"
         maxWidth="85vw"
         height="auto"
         maxHeight="197px"
@@ -95,6 +95,7 @@ const EngineStartStopPopup = forwardRef(
           />
           <ButtonItem
             horizontalAlignment="right"
+            verticalAlignment="top"
             buttonOptions={{
               text: "Authenticate",
               type: "default",
@@ -102,6 +103,7 @@ const EngineStartStopPopup = forwardRef(
               onClick: handleAuthenticate,
               disabled: isLoading,
               useSubmitBehavior: false,
+              width: "100%",
             }}
           />
         </Form>
