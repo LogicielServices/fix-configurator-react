@@ -91,7 +91,6 @@ export default function SessionsDataGrid({
   const seqNumPopupRef = useRef();
   const sessionEditConfigPopupRef = useRef();
   const engineDetailsPopupRef = useRef();
-  const [engineDetailsPopupVisible, setEngineDetailsPopupVisible] = useState(false);
   const [engineDetails, setEngineDetails] = useState(null);
   const engineStartStopPopupRef = useRef();
   const [engineStartStopAction, setEngineStartStopAction] = useState(null);
@@ -203,11 +202,6 @@ export default function SessionsDataGrid({
     }
     cfgSessionFormPopupRef?.current?.handleSetFormData?.(response);
     setCfgPopUpVisible(row?.data?.mode);
-  };
-
-  // GitHub Configuration Handlers
-  const handleCloneGitHubFile = () => {
-    setCloneGitHubFilePopupVisible(true);
   };
 
   // Data Grid Component
