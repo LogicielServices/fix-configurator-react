@@ -54,19 +54,6 @@
   --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
 }
 
-html[data-theme="dark"] {
-  --bg: #0b1020;
-  --panel: #101426;
-  --text: #e6e9f2;
-  --muted: #9aa3b2;
-  --outline: #232b3f;
-  --primary: #3b82f6;
-  --primary-contrast: #ffffff;
-  --focus-ring: 0 0 0 4px rgba(59, 130, 246, 0.22);
-  --danger: #f87171;
-  --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-}
-
 *,
 *::before,
 *::after { box-sizing: border-box; }
@@ -146,15 +133,7 @@ body {
   font-size: 13px;
 }
 
-.theme-toggle {
-  border: 1px solid var(--outline);
-  background: transparent;
-  color: var(--text);
-  border-radius: 10px;
-  padding: 8px 12px;
-  cursor: pointer;
-}
-.theme-toggle:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+
 
 .auth-form {
   margin-top: 16px;
@@ -180,9 +159,6 @@ body {
   color: var(--text);
   outline: none;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-html[data-theme="dark"] .field input {
-  background: #0f1428;
 }
 .field input:focus-visible {
   border-color: var(--primary);

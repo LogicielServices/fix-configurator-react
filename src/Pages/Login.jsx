@@ -1,6 +1,5 @@
 
-import React, { useContext, useEffect, useId, useState } from "react";
-import { DarkMode, LightMode } from "@mui/icons-material";
+import React, { useContext, useId, useState } from "react";
 import { login } from "../Services/AuthService";
 import GlobalContext from "../Provider/GlobalProvider";
 import { authConstants, pathConstants } from "../utils/constants";
@@ -9,12 +8,10 @@ import { useNavigate } from "react-router-dom";
 const loginDefaults = {
   brand: { name: "Fix Configurator" },
   forgotPasswordUrl: "#",
-  defaultTheme: "light",
 };
 
 export default function Login() {
   const { appConfig, handleLoginSuccess } = useContext(GlobalContext);
-  const [theme, setTheme] = useState(loginDefaults?.defaultTheme);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(true);
@@ -27,10 +24,6 @@ export default function Login() {
   const usernameId = useId();
   const passwordId = useId();
   const rememberId = useId();
-
-  useEffect(() => {
-    document.documentElement.dataset.theme = theme;
-  }, [theme]);
 
   const validate = () => {
     const next = {};
@@ -106,16 +99,6 @@ export default function Login() {
               <p className="auth-subtitle">{"Sign in to continue"}</p>
             </div>
           </div>
-
-          <button
-            type="button"
-            className="theme-toggle"
-            aria-label={`Switch to ${theme === "light" ? "dark" : "light"} theme`}
-            onClick={() => setTheme((t) => (t === "light" ? "dark" : "light"))}
-            title="Toggle theme"
-          >
-            {theme === "light" ? <LightMode fontSize="small" /> : <DarkMode fontSize="small" />}
-          </button>
         </header>
 
         <form className="auth-form" onSubmit={handleSubmit} noValidate>
