@@ -20,7 +20,7 @@ const GitHubConfigurationPopup = ({
       clonableGitFilesEnum.config,
       engineName
     );
-    setConfigJson(JSON?.stringify?.(response) || "");
+    setConfigJson(JSON?.stringify?.(response, null, 2) || "");
     setCloneGitHubFilePopupVisible(clonableGitFilesEnum.config);
   };
 
@@ -30,7 +30,7 @@ const GitHubConfigurationPopup = ({
       clonableGitFilesEnum.store,
       engineName
     );
-    setStoreIni(JSON?.stringify?.(response) || "");
+    setStoreIni(JSON?.stringify?.(response, null, 2) || "");
     setCloneGitHubFilePopupVisible(clonableGitFilesEnum.store);
   };
 
@@ -73,6 +73,7 @@ const GitHubConfigurationPopup = ({
           defaultValue={configJson}
           width={500}
           minHeight={500}
+          maxHeight={500}
           value={configJson}
           onValueChanged={(e) => setConfigJson(e)}
         />
@@ -90,6 +91,7 @@ const GitHubConfigurationPopup = ({
           defaultValue={storeIni}
           width={500}
           minHeight={500}
+          maxHeight={500}
           value={storeIni}
           onValueChanged={(e) => setStoreIni(e)}
         />
