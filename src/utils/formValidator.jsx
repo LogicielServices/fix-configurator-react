@@ -17,6 +17,12 @@ export const passwordValidation = {
   unmatchedPasswordAndConfirmPassword: "Password and confirm password must be matching.",
 };
 
+export const reportEmailsValidation = {
+  pattern: /^([\w+.\-%]+@[\w+.]+\.[A-Za-z]{2,4},?){1,20}$/,
+  message:
+    'Please enter a valid email address. Multiple email addresses should be separated by commas.',
+};
+
 export const emailValidation = {
   pattern: /\S+@\S+\.\S+/,
   message: "Invalid email format.",

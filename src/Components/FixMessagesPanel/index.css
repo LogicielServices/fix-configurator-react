@@ -100,6 +100,9 @@
 .fx-msgs > .fx-card {
   min-width: 0;
   height: 100%;
+  .dx-datagrid-rowsview.dx-empty {
+    min-height: 180px;
+  }
 }
 
 .sess-wrap .sg-actions-col {
@@ -151,7 +154,7 @@
 /* FA icon size */
 .sess-wrap .sg-action-btn i,
 .sess-wrap .sg-status-btn i {
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1;
 }
 

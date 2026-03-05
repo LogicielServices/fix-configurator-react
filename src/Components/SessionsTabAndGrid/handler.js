@@ -1,3 +1,5 @@
+import { getEnumKeyByValue } from "../../utils/helper";
+
 export const sessionStatusEnum = Object.freeze({
   connected: 'CONNECTED',
   disconnected: 'DISCONNECTED',
@@ -26,6 +28,7 @@ export const FaRotateRight = () => <i className="fa-solid fa-rotate-right" aria-
 export const FaSliders = () => <i className="fa-solid fa-sliders" aria-hidden="true" />;
 export const FaPen = () => <i className="fa-solid fa-pen" aria-hidden="true" />;
 export const FaUnavailable = () => <i className="fa-solid fa-ban" aria-hidden="true" />;
+export const FaEnvelope = () => <i className="fa-solid fa-envelope" aria-hidden="true" />;
 
 // Small helpers for visuals
 export const StatusBadge = ({ value }) => {
@@ -130,6 +133,24 @@ export const jobConfigFormOptions = Object.freeze({
   branchName: undefined,
   environment: undefined,
 })
+
+export const timeUnitEnum = Object.freeze({
+  seconds: 'Seconds',
+  minutes: 'Minutes',
+  hours: 'Hours',
+});
+
+export const sessionEmailConfigFormOptions = Object.freeze({
+  sessionId: undefined,
+  toEmails: [],
+  ccEmails: [],
+  // emailStatus: false,
+  timeout: 0,
+  recurring: false,
+  emailSubject: undefined,
+  emailBody: undefined,
+  timeUnit: getEnumKeyByValue(timeUnitEnum, timeUnitEnum.seconds),
+});
 
 export const osList = Object.freeze(['Linux', 'Windows']);
 

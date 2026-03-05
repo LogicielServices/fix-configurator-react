@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect, useRef } from "react";
 import {
   connectFixSession,
   disconnectFixSession,
+  getSessionConfiguration,
   resetSequenceFixSession,
 } from "../../Services/FixSessionService";
 import useClientUpdates from "../../SignalR/useClientUpdates";
@@ -38,6 +39,8 @@ import {
   jobConfigFormOptions,
   editSessionRowFields,
   cfgSessionsFilesEnum,
+  FaEnvelope,
+  sessionEmailConfigFormOptions,
 } from "./handler.js";
 import CFGSessionFormPopup from "./PopupComponents/CFGSessionFormPopup.jsx";
 import SequenceNumbersPopup from "./PopupComponents/SequenceNumbersPopup.jsx";
@@ -51,6 +54,7 @@ import {
   getSessionDetail,
 } from "../../Services/GithubService.js";
 import { Button as DevBtn } from "devextreme-react/button";
+import SequenceEmailConfigFormPopup from "./PopupComponents/SessionEmailConfigFormPopup.jsx";
 
 export default function SessionsDataGrid({
   engineID,
@@ -68,7 +72,9 @@ export default function SessionsDataGrid({
   const [cloneGitHubFilePopupVisible, setCloneGitHubFilePopupVisible] =
     useState(false);
   const [jenkinsConfigFormData, setJenkinsConfigFormData] = useState({});
+  const [sessionEmailConfigFormData, setSessionEmailConfigFormData] = useState({});
   const [jobConfigPopUpVisible, setJobConfigPopUpVisible] = useState(false);
+  const [sessionEmailConfigPopUpVisible, setSessionEmailConfigPopUpVisible] = useState(false);
   const [jobConfigFormData, setJobConfigFormData] = useState({});
   const [gitHubBranches, setGitHubBranches] = useState([]);
   const [jenkinsAgents, setJenkinsAgents] = useState([]);
@@ -108,12 +114,21 @@ export default function SessionsDataGrid({
 
   const handleTriggerDeploymentPopUp = async () => {
     const data = await getJenkinsConfig(engineID);
-    console.log(data)
     setJobConfigPopUpVisible(true);
     setJobConfigFormData({
       ...jobConfigFormOptions,
       ...data,
     });
+  };
+
+  const handleSessionEmailConfigsPopUp = async ({ row }) => {
+    const data = await getSessionConfiguration(engineID, row?.data?.connectionID);
+    if (!data?.sessionId) {
+      setSessionEmailConfigFormData({ ...sessionEmailConfigFormOptions, sessionId: row?.data?.connectionID });
+    } else {
+      setSessionEmailConfigFormData(data);
+    }
+    setSessionEmailConfigPopUpVisible(true);
   };
 
   // Connection Handlers
@@ -398,6 +413,14 @@ export default function SessionsDataGrid({
               }
             />
 
+            {/* Session email config */}
+            <Button
+              hint="Session Email Config"
+              onClick={handleSessionEmailConfigsPopUp}
+              cssClass="sg-action-btn"
+              render={FaEnvelope}
+            />
+
             {/* Edit session config */}
             <Button
               hint="Edit session config"
@@ -481,6 +504,14 @@ export default function SessionsDataGrid({
         engineName={engineName}
         cfgPopUpVisible={cfgPopUpVisible}
         setCfgPopUpVisible={setCfgPopUpVisible}
+      />
+      <SequenceEmailConfigFormPopup
+        engineID={engineID}
+        engineName={engineName}
+        sessionEmailConfigPopUpVisible={sessionEmailConfigPopUpVisible}
+        setSessionEmailConfigPopUpVisible={setSessionEmailConfigPopUpVisible}
+        sessionEmailConfigFormData={sessionEmailConfigFormData}
+        setSessionEmailConfigFormData={setSessionEmailConfigFormData}
       />
       {sessionsDataGridComponent}
     </div>

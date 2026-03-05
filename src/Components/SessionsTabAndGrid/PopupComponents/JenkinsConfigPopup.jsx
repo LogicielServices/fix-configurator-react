@@ -94,6 +94,7 @@ const JenkinsConfigPopup = ({
           <SimpleItem
             isRequired
             dataField="fixEngineMachinePassword"
+            editorOptions={{ mode: 'password' }}
           />
           <SimpleItem
             isRequired

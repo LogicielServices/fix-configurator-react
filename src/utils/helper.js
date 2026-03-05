@@ -79,3 +79,10 @@ export const booleanEnum = Object.freeze({
   Yes: 'Y',
   No: 'N',
 })
+
+export const getEnumKeyByValue = (enumRef, value, isTitleCased = false) => {
+  const key =
+    Object.keys(enumRef || [])?.[Object.values(enumRef || []).indexOf(value)] ||
+    ''
+  return key;
+}
