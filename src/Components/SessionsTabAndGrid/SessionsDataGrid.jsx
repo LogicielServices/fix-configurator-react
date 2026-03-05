@@ -49,6 +49,7 @@ import JobDeploymentPopup from "./PopupComponents/JobDeploymentPopup.jsx";
 import GitHubConfigurationPopup from "./PopupComponents/GitHubConfigurationPopup.jsx";
 import SessionEditConfigPopup from "./PopupComponents/SessionEditConfigPopup.jsx";
 import EngineDetailsPopup from "./PopupComponents/EngineDetailsPopup.jsx";
+import EngineStartStopPopup from "./PopupComponents/EngineStartStopPopup.jsx";
 import { getJenkinsConfig, getJenkinsAgents } from "../../Services/JenkinsConfigService.js";
 import { showErrorToast } from "../../utils/toastsService.js";
 import {
@@ -92,6 +93,8 @@ export default function SessionsDataGrid({
   const engineDetailsPopupRef = useRef();
   const [engineDetailsPopupVisible, setEngineDetailsPopupVisible] = useState(false);
   const [engineDetails, setEngineDetails] = useState(null);
+  const engineStartStopPopupRef = useRef();
+  const [engineStartStopAction, setEngineStartStopAction] = useState(null);
 
   // Fetch initial data on mount
   useEffect(() => {
@@ -150,7 +153,16 @@ export default function SessionsDataGrid({
     });
     engineDetailsPopupRef.current?.handleOpenPopup();
   };
+  // Engine Start/Stop Handlers
+  const handleStartEngine = () => {
+    setEngineStartStopAction("start");
+    engineStartStopPopupRef.current?.handleOpenPopup();
+  };
 
+  const handleStopEngine = () => {
+    setEngineStartStopAction("stop");
+    engineStartStopPopupRef.current?.handleOpenPopup();
+  };
   // Connection Handlers
   const connectEngine = async ({ row }) => {
     const result = await confirm(
@@ -309,6 +321,34 @@ export default function SessionsDataGrid({
               stylingMode="contained"
               type="default"
               onClick={handleEngineDetailsPopUp}
+            />
+          </Item>
+          <Item
+            location="before"
+            visible={!!engineID || !!sessions}
+            locateInMenu="auto"
+          >
+            <DevBtn
+              icon="fa-solid fa-power-off"
+              name="Start Engine"
+              text="Start Engine"
+              stylingMode="contained"
+              type="success"
+              onClick={handleStartEngine}
+            />
+          </Item>
+          <Item
+            location="before"
+            visible={!!engineID || !!sessions}
+            locateInMenu="auto"
+          >
+            <DevBtn
+              icon="fa-solid fa-stop"
+              name="Stop Engine"
+              text="Stop Engine"
+              stylingMode="contained"
+              type="danger"
+              onClick={handleStopEngine}
             />
           </Item>
           <Item visible={!!engineID || !!sessions}>
@@ -540,6 +580,11 @@ export default function SessionsDataGrid({
       <EngineDetailsPopup
         ref={engineDetailsPopupRef}
         engineDetails={engineDetails}
+      />
+      <EngineStartStopPopup
+        ref={engineStartStopPopupRef}
+        action={engineStartStopAction}
+        engineID={engineID}
       />
       {sessionsDataGridComponent}
     </div>

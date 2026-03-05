@@ -29,3 +29,17 @@ export const triggerJenkins = async (branchName, environment, engineID) => {
   const response = await Post(`/api/JenkinsConfiguration/JenkinsTrigger?branchName=${branchName}&environment=${environment}&engineID=${engineID}`);
   return response || {};
 }
+
+export const startFixEngine = async (engineID) => {
+  const response = await Post('/api/jenkinsConfiguration/startFixEngine', {
+    engineID,
+  });
+  return response || {};
+}
+
+export const stopFixEngine = async (engineID) => {
+  const response = await Post('/api/jenkinsConfiguration/stopFixEngine', {
+    engineID,
+  });
+  return response || {};
+}
