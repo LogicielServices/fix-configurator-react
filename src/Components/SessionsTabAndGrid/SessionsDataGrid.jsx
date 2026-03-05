@@ -47,6 +47,7 @@ import SequenceNumbersPopup from "./PopupComponents/SequenceNumbersPopup.jsx";
 import JenkinsConfigPopup from "./PopupComponents/JenkinsConfigPopup.jsx";
 import JobDeploymentPopup from "./PopupComponents/JobDeploymentPopup.jsx";
 import GitHubConfigurationPopup from "./PopupComponents/GitHubConfigurationPopup.jsx";
+import SessionEditConfigPopup from "./PopupComponents/SessionEditConfigPopup.jsx";
 import { getJenkinsConfig, getJenkinsAgents } from "../../Services/JenkinsConfigService.js";
 import { showErrorToast } from "../../utils/toastsService.js";
 import {
@@ -86,6 +87,7 @@ export default function SessionsDataGrid({
   });
   const cfgSessionFormPopupRef = useRef();
   const seqNumPopupRef = useRef();
+  const sessionEditConfigPopupRef = useRef();
 
   // Fetch initial data on mount
   useEffect(() => {
@@ -228,23 +230,9 @@ export default function SessionsDataGrid({
           columnRenderingMode="virtual"
         />
         <Editing
-          mode="popup"
-          allowUpdating={engineID && sessions}
+          allowUpdating={false}
           allowDeleting={false}
           allowAdding={false}
-          popup={{
-            title: "Session Details",
-            showTitle: true,
-            showCloseButton: true,
-            hideOnParentScroll: false,
-            toolbarItems: [],
-          }}
-          form={{
-            disabled: true,
-            items: editSessionsRowState?.fields,
-            formData: editSessionsRowState?.data,
-            colCountByScreen: { lg: 4, md: 3, sm: 2, xs: 1 },
-          }}
         />
         <Toolbar>
           <Item
@@ -429,8 +417,7 @@ export default function SessionsDataGrid({
                   fields: editSessionRowFields,
                   data: e?.row?.data || {},
                 });
-                const inst = dataGridRef?.current?.instance;
-                inst?.editRow?.(inst?.getRowIndexByKey?.(e?.row?.key));
+                sessionEditConfigPopupRef?.current?.handleOpenPopup?.();
               }}
               cssClass="sg-action-btn"
               render={FaSliders}
@@ -457,7 +444,7 @@ export default function SessionsDataGrid({
         />
       </DataGrid>
     );
-  }, [updates, editSessionsRowState]);
+  }, [updates]);
 
   // Return JSX
   return (
@@ -512,6 +499,11 @@ export default function SessionsDataGrid({
         setSessionEmailConfigPopUpVisible={setSessionEmailConfigPopUpVisible}
         sessionEmailConfigFormData={sessionEmailConfigFormData}
         setSessionEmailConfigFormData={setSessionEmailConfigFormData}
+      />
+      <SessionEditConfigPopup
+        ref={sessionEditConfigPopupRef}
+        editSessionsRowState={editSessionsRowState}
+        setEditSessionsRowState={setEditSessionsRowState}
       />
       {sessionsDataGridComponent}
     </div>
