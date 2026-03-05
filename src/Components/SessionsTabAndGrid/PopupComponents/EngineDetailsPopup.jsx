@@ -2,13 +2,6 @@ import { Popup, Form } from "devextreme-react";
 import { SimpleItem } from "devextreme-react/form";
 import { forwardRef, useImperativeHandle, useState } from "react";
 
-// Helper function to format field label
-const formatFieldLabel = (fieldName) => {
-  return fieldName
-    .replace(/([A-Z])/g, " $1")
-    .replace(/^./, (str) => str.toUpperCase());
-};
-
 const EngineDetailsPopup = forwardRef(({ engineDetails }, ref) => {
   const [isVisible, setIsVisible] = useState(false);
 

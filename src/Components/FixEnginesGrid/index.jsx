@@ -29,6 +29,7 @@ import { confirm } from "devextreme/ui/dialog";
 import { textMessages } from "../../utils/constants";
 import { Popup } from "devextreme-react";
 import { showErrorToast } from "../../utils/toastsService";
+import { useLoader } from "../../Provider/LoaderContext";
 
 // Small chips
 const DbChip = ({ db }) => <span className="eng-chip eng-db">DB {db}</span>;
@@ -73,6 +74,7 @@ export default function EnginesGrid({ handleEngineConnected, connectedEngines, s
   const [isFormLoading, setIsFormLoading] = useState(false);
   const [popupVisible, setPopupVisible] = useState(false);
   const [addFormData, setAddFormData] = useState({ ...addFormDefaultData });
+  const { showLoader, hideLoader, isLoading } = useLoader();
 
   const getData = async () => {
     fixEngineRef?.current?.instance?.beginCustomLoading?.();
@@ -99,7 +101,8 @@ export default function EnginesGrid({ handleEngineConnected, connectedEngines, s
       fixEngineIpAddress: data?.fixEngineIpAddress || "",
       fixEngineIpPort: data?.fixEngineIpPort || 0,
     };
-    let response
+    let response;
+    showLoader();
     if (isSave) {
       engineData.lastReadStreamEntryID = "";
       engineData.logLastTimeStamps = "";
@@ -108,6 +111,7 @@ export default function EnginesGrid({ handleEngineConnected, connectedEngines, s
     } else {
       response = await connectToFixEngine(engineData);
     }
+    hideLoader();
     if (response) {
       if (isSave) {
         getData?.()

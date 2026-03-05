@@ -1,5 +1,6 @@
 import { BrowserRouter } from "react-router-dom";
 import { GlobalProvider } from "./Provider/GlobalProvider";
+import { LoaderProvider } from "./Provider/LoaderContext";
 import RoutesComponent from "./Components/RoutesComponent/Routes.jsx";
 import { Toaster } from 'react-hot-toast';
 import 'devextreme/dist/css/dx.common.css';
@@ -10,10 +11,12 @@ import './App.css';
 const App = ({ appConfig }) => {
   return (
     <GlobalProvider appConfig={appConfig}>
-      <BrowserRouter>
-        <RoutesComponent />
-        <Toaster position="bottom-right" />
-      </BrowserRouter>
+      <LoaderProvider>
+        <BrowserRouter>
+          <RoutesComponent />
+          <Toaster position="bottom-right" />
+        </BrowserRouter>
+      </LoaderProvider>
     </GlobalProvider>
   )
 }
