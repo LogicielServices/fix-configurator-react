@@ -39,6 +39,7 @@ const JenkinsConfigPopup = ({
     const response = await deleteJenkinsConfig(engineID);
     if (response?.isSuccess) {
       showSuccessToast(response?.message);
+      setJenkinsConfigPopUpVisible(false);
       return;
     }
     showErrorToast(response?.message || textMessages?.anErrorOccurred);
