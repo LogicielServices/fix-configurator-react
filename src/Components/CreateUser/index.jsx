@@ -94,7 +94,7 @@ const CreateUser = forwardRef((props, ref) => {
       fieldsData.allowTFA = undefined;
       const response = await registerUser(fieldsData);
       setIsLoading(false);
-      if (response?.success) {
+      if (response?.isSuccess) {
         showSuccessToast(response?.message || textMessages?.userWasCreatedSuccessfully);
         closeDirPopup();
         return;

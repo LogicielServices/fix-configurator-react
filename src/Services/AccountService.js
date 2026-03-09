@@ -11,9 +11,6 @@ export const registerUser = async (data) => {
 }
 
 export const reValidateSignedInUser = async (username, password) => {
-  const response = await Post("/api/account/reValidateSignedInUser", {
-    username,
-    password,
-  });
+  const response = await Post(`/api/account/reValidateSignedInUser?username=${username}&password=${password}`);
   return response;
 }

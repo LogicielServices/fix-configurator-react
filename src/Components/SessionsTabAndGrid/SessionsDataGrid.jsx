@@ -116,7 +116,7 @@ export default function SessionsDataGrid({
     setJenkinsConfigPopUpVisible(true);
     setJenkinsConfigFormData({
       ...jenkinsConfigFormOptions,
-      ...data,
+      ...data?.result,
     });
   };
 
@@ -125,7 +125,7 @@ export default function SessionsDataGrid({
     setJobConfigPopUpVisible(true);
     setJobConfigFormData({
       ...jobConfigFormOptions,
-      ...data,
+      ...data?.result,
     });
   };
 
@@ -138,6 +138,14 @@ export default function SessionsDataGrid({
     }
     setSessionEmailConfigPopUpVisible(true);
   };
+
+  const handleJenkinsConfigPopup = async () => {
+    const data = await getJenkinsConfig(engineID);
+    if (!data?.isSuccess) {
+      return showErrorToast(data?.message || textMessages?.anErrorOccurred);
+    }
+    setCloneGitHubFilePopupVisible(true);
+  }
 
   // Engine Details Handler
   const handleEngineDetailsPopUp = () => {
@@ -270,9 +278,7 @@ export default function SessionsDataGrid({
               text="Clone GitHub File"
               type="default"
               stylingMode="contained"
-              onClick={() => {
-                setCloneGitHubFilePopupVisible(true);
-              }}
+              onClick={handleJenkinsConfigPopup}
             />
           </Item>
           <Item

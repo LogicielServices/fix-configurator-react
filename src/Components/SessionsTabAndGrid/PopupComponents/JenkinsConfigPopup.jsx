@@ -17,6 +17,7 @@ const JenkinsConfigPopup = ({
 }) => {
   const addJenkinsConfig = async (e) => {
     e?.preventDefault?.();
+    jenkinsConfigFormData.engineName = undefined;
     const response = await upsertJenkinsConfig({
       ...jenkinsConfigFormData,
     });

@@ -31,8 +31,18 @@ const JobDeploymentPopup = ({
 
   const checkJobStatus = async () => {
     const response = await getJobStatus(jobConfigFormData?.jenkinsAgentName);
-    if (response?.isSuccess) {
-      showSuccessToast(response?.message);
+    if (response?.id) {
+      showSuccessToast(
+        <div style={{ lineHeight: 1.4 }}>
+          <div style={{ fontWeight: 600, marginBottom: 4 }}>Action Completed</div>
+          <div><strong>ID:</strong> {response?.id}</div>
+          <div><strong>Status:</strong> {response?.inProgress ? "In Progress" : "Completed"}</div>
+          <div>
+            <strong>Result:</strong>{" "}
+            <span style={{ color: "#16a34a", fontWeight: 600 }}>✅ {response?.result}</span>
+          </div>
+        </div>
+      );
       return;
     }
     showErrorToast(response?.message || textMessages?.anErrorOccurred);
@@ -51,7 +61,7 @@ const JobDeploymentPopup = ({
       showCloseButton
       width="800px"
       maxWidth="70vw"
-      maxHeight="410px"
+      maxHeight="370px"
     >
       <form onSubmit={triggerJob}>
         <Form
@@ -117,13 +127,11 @@ const JobDeploymentPopup = ({
             editorType="dxSelectBox"
             editorOptions={{ dataSource: osList }}
           />
-          <SimpleItem itemType="empty" />
-          <GroupItem colSpan={2} colCount={12}>
-            <SimpleItem colSpan={6} />
+          <GroupItem cssClass="mt-4" colSpan={1} colCount={2}>
             <ButtonItem
               itemType="button"
               verticalAlignment="bottom"
-              colSpan={3}
+              colSpan={1}
               cssClass="pr-0 pe-0"
               buttonOptions={{
                 text: "Job Status",
@@ -135,13 +143,14 @@ const JobDeploymentPopup = ({
             />
             <ButtonItem
               itemType="button"
-              colSpan={3}
+              colSpan={1}
               verticalAlignment="bottom"
               buttonOptions={{
                 text: "Trigger Job",
                 type: "default",
                 useSubmitBehavior: true,
                 width: "100%",
+                disabled: !jobConfigFormData?.fixEngineMachineUsername || !jobConfigFormData?.jenkinsAgentName || !jobConfigFormData?.path,
               }}
             />
           </GroupItem>

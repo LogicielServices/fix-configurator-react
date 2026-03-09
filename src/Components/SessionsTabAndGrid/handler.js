@@ -149,7 +149,7 @@ export const sessionEmailConfigFormOptions = Object.freeze({
   recurring: false,
   emailSubject: undefined,
   emailBody: undefined,
-  timeUnit: getEnumKeyByValue(timeUnitEnum, timeUnitEnum.seconds),
+  timeunit: getEnumKeyByValue(timeUnitEnum, timeUnitEnum.seconds),
 });
 
 export const osList = Object.freeze(['Linux', 'Windows']);

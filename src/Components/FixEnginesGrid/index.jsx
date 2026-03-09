@@ -112,24 +112,25 @@ export default function EnginesGrid({ handleEngineConnected, connectedEngines, s
       response = await connectToFixEngine(engineData);
     }
     hideLoader();
-    if (response) {
-      if (isSave) {
-        getData?.()
-          ?.then?.(() => fixEngineRef?.current?.instance?.cancelEditData?.());
-      }
-      const connectivityStatuses = await getSessionsConnectivityStatus();
-      const engineConnStatuses = connectivityStatuses?.filter?.(cs =>
-        cs?.engineID === response?.engineID &&
-        cs?.engineName === response?.engineName
-      );
-      const sessionsWithStatus = response?.sessions?.map?.((res) => {
-        res.status = engineConnStatuses?.find?.(cs =>
-          cs?.connectionID === res?.connectionID
-        )?.status || res?.status;
-        return res;
-      });
-      handleEngineConnected?.({ ...response, sessions: sessionsWithStatus });
+    if (isSave && !response?.isSuccess) {
+      getData?.()
+        ?.then?.(() => fixEngineRef?.current?.instance?.cancelEditData?.());
+    } else if (response?.StatusCode) {
+      showErrorToast(textMessages?.anErrorOccurred);
+      return;
     }
+    const connectivityStatuses = await getSessionsConnectivityStatus();
+    const engineConnStatuses = connectivityStatuses?.filter?.(cs =>
+      cs?.engineID === response?.engineID &&
+      cs?.engineName === response?.engineName
+    );
+    const sessionsWithStatus = response?.sessions?.map?.((res) => {
+      res.status = engineConnStatuses?.find?.(cs =>
+        cs?.connectionID === res?.connectionID
+      )?.status || res?.status;
+      return res;
+    });
+    handleEngineConnected?.({ ...response, sessions: sessionsWithStatus });
   };
 
   const handleFormConnectClick = async (isSave = false) => {
@@ -141,7 +142,6 @@ export default function EnginesGrid({ handleEngineConnected, connectedEngines, s
     setIsFormLoading(false);
   }
 
-  
   const ActionCell = useCallback(({ data }) => {
     const key = data?.engineID;
     const isBusy = !!actionLoading?.[key];

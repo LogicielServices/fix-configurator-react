@@ -1,4 +1,4 @@
-import { Form, Popup } from "devextreme-react";
+import { Form, Popup, TagBox } from "devextreme-react";
 import {
   ButtonItem,
   GroupItem,
@@ -11,6 +11,8 @@ import { reportEmailsValidation } from "../../../utils/formValidator";
 import { useRef } from "react";
 import { enumToList } from "../../../utils/helper";
 import { deleteSessionEmailConfig, saveSessionEmailConfig } from "../../../Services/FixSessionService";
+import { showErrorToast, showSuccessToast } from "../../../utils/toastsService";
+import { textMessages } from "../../../utils/constants";
 
 const SequenceEmailConfigFormPopup = ({
   engineID,
@@ -27,12 +29,29 @@ const SequenceEmailConfigFormPopup = ({
   };
   const handleSubmit = async (e) => {
     e?.preventDefault?.();
+    if (!sessionEmailConfigFormData?.toEmails?.length) {
+      formRef.current.instance.getEditor("toEmails").option('isValid', false);
+      return;
+    }
+    if (!sessionEmailConfigFormData?.ccEmails?.length) {
+      sessionEmailConfigFormData.ccEmails = [];
+    }
     const response = await saveSessionEmailConfig(engineID, sessionEmailConfigFormData);
-    setSessionEmailConfigPopUpVisible(false);
+    if (response?.isSuccess) {
+      showSuccessToast(response?.message);
+      setSessionEmailConfigPopUpVisible(false);
+      return;
+    }
+    showErrorToast(response?.message);
   };
   const deleteConfig = async (e) => {
     e?.preventDefault?.();
-    await deleteSessionEmailConfig(engineID, sessionEmailConfigFormData?.sessionId);
+    const response = await deleteSessionEmailConfig(engineID, sessionEmailConfigFormData?.sessionId);
+    if (!response?.isSuccess) {
+      showErrorToast(response?.message || textMessages.anErrorOccurred);
+      return;
+    }
+    showSuccessToast(response?.message);
     setSessionEmailConfigPopUpVisible(false);
   }
   return (
@@ -41,6 +60,7 @@ const SequenceEmailConfigFormPopup = ({
       onHiding={() => {
         setSessionEmailConfigFormData({ ...sessionEmailConfigFormOptions });
         setSessionEmailConfigPopUpVisible(false);
+        formRef.current.instance.getEditor("toEmails").option('isValid', true);
       }}
       title="SESSION EMAIL CONFIGURATIONS"
       showCloseButton
@@ -158,8 +178,9 @@ const SequenceEmailConfigFormPopup = ({
               valueExpr: "ID",
             }}
           />
-          <SimpleItem colSpan={2} dataField="emailSubject" />
+          <SimpleItem isRequired colSpan={2} dataField="emailSubject" />
           <SimpleItem
+            isRequired
             editorType="dxTextArea"
             colSpan={2}
             dataField="emailBody"

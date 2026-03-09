@@ -2,8 +2,9 @@ import { Popup, Form } from "devextreme-react";
 import { SimpleItem, ButtonItem } from "devextreme-react/form";
 import { forwardRef, useImperativeHandle, useState } from "react";
 import { startFixEngine, stopFixEngine } from "../../../Services/JenkinsConfigService";
-import { showErrorToast } from "../../../utils/toastsService";
+import { showErrorToast, showSuccessToast } from "../../../utils/toastsService";
 import { reValidateSignedInUser } from "../../../Services/AccountService";
+import { textMessages } from "../../../utils/constants";
 
 const EngineStartStopPopup = forwardRef(
   ({ action, engineID, onSuccess }, ref) => {
@@ -36,21 +37,21 @@ const EngineStartStopPopup = forwardRef(
         const username = localStorage.getItem("username") || "";
         const authResponse = await reValidateSignedInUser(username, formData.password);
 
-        if (!authResponse || authResponse.error) {
-          showErrorToast("Authentication failed. Please check your password.");
+        if (!authResponse?.isSuccessful) {
+          showErrorToast(authResponse?.detail || textMessages?.anErrorOccurred);
           setIsLoading(false);
           return;
         }
-
+        showSuccessToast(authResponse?.message);
         // Step 2: Call the appropriate engine control endpoint
         const engineResponse =
           action === "start"
             ? await startFixEngine(engineID)
             : await stopFixEngine(engineID);
 
-        if (!engineResponse || engineResponse.error) {
+        if (!engineResponse || engineResponse.title === "Error") {
           showErrorToast(
-            `Failed to ${action} engine. Please try again.`
+            engineResponse?.detail || textMessages?.anErrorOccurred
           );
         } else {
           // Success - close popup and call callback
