@@ -1,3 +1,5 @@
+import { getEnumKeyByValue } from "../../utils/helper";
+
 export const sessionStatusEnum = Object.freeze({
   connected: 'CONNECTED',
   disconnected: 'DISCONNECTED',
@@ -26,6 +28,7 @@ export const FaRotateRight = () => <i className="fa-solid fa-rotate-right" aria-
 export const FaSliders = () => <i className="fa-solid fa-sliders" aria-hidden="true" />;
 export const FaPen = () => <i className="fa-solid fa-pen" aria-hidden="true" />;
 export const FaUnavailable = () => <i className="fa-solid fa-ban" aria-hidden="true" />;
+export const FaEnvelope = () => <i className="fa-solid fa-envelope" aria-hidden="true" />;
 
 // Small helpers for visuals
 export const StatusBadge = ({ value }) => {
@@ -54,3 +57,132 @@ export const handleRowPrepared = ({ data, rowType, rowElement }) => {
     rowElement?.classList?.add?.('sg-row-unavailable');
   }
 };
+
+export const cfgSessionsTypes = Object.freeze({
+  initiator: 'initiator',
+  acceptor: 'acceptor',
+});
+
+export const cfgSessionsFilesEnum = Object.freeze({
+  initiator: 'initiator.cfg',
+  acceptor: 'acceptor.cfg',
+});
+
+export const cfgInitiatorSessionFormOptions = Object.freeze({
+  fileStorePath: "",
+  sendBufferSize: 0,
+  recvBufferSize: 0,
+  socketConnectHost: "",
+  socketConnectPort: "",
+  heartBtInt: "",
+  checkLatency: false,
+  resetOnLogon: false,
+  persistMessages: false,
+  requiresOrigSendingTime: false,
+  socketNodelay: false,
+  validateFieldsOutOfOrder: false,
+  validateFieldsHaveValues: false,
+  validateUserDefinedFields: false,
+  validateRequiredFields: false,
+  validateUnknownFields: false,
+  validateUnknownMsgType: false,
+  beginString: "",
+  senderCompID: "",
+  targetCompID: "",
+});
+
+export const cfgAcceptorSessionFormOptions = Object.freeze({
+  beginString: "",
+  socketAcceptPort: 0,
+  senderCompID: "",
+  targetCompID: "",
+  fileStorePath: "",
+  fileLogPath: "",
+  timestampPrecision: 0,
+  sendBufferSize: 0,
+  recvBufferSize: 0,
+  useDataDictionary: false,
+  millisecondsInTimestamp: false,
+  validateUserDefinedFields: false,
+  validateRequiredFields: false,
+  requiresOrigSendingTime: false,
+  checkLatency: false,
+  resetOnLogon: false,
+  socketNodelay: false,
+  validateUnknownFields: false,
+  resetOnDisconnect: false,
+  validateFieldsOutOfOrder: false,
+  validateUnknownMsgType: false,
+  persistMessages: false,
+  validateFieldsHaveValues: false,
+});
+
+export const jenkinsConfigFormOptions = Object.freeze({
+  engineName: undefined,
+  engineIp: undefined,
+  fixEngineMachineUsername: undefined,
+  fixEngineMachinePassword: undefined,
+  jenkinsAgentName: undefined,
+  path: undefined,
+  fixEngineGitHubBranch: undefined,
+  s3BucketLogPath: undefined,
+});
+
+export const jobConfigFormOptions = Object.freeze({
+  fixEnginePath: undefined,
+  branchName: undefined,
+  environment: undefined,
+})
+
+export const timeUnitEnum = Object.freeze({
+  seconds: 'Seconds',
+  minutes: 'Minutes',
+  hours: 'Hours',
+});
+
+export const sessionEmailConfigFormOptions = Object.freeze({
+  sessionId: undefined,
+  toEmails: [],
+  ccEmails: [],
+  // emailStatus: false,
+  timeout: 0,
+  recurring: false,
+  emailSubject: undefined,
+  emailBody: undefined,
+  timeUnit: getEnumKeyByValue(timeUnitEnum, timeUnitEnum.seconds),
+});
+
+export const osList = Object.freeze(['Linux', 'Windows']);
+
+export const clonableGitFilesEnum = Object.freeze({
+  config: "config.json",
+  store: "store.ini",
+})
+
+export const editSessionRowFields = Object.freeze([
+  "senderCompID",
+  "targetCompID",
+  "ipAddress",
+  "backUpIPAddress",
+  "port",
+  "backUpPort",
+  "validate",
+  "handleResend",
+  "maxLatency",
+  "resetConnection",
+  "enableConnection",
+  "fixVersion",
+  "internalFIXVersion",
+  "mode",
+  "dbEnabled",
+  "latencyEnabled",
+  "autoConnect",
+  "autoReconnect",
+  "reconnectDelay",
+  "connectRetry",
+  "logonRawData",
+  "milliSecondTime",
+  "sessionStart",
+  "sessionEnd",
+  "taskReset"
+]);

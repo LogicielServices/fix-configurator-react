@@ -1,15 +1,13 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import {
   connectFixSession,
   disconnectFixSession,
+  getSessionConfiguration,
   resetSequenceFixSession,
 } from "../../Services/FixSessionService";
 import useClientUpdates from "../../SignalR/useClientUpdates";
 import { confirm } from "devextreme/ui/dialog";
 import { textMessages } from "../../utils/constants.js";
-import { Form, Popup } from "devextreme-react";
-import { setSequenceFixSession } from "../../Services/FixSessionService.js";
-import { ButtonItem, SimpleItem } from "devextreme-react/form.js";
 import {
   DataGrid,
   Column,
@@ -22,6 +20,8 @@ import {
   Button,
   Editing,
   Scrolling,
+  Toolbar,
+  Item,
 } from "devextreme-react/data-grid";
 import {
   ModeChip,
@@ -34,81 +34,177 @@ import {
   StatusBadge,
   handleRowPrepared,
   sessionStatusEnum,
+  cfgSessionsTypes,
+  jenkinsConfigFormOptions,
+  jobConfigFormOptions,
+  editSessionRowFields,
+  cfgSessionsFilesEnum,
+  FaEnvelope,
+  sessionEmailConfigFormOptions,
 } from "./handler.js";
+import CFGSessionFormPopup from "./PopupComponents/CFGSessionFormPopup.jsx";
+import SequenceNumbersPopup from "./PopupComponents/SequenceNumbersPopup.jsx";
+import JenkinsConfigPopup from "./PopupComponents/JenkinsConfigPopup.jsx";
+import JobDeploymentPopup from "./PopupComponents/JobDeploymentPopup.jsx";
+import GitHubConfigurationPopup from "./PopupComponents/GitHubConfigurationPopup.jsx";
+import SessionEditConfigPopup from "./PopupComponents/SessionEditConfigPopup.jsx";
+import EngineDetailsPopup from "./PopupComponents/EngineDetailsPopup.jsx";
+import EngineStartStopPopup from "./PopupComponents/EngineStartStopPopup.jsx";
+import { getJenkinsConfig, getJenkinsAgents } from "../../Services/JenkinsConfigService.js";
+import { showErrorToast } from "../../utils/toastsService.js";
+import {
+  getBranches,
+  getSessionDetail,
+} from "../../Services/GithubService.js";
+import { Button as DevBtn } from "devextreme-react/button";
+import SequenceEmailConfigFormPopup from "./PopupComponents/SessionEmailConfigFormPopup.jsx";
 
 export default function SessionsDataGrid({
   engineID,
   sessions,
+  engineName,
   setSelectedSessionID,
 }) {
   const { updates, dataGridRef } = useClientUpdates(engineID, sessions);
-  const [seqNumPopUp, setSeqNumPopUp] = useState(false);
 
-  const seqInOutSubmit = async (e) => {
-    e?.preventDefault?.();
-    await setSequenceFixSession(
-      engineID,
-      seqNumPopUp?.connectionID,
-      seqNumPopUp?.inSeqNum,
-      seqNumPopUp?.outSeqNum,
-    );
-    setSeqNumPopUp(false);
+  // State Management
+  const [seqNumPopUpData, setSeqNumPopUpData] = useState(null);
+  const [cfgPopUpVisible, setCfgPopUpVisible] = useState(false);
+  const [jenkinsConfigPopUpVisible, setJenkinsConfigPopUpVisible] =
+    useState(false);
+  const [cloneGitHubFilePopupVisible, setCloneGitHubFilePopupVisible] =
+    useState(false);
+  const [jenkinsConfigFormData, setJenkinsConfigFormData] = useState({});
+  const [sessionEmailConfigFormData, setSessionEmailConfigFormData] = useState({});
+  const [jobConfigPopUpVisible, setJobConfigPopUpVisible] = useState(false);
+  const [sessionEmailConfigPopUpVisible, setSessionEmailConfigPopUpVisible] = useState(false);
+  const [jobConfigFormData, setJobConfigFormData] = useState({});
+  const [gitHubBranches, setGitHubBranches] = useState([]);
+  const [jenkinsAgents, setJenkinsAgents] = useState([]);
+  const [configJson, setConfigJson] = useState("");
+  const [storeIni, setStoreIni] = useState("");
+  const [editSessionsRowState, setEditSessionsRowState] = useState({
+    fields: [],
+    data: {},
+  });
+  const cfgSessionFormPopupRef = useRef();
+  const seqNumPopupRef = useRef();
+  const sessionEditConfigPopupRef = useRef();
+  const engineDetailsPopupRef = useRef();
+  const [engineDetails, setEngineDetails] = useState(null);
+  const engineStartStopPopupRef = useRef();
+  const [engineStartStopAction, setEngineStartStopAction] = useState(null);
+
+  // Fetch initial data on mount
+  useEffect(() => {
+    const loadInitialData = async () => {
+      const [branchesData, agentsResponse] = await Promise.all([
+        getBranches(),
+        getJenkinsAgents(),
+      ]);
+      setGitHubBranches(branchesData || []);
+      const agentNames =
+        agentsResponse?.computer?.map?.((x) => x?.displayName) || [];
+      setJenkinsAgents(agentNames);
+    };
+    loadInitialData();
+  }, []);
+
+  // Jenkins Configuration Handlers
+  const handleJenkinsConfigPopUp = async () => {
+    const data = await getJenkinsConfig(engineID);
+    setJenkinsConfigPopUpVisible(true);
+    setJenkinsConfigFormData({
+      ...jenkinsConfigFormOptions,
+      ...data,
+    });
   };
 
+  const handleTriggerDeploymentPopUp = async () => {
+    const data = await getJenkinsConfig(engineID);
+    setJobConfigPopUpVisible(true);
+    setJobConfigFormData({
+      ...jobConfigFormOptions,
+      ...data,
+    });
+  };
+
+  const handleSessionEmailConfigsPopUp = async ({ row }) => {
+    const data = await getSessionConfiguration(engineID, row?.data?.connectionID);
+    if (!data?.sessionId) {
+      setSessionEmailConfigFormData({ ...sessionEmailConfigFormOptions, sessionId: row?.data?.connectionID });
+    } else {
+      setSessionEmailConfigFormData(data);
+    }
+    setSessionEmailConfigPopUpVisible(true);
+  };
+
+  // Engine Details Handler
+  const handleEngineDetailsPopUp = () => {
+    setEngineDetails({
+      engineName: engineName,
+      redisIpAddress: engineID?.split?.(":")?.[0],
+      redisIpPort: engineID?.split?.(":")?.[1],
+      redisDB: engineID?.split?.(":")?.[3] || "",
+      fixEngineIpAddress: engineID?.split?.(":")?.[0],
+      fixEngineIpPort: engineID?.split?.(":")?.[1],
+      fixEngineStatus: "Active",
+    });
+    engineDetailsPopupRef.current?.handleOpenPopup();
+  };
+  // Engine Start/Stop Handlers
+  const handleStartEngine = () => {
+    setEngineStartStopAction("start");
+    engineStartStopPopupRef.current?.handleOpenPopup();
+  };
+
+  const handleStopEngine = () => {
+    setEngineStartStopAction("stop");
+    engineStartStopPopupRef.current?.handleOpenPopup();
+  };
+  // Connection Handlers
   const connectEngine = async ({ row }) => {
-    const result = await confirm(textMessages?.areYouSure, "Connect FIX");
+    const result = await confirm(
+      textMessages?.areYouSure,
+      "Connect FIX"
+    );
     if (result) connectFixSession(engineID, row?.data?.connectionID);
   };
+
   const disconnectEngine = async ({ row }) => {
-    const result = await confirm(textMessages?.areYouSure, "Disconnect FIX");
+    const result = await confirm(
+      textMessages?.areYouSure,
+      "Disconnect FIX"
+    );
     if (result) disconnectFixSession(engineID, row?.data?.connectionID);
   };
+
   const resetSequence = async ({ row }) => {
-    const result = await confirm(textMessages?.areYouSure, "Reset Sequence");
+    const result = await confirm(
+      textMessages?.areYouSure,
+      "Reset Sequence"
+    );
     if (result) resetSequenceFixSession(engineID, row?.data?.connectionID);
   };
-  const sequenceIdsFormPopUp = useMemo(() => {
-    return (
-      <Popup
-        visible={!!seqNumPopUp}
-        onHiding={() => setSeqNumPopUp(false)}
-        showCloseButton
-        title="Set Sequences"
-        width="auto"
-        height="auto"
-      >
-        <form action="your-action" onSubmit={seqInOutSubmit}>
-          <Form
-            id="form"
-            focusStateEnabled
-            activeStateEnabled
-            hoverStateEnabled
-            showRequiredMark
-          >
-            <SimpleItem
-              dataField="inSeqNum"
-              editorType="dxNumberBox"
-              editorOptions={{ min: 0 }}
-            />
-            <SimpleItem
-              dataField="outSeqNum"
-              editorType="dxNumberBox"
-              editorOptions={{ min: 0 }}
-            />
-            <ButtonItem
-              itemType="button"
-              buttonOptions={{
-                text: "Submit",
-                type: "default",
-                useSubmitBehavior: true,
-              }}
-            />
-          </Form>
-        </form>
-      </Popup>
-    );
-  }, [seqNumPopUp]);
 
+  // Session Edit Handler
+  const handleEditSession = async ({ row }) => {
+    const response = await getSessionDetail(
+      engineID,
+      cfgSessionsFilesEnum[row?.data?.mode],
+      engineName,
+      row?.data?.senderCompID,
+      row?.data?.targetCompID
+    );
+    if (response?.isError) {
+      showErrorToast(textMessages?.anErrorOccurred);
+      return;
+    }
+    cfgSessionFormPopupRef?.current?.handleSetFormData?.(response);
+    setCfgPopUpVisible(row?.data?.mode);
+  };
+
+  // Data Grid Component
   const sessionsDataGridComponent = useMemo(() => {
     return (
       <DataGrid
@@ -158,23 +254,110 @@ export default function SessionsDataGrid({
           columnRenderingMode="virtual"
         />
         <Editing
-          mode="popup"
-          allowUpdating={engineID && sessions}
+          allowUpdating={false}
           allowDeleting={false}
           allowAdding={false}
-          popup={{
-            title: "Session Details",
-            showTitle: true,
-            showCloseButton: true,
-            hideOnParentScroll: false,
-            toolbarItems: [],
-          }}
-          form={{
-            disabled: true,
-            items: Object.keys(updates?.[0] || {}),
-            colCountByScreen: { lg: 4, md: 3, sm: 2, xs: 1 },
-          }}
         />
+        <Toolbar>
+          <Item
+            location="before"
+            visible={!!engineID || !!sessions}
+            locateInMenu="auto"
+          >
+            <DevBtn
+              icon="fa-solid fa-clone"
+              name="Clone GitHub File"
+              text="Clone GitHub File"
+              type="default"
+              stylingMode="contained"
+              onClick={() => {
+                setCloneGitHubFilePopupVisible(true);
+              }}
+            />
+          </Item>
+          <Item
+            location="before"
+            visible={!!engineID || !!sessions}
+            locateInMenu="auto"
+          >
+            <DevBtn
+              icon="fa-solid fa-sliders"
+              name="Jenkins Configuration"
+              text="Jenkins Configuration"
+              stylingMode="contained"
+              type="default"
+              onClick={handleJenkinsConfigPopUp}
+            />
+          </Item>
+          <Item
+            location="before"
+            visible={!!engineID || !!sessions}
+            locateInMenu="auto"
+          >
+            <DevBtn
+              icon="fa-solid fa-cloud-arrow-up"
+              name="Trigger Deployment"
+              text="Trigger Deployment"
+              stylingMode="contained"
+              type="default"
+              onClick={handleTriggerDeploymentPopUp}
+            />
+          </Item>
+          <Item
+            location="before"
+            visible={!!engineID || !!sessions}
+            locateInMenu="auto"
+          >
+            <DevBtn
+              icon="fa-solid fa-server"
+              name="Engine Details"
+              text="Engine Details"
+              stylingMode="contained"
+              type="default"
+              onClick={handleEngineDetailsPopUp}
+            />
+          </Item>
+          <Item
+            location="after"
+            visible={!!engineID || !!sessions}
+            locateInMenu="auto"
+          >
+            <DevBtn
+              icon="fa-solid fa-power-off"
+              name="Start Engine"
+              text="Start Engine"
+              stylingMode="contained"
+              type="success"
+              onClick={handleStartEngine}
+            />
+          </Item>
+          <Item
+            location="after"
+            visible={!!engineID || !!sessions}
+            locateInMenu="auto"
+          >
+            <DevBtn
+              icon="fa-solid fa-stop"
+              name="Stop Engine"
+              text="Stop Engine"
+              stylingMode="contained"
+              type="danger"
+              onClick={handleStopEngine}
+            />
+          </Item>
+          <Item location="after" visible={!!engineID || !!sessions}>
+            <DevBtn
+              icon="add"
+              name="Add New Session"
+              text="Add New Session"
+              type="default"
+              onClick={() => {
+                setCfgPopUpVisible(cfgSessionsTypes.initiator);
+              }}
+            />
+          </Item>
+          <Item name="searchPanel" location="after" />
+        </Toolbar>
         <Column dataField="connectionID" caption="ConnectionID" />
         {!engineID && !sessions ? (
           <Column dataField="engineName" caption="Engine" />
@@ -229,7 +412,7 @@ export default function SessionsDataGrid({
           <Column
             type="buttons"
             caption="Actions"
-            minWidth={220}
+            width={220}
             fixed
             fixedPosition="right"
             alignment="center"
@@ -261,7 +444,7 @@ export default function SessionsDataGrid({
             <Button
               hint="Set sequences"
               onClick={({ row }) =>
-                setSeqNumPopUp({
+                seqNumPopupRef?.current?.handleSetFormData?.({
                   connectionID: row?.data?.connectionID,
                   inSeqNum: row?.data?.inSeqNum,
                   outSeqNum: row?.data?.outSeqNum,
@@ -285,10 +468,24 @@ export default function SessionsDataGrid({
               }
             />
 
+            {/* Session email config */}
+            <Button
+              hint="Session Email Config"
+              onClick={handleSessionEmailConfigsPopUp}
+              cssClass="sg-action-btn"
+              render={FaEnvelope}
+            />
+
             {/* Edit session config */}
             <Button
               hint="Edit session config"
-              // onClick={(e) => onButtonClick(e, editSessionConfig)}
+              onClick={(e) => {
+                setEditSessionsRowState({
+                  fields: editSessionRowFields,
+                  data: e?.row?.data || {},
+                });
+                sessionEditConfigPopupRef?.current?.handleOpenPopup?.();
+              }}
               cssClass="sg-action-btn"
               render={FaSliders}
             />
@@ -296,10 +493,7 @@ export default function SessionsDataGrid({
             {/* Edit session */}
             <Button
               hint="Edit session"
-              onClick={(e) => {
-                const inst = dataGridRef?.current?.instance;
-                inst?.editRow?.(inst?.getRowIndexByKey?.(e?.row?.key));
-              }}
+              onClick={handleEditSession}
               cssClass="sg-action-btn"
               render={FaPen}
             />
@@ -319,9 +513,163 @@ export default function SessionsDataGrid({
     );
   }, [updates]);
 
+  // Memoized Popup Components
+  const memoizedSequenceNumbersPopup = useMemo(
+    () => (
+      <SequenceNumbersPopup
+        ref={seqNumPopupRef}
+        engineID={engineID}
+        seqNumPopUpData={seqNumPopUpData}
+        setSeqNumPopUpData={setSeqNumPopUpData}
+      />
+    ),
+    [engineID, seqNumPopUpData]
+  );
+
+  const memoizedJenkinsConfigPopup = useMemo(
+    () => (
+      <JenkinsConfigPopup
+        engineID={engineID}
+        engineName={engineName}
+        jenkinsConfigPopUpVisible={jenkinsConfigPopUpVisible}
+        setJenkinsConfigPopUpVisible={setJenkinsConfigPopUpVisible}
+        jenkinsConfigFormData={jenkinsConfigFormData}
+        setJenkinsConfigFormData={setJenkinsConfigFormData}
+        jenkinsAgents={jenkinsAgents}
+        gitHubBranches={gitHubBranches}
+      />
+    ),
+    [
+      engineID,
+      engineName,
+      jenkinsConfigPopUpVisible,
+      jenkinsConfigFormData,
+      jenkinsAgents,
+      gitHubBranches,
+    ]
+  );
+
+  const memoizedJobDeploymentPopup = useMemo(
+    () => (
+      <JobDeploymentPopup
+        engineID={engineID}
+        engineName={engineName}
+        jobConfigPopUpVisible={jobConfigPopUpVisible}
+        setJobConfigPopUpVisible={setJobConfigPopUpVisible}
+        jobConfigFormData={jobConfigFormData}
+        setJobConfigFormData={setJobConfigFormData}
+        jenkinsAgents={jenkinsAgents}
+        gitHubBranches={gitHubBranches}
+      />
+    ),
+    [
+      engineID,
+      engineName,
+      jobConfigPopUpVisible,
+      jobConfigFormData,
+      jenkinsAgents,
+      gitHubBranches,
+    ]
+  );
+
+  const memoizedGitHubConfigPopup = useMemo(
+    () => (
+      <GitHubConfigurationPopup
+        engineID={engineID}
+        engineName={engineName}
+        cloneGitHubFilePopupVisible={cloneGitHubFilePopupVisible}
+        setCloneGitHubFilePopupVisible={setCloneGitHubFilePopupVisible}
+        configJson={configJson}
+        setConfigJson={setConfigJson}
+        storeIni={storeIni}
+        setStoreIni={setStoreIni}
+      />
+    ),
+    [
+      engineID,
+      engineName,
+      cloneGitHubFilePopupVisible,
+      configJson,
+      storeIni,
+    ]
+  );
+
+  const memoizedCFGSessionPopup = useMemo(
+    () => (
+      <CFGSessionFormPopup
+        ref={cfgSessionFormPopupRef}
+        engineID={engineID}
+        engineName={engineName}
+        cfgPopUpVisible={cfgPopUpVisible}
+        setCfgPopUpVisible={setCfgPopUpVisible}
+      />
+    ),
+    [engineID, engineName, cfgPopUpVisible]
+  );
+
+  const memoizedSessionEmailConfigPopup = useMemo(
+    () => (
+      <SequenceEmailConfigFormPopup
+        engineID={engineID}
+        engineName={engineName}
+        sessionEmailConfigPopUpVisible={sessionEmailConfigPopUpVisible}
+        setSessionEmailConfigPopUpVisible={setSessionEmailConfigPopUpVisible}
+        sessionEmailConfigFormData={sessionEmailConfigFormData}
+        setSessionEmailConfigFormData={setSessionEmailConfigFormData}
+      />
+    ),
+    [
+      engineID,
+      engineName,
+      sessionEmailConfigPopUpVisible,
+      sessionEmailConfigFormData,
+    ]
+  );
+
+  const memoizedSessionEditConfigPopup = useMemo(
+    () => (
+      <SessionEditConfigPopup
+        ref={sessionEditConfigPopupRef}
+        editSessionsRowState={editSessionsRowState}
+        setEditSessionsRowState={setEditSessionsRowState}
+      />
+    ),
+    [editSessionsRowState]
+  );
+
+  const memoizedEngineDetailsPopup = useMemo(
+    () => (
+      <EngineDetailsPopup
+        ref={engineDetailsPopupRef}
+        engineDetails={engineDetails}
+      />
+    ),
+    [engineDetails]
+  );
+
+  const memoizedEngineStartStopPopup = useMemo(
+    () => (
+      <EngineStartStopPopup
+        ref={engineStartStopPopupRef}
+        action={engineStartStopAction}
+        engineID={engineID}
+      />
+    ),
+    [engineStartStopAction, engineID]
+  );
+
+  // Return JSX
   return (
     <div>
-      {sequenceIdsFormPopUp}
+      {memoizedSequenceNumbersPopup}
+      {memoizedJenkinsConfigPopup}
+      {memoizedJobDeploymentPopup}
+      {memoizedGitHubConfigPopup}
+      {memoizedCFGSessionPopup}
+      {memoizedSessionEmailConfigPopup}
+      {memoizedSessionEditConfigPopup}
+      {memoizedEngineDetailsPopup}
+      {memoizedEngineStartStopPopup}
       {sessionsDataGridComponent}
     </div>
   );

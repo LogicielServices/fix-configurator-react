@@ -2,21 +2,33 @@ import { Drawer, IconButton, Menu, MenuItem, Typography } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import BreadCrumbs from "../BreadCrumbsComponent/BreadCrumbs";
 import { authConstants } from "../../utils/constants";
-import { AccountCircle, ArrowDropDown, Logout, Notifications, Person, Power } from "@mui/icons-material";
-import { useRef, useState } from "react";
+import { AccountCircle, ArrowDropDown, Dashboard, GitHub, Logout, Notifications, Person, Power } from "@mui/icons-material";
+import { useContext, useRef, useState } from "react";
 import { iconButtonOptions, menuOptions } from "./MenuBarHandler";
 import CreateUser from "../CreateUser";
 import { logout } from "../../utils/helper";
 import SessionStatusGrid from "../SessionStatusGrid";
 import TelnetComponent from "../TelnetComponent";
+import GlobalContext from "../../Provider/GlobalProvider";
 
 const MenuBar = ({ handleDrawerToggle }) => {
+  const { appConfig } = useContext(GlobalContext);
   const [openSessionStatuses, setOpenSessionStatuses] = useState(false);
   const menuItems = [
     {
       onClick: () => createUserRef?.current?.handleOpenCreateUserDialog?.(),
       icon: <Person className="me-3" fontSize="small" />,
       text: "Create User",
+    },
+    {
+      onClick: () => window.open(appConfig?.GITHUB_REPO_URL, '_blank'),
+      icon: <GitHub className="me-3" fontSize="small" />,
+      text: "Open GitHub",
+    },
+    {
+      onClick: () => window.open(appConfig?.GRAFANA_URL, '_blank'),
+      icon: <Dashboard className="me-3" fontSize="small" />,
+      text: "Open Grafana",
     },
     {
       onClick: () => logout(),

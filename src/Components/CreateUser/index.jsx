@@ -132,8 +132,8 @@ const CreateUser = forwardRef((props, ref) => {
             Create a new user!
           </Typography>
 
-          <Grid container spacing={1.5}>
-            <Grid item size={{ xs: 12, sm: 6 }}>
+          <Grid container columnGap={1}>
+            <Grid item xs={12} sm={5.8}>
               <TextField
                 label="First Name"
                 variant="outlined"
@@ -150,7 +150,7 @@ const CreateUser = forwardRef((props, ref) => {
                 autoComplete="given-name"
               />
             </Grid>
-            <Grid item size={{ xs: 12, sm: 6 }}>
+            <Grid item xs={12} sm={6}>
               <TextField
                 label="Last Name"
                 variant="outlined"
@@ -195,8 +195,8 @@ const CreateUser = forwardRef((props, ref) => {
             autoComplete="email"
           />
           
-          <Grid container spacing={1.5}>
-            <Grid item size={{ xs: 12, sm: 6 }}>
+          <Grid container columnGap={1}>
+            <Grid item xs={12} sm={5.8}>
               <TextField
                 label="Password"
                 variant="outlined"
@@ -212,7 +212,7 @@ const CreateUser = forwardRef((props, ref) => {
               />
             </Grid>
               
-            <Grid item size={{ xs: 12, sm: 6 }}>
+            <Grid item xs={12} sm={6}>
               <TextField
                 label="Confirm Password"
                 variant="outlined"

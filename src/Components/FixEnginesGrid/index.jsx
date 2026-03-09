@@ -29,6 +29,7 @@ import { confirm } from "devextreme/ui/dialog";
 import { textMessages } from "../../utils/constants";
 import { Popup } from "devextreme-react";
 import { showErrorToast } from "../../utils/toastsService";
+import { useLoader } from "../../Provider/LoaderContext";
 
 // Small chips
 const DbChip = ({ db }) => <span className="eng-chip eng-db">DB {db}</span>;
@@ -66,13 +67,14 @@ const addFormDefaultData = Object.entries({
   redisDB: 0,
 })
 
-export default function EnginesGrid({ handleEngineConnected, connectedEngines }) {
+export default function EnginesGrid({ handleEngineConnected, connectedEngines, setShowPopup }) {
   const [rows, setRows] = useState([]);
   const [actionLoading, setActionLoading] = useState({});
   const fixEngineRef = useRef();
   const [isFormLoading, setIsFormLoading] = useState(false);
   const [popupVisible, setPopupVisible] = useState(false);
   const [addFormData, setAddFormData] = useState({ ...addFormDefaultData });
+  const { showLoader, hideLoader, isLoading } = useLoader();
 
   const getData = async () => {
     fixEngineRef?.current?.instance?.beginCustomLoading?.();
@@ -99,7 +101,8 @@ export default function EnginesGrid({ handleEngineConnected, connectedEngines })
       fixEngineIpAddress: data?.fixEngineIpAddress || "",
       fixEngineIpPort: data?.fixEngineIpPort || 0,
     };
-    let response
+    let response;
+    showLoader();
     if (isSave) {
       engineData.lastReadStreamEntryID = "";
       engineData.logLastTimeStamps = "";
@@ -108,6 +111,7 @@ export default function EnginesGrid({ handleEngineConnected, connectedEngines })
     } else {
       response = await connectToFixEngine(engineData);
     }
+    hideLoader();
     if (response) {
       if (isSave) {
         getData?.()
@@ -296,8 +300,9 @@ export default function EnginesGrid({ handleEngineConnected, connectedEngines })
   return (
     <div id="fix-engines-dialog">
       <div className="eng-wrap p-3">
-        <div className="eng-head">
+        <div className="eng-head d-flex flex-rows justify-content-between">
           <h3 className="eng-title">Engine Configurations</h3>
+          <div><Button type="back" icon="close" onClick={() => setShowPopup(false)} /></div>
         </div>
         <Popup
           title="Add or Connect Engines"

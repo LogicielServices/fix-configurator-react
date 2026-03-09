@@ -55,3 +55,34 @@ export function parseJwt() {
 
   return JSON.parse(jsonPayload);
 }
+
+export const camelCaseToTitleCase = (str) => {
+  const result = `${str}`.replace(/([A-Z])/g, ' $1')
+  return result.charAt(0).toUpperCase() + result.slice(1)
+}
+
+export const enumToList = (
+  e,
+  key = 'ID',
+  value = 'Name',
+  isTitleCased = false,
+) => {
+  return Object.entries(e).map((x) => {
+    const obj = {}
+    obj[key] = isTitleCased ? camelCaseToTitleCase(x[1]) : x[1]
+    obj[value] = isTitleCased ? camelCaseToTitleCase(x[0]) : x[0]
+    return obj
+  })
+}
+
+export const booleanEnum = Object.freeze({
+  Yes: 'Y',
+  No: 'N',
+})
+
+export const getEnumKeyByValue = (enumRef, value, isTitleCased = false) => {
+  const key =
+    Object.keys(enumRef || [])?.[Object.values(enumRef || []).indexOf(value)] ||
+    ''
+  return key;
+}

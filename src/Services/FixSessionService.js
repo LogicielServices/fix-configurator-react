@@ -16,6 +16,10 @@ export const connectToFixEngine = async (data) => {
   return response;
 }
 
+export const disconnectFixEngine = async (data) => {
+  const response = await Post(`/api/fixengines/disconnect`, data);
+  return response;
+}
 
 export const saveFixEngine = async (data) => {
   const props = {
@@ -60,5 +64,25 @@ export const resetSequenceFixSession = async (engineID, sessionID) => {
 
 export const setSequenceFixSession = async (engineID, sessionID, inSeq, outSeq) => {
   const response = await Put(`/api/fixengines/${engineID}/fixSessions/setSequence/${sessionID}/${inSeq}/${outSeq}`);
+  return response;
+}
+
+export const getConnectedEngines = async () => {
+  const response = await Get('/api/fixengines/connectedengines');
+  return response;
+}
+
+export const getSessionConfiguration = async (engineID, sessionID) => {
+  const response = await Get(`/api/fixengines/${engineID}/fixsessions/alertconfig/getById/${sessionID}`);
+  return response;
+}
+
+export const saveSessionEmailConfig = async (engineID, configData) => {
+  const response = await Put(`/api/fixengines/${engineID}/fixsessions/alertconfig/upsert`, configData);
+  return response;
+}
+
+export const deleteSessionEmailConfig = async (engineID, sessionID) => {
+  const response = await Delete(`/api/fixengines/${engineID}/fixsessions/alertconfig/delete/${sessionID}`);
   return response;
 }

@@ -150,7 +150,7 @@
 
 /* Icon sizing/alignment */
 .sess-wrap .sg-mode-icon {
-  font-size: 13px;
+  font-size: 13px !important;
   /* FA icon size */
   color: inherit;
 }
