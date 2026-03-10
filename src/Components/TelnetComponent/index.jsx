@@ -61,6 +61,7 @@ const TelnetComponent = forwardRef((props, ref) => {
         success: response?.isSuccess,
         message: response?.message || textMessages?.unableToCheckConnectivity,
       });
+      return;
     }
     setResult({
       success: response?.isSuccess,
