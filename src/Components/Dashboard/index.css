@@ -5,7 +5,7 @@
 /* Base dashboard container */
 .fx-dashboard {
   background: #f8fafc;
-  min-height: 100vh;
+  min-height: calc(100vh - 108px);
   padding: 24px;
 }
 
