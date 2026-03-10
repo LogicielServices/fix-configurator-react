@@ -66,6 +66,7 @@ export default function SessionsDataGrid({
   setSelectedSessionID,
 }) {
   const { updates, dataGridRef } = useClientUpdates(engineID, sessions);
+  const ipAddress = sessions?.find?.(x => x?.mode === cfgSessionsTypes.acceptor)?.ipAddress || "N/A";
 
   // State Management
   const [seqNumPopUpData, setSeqNumPopUpData] = useState(null);
@@ -648,9 +649,10 @@ export default function SessionsDataGrid({
       <EngineDetailsPopup
         ref={engineDetailsPopupRef}
         engineDetails={engineDetails}
+        ipAddress={ipAddress}
       />
     ),
-    [engineDetails]
+    [engineDetails, ipAddress]
   );
 
   const memoizedEngineStartStopPopup = useMemo(

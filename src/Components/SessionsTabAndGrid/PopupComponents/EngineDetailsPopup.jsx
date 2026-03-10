@@ -1,8 +1,9 @@
 import { Popup, Form } from "devextreme-react";
 import { SimpleItem } from "devextreme-react/form";
 import { forwardRef, useImperativeHandle, useState } from "react";
+import { cfgSessionsTypes } from "../handler";
 
-const EngineDetailsPopup = forwardRef(({ engineDetails }, ref) => {
+const EngineDetailsPopup = forwardRef(({ engineDetails, ipAddress }, ref) => {
   const [isVisible, setIsVisible] = useState(false);
 
   useImperativeHandle(ref, () => ({
@@ -19,7 +20,7 @@ const EngineDetailsPopup = forwardRef(({ engineDetails }, ref) => {
     engineName: engineDetails?.engineName || "",
     redisServer: `${engineDetails?.redisIpAddress || ""} : ${engineDetails?.redisIpPort || ""}`,
     redisDB: engineDetails?.redisDB || "",
-    fixEngine: `${engineDetails?.fixEngineIpAddress || ""} : ${engineDetails?.fixEngineIpPort || ""}`,
+    fixEngine: `${ipAddress || ""}`,
     fixEngineStatus: engineDetails?.fixEngineStatus || "N/A",
   };
 
