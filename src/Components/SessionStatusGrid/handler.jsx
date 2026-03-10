@@ -3,7 +3,7 @@ const StatusBadge = ({ status }) => {
   const map = {
     CONNECTED:   { cls: 'dxl-badge-connected',    label: 'Connected',    icon: '🟢' },
     DISCONNECTED:{ cls: 'dxl-badge-disconnected', label: 'Disconnected', icon: '🔴' },
-    UNAVAILABLE: { cls: 'dxl-badge-unavailable',  label: 'Unavailable',  icon: '🟠' },
+    UNAVAILABLE: { cls: 'dxl-badge-unavailable',  label: 'Unavailable',  icon: '⚫' },
   };
   const m = map[v] || { cls: 'dxl-badge-default', label: v || 'Unknown', icon: '⚪' };
   return (

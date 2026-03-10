@@ -14,6 +14,9 @@ import {
   SearchPanel,
 } from "devextreme-react/data-grid";
 import Button from "devextreme-react/button";
+import { DropDownButton } from "devextreme-react/drop-down-button";
+import { IconButton, Tooltip } from "@mui/material";
+import { Delete, LinkOutlined, MoreVert, Storage, Cable, CheckCircle } from "@mui/icons-material";
 import {
   getAllEngines,
   connectToFixEngine,
@@ -142,9 +145,11 @@ export default function EnginesGrid({ handleEngineConnected, connectedEngines, s
     setIsFormLoading(false);
   }
 
+  // Modern Action Cell with 3-dot menu option
   const ActionCell = useCallback(({ data }) => {
     const key = data?.engineID;
     const isBusy = !!actionLoading?.[key];
+    
     const handleDelete = async () => {
       setActionLoading((s) => ({ ...s, [key]: true }));
       const result = await confirm(textMessages?.areYouSure, "Delete Engine");
@@ -154,6 +159,7 @@ export default function EnginesGrid({ handleEngineConnected, connectedEngines, s
       }
       setActionLoading((s) => ({ ...s, [key]: false }));
     }
+    
     const handleConnectEngine = async () => {
       setActionLoading((s) => ({ ...s, [key]: true }));
       const result = await confirm(textMessages?.areYouSure, "Connect Engine");
@@ -162,29 +168,89 @@ export default function EnginesGrid({ handleEngineConnected, connectedEngines, s
       }
       setActionLoading((s) => ({ ...s, [key]: false }));
     }
+    
+    // Option 1: Individual modern buttons (recommended)
     return (
-      <div className="eng-actions">
-        <Button
-          icon={isBusy ? "refresh" : "link"}
-          stylingMode="contained"
-          type="default"
-          onClick={handleConnectEngine}
-          disabled={isBusy}
-          hint="Connect"
-          elementAttr={{ "aria-label": isBusy ? "Connecting" : "Connect" }}
-        />
-        {/* Example: if you later add delete as icon-only */}
-        <Button
-          icon="trash"
-          stylingMode="contained"
-          type="danger"
-          onClick={handleDelete}
-          disabled={isBusy}
-          hint="Delete"
-          elementAttr={{ 'aria-label': 'Delete engine' }}
-        />
+      <div className="eng-actions-modern">
+        <Tooltip title="Connect Engine" arrow placement="top">
+          <span>
+            <IconButton
+              size="small"
+              onClick={handleConnectEngine}
+              disabled={isBusy}
+              className="eng-action-connect"
+              aria-label="Connect Engine"
+            >
+              {isBusy ? (
+                <i className="fas fa-spinner fa-spin" style={{ fontSize: '16px' }} />
+              ) : (
+                <Cable sx={{ fontSize: '18px' }} />
+              )}
+            </IconButton>
+          </span>
+        </Tooltip>
+        
+        <Tooltip title="Delete Engine" arrow placement="top">
+          <span>
+            <IconButton
+              size="small"
+              onClick={handleDelete}
+              disabled={isBusy}
+              className="eng-action-delete"
+              aria-label="Delete Engine"
+            >
+              <Delete sx={{ fontSize: '18px' }} />
+            </IconButton>
+          </span>
+        </Tooltip>
       </div>
     );
+    
+    // Option 2: 3-dot menu (uncomment to use)
+    /*
+    const menuItems = [
+      {
+        text: "Connect Engine",
+        icon: "fas fa-plug",
+        onClick: handleConnectEngine,
+        disabled: isBusy,
+      },
+      {
+        text: "Open Redis",
+        icon: "fas fa-database",
+        onClick: () => {
+          window.open(`redis://${data?.redisIpAddress}:${data?.redisIpPort}/${data?.redisDB}`, '_blank');
+        },
+      },
+      {
+        text: "Test Connection",
+        icon: "fas fa-check-circle",
+        onClick: async () => {
+          // Add test connection logic
+        },
+      },
+      {
+        text: "Delete",
+        icon: "fas fa-trash",
+        onClick: handleDelete,
+        disabled: isBusy,
+      },
+    ];
+    
+    return (
+      <DropDownButton
+        text=""
+        icon="more"
+        dropDownOptions={{ width: 200 }}
+        items={menuItems}
+        displayExpr="text"
+        keyExpr="text"
+        onItemClick={(e) => e?.itemData?.onClick?.()}
+        stylingMode="text"
+        className="eng-action-menu"
+      />
+    );
+    */
   }, [actionLoading]);
 
   const enginesConfGrid = useMemo(() => {

@@ -1,84 +1,170 @@
-/* Header */
+/* ═══════════════════════════════════════════════════════════════════════════
+   Fix Engines Grid - Modern Enterprise Design
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Header Section
+   ───────────────────────────────────────────────────────────────────────── */
 .eng-wrap .eng-head {
-  margin: 8px 2px 12px;
-  line-height: 1.9;
+  margin: 0 4px 20px;
+  line-height: 1.5;
 }
 
 .eng-wrap .eng-title {
   margin: 0;
-  font-size: 17px;
+  font-size: 22px;
   font-weight: 700;
   color: #0f172a;
-}
-.eng-wrap .eng-subtitle {
-  margin: 4px 0 0;
-  font-size: 12px;
-  color: #64748b; /* slate-500 */
+  letter-spacing: -0.02em;
+  line-height: 1.2;
 }
 
-/* Surface */
+.eng-wrap .eng-subtitle {
+  margin: 6px 0 0;
+  font-size: 14px;
+  color: #64748b;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Modern Card Surface
+   ───────────────────────────────────────────────────────────────────────── */
 .eng-wrap .eng-surface {
   background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 14px;
-  box-shadow: 0 8px 24px rgba(2, 6, 23, 0.06);
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
   overflow: hidden;
 }
 
 .eng-wrap .eng-surface .dx-datagrid-rowsview.dx-fixed-columns td {
-  height: 71px;
+  height: auto;
+  min-height: 60px;
 }
 
-/* Grid base */
+/* ─────────────────────────────────────────────────────────────────────────
+   DataGrid Base Styling
+   ───────────────────────────────────────────────────────────────────────── */
 .eng-wrap .dx-datagrid {
   background: transparent;
+  font-size: 14px;
 }
-/* Alternating rows & hover */
+
+.eng-wrap .dx-datagrid-headers {
+  background: #f8fafc;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.eng-wrap .dx-datagrid-headers .dx-header-row > td {
+  font-weight: 600;
+  color: #475569;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  padding: 12px 16px;
+  border-right: 1px solid #f1f5f9;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Table Rows - Modern Spacing & States
+   ───────────────────────────────────────────────────────────────────────── */
+.eng-wrap .dx-datagrid-rowsview .dx-row > td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #f1f5f9;
+  border-right: 1px solid #f8fafc;
+}
+
 .eng-wrap .dx-datagrid-rowsview .dx-row:nth-child(odd) > td {
   background: #ffffff;
 }
+
 .eng-wrap .dx-datagrid-rowsview .dx-row:nth-child(even) > td {
-  background: #f8fafc;
+  background: #fafbfc;
 }
+
 .eng-wrap .dx-datagrid .dx-row.dx-state-hover > td {
-  background: #eef2ff !important; /* indigo-50 hint */
+  background: #f1f5f9 !important;
+  cursor: pointer;
 }
 
-/* Compact filter row inputs */
+.eng-wrap .dx-datagrid .dx-row.dx-selection > td {
+  background: #e0f2fe !important;
+  color: #0c4a6e;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Filter Row
+   ───────────────────────────────────────────────────────────────────────── */
+.eng-wrap .dx-datagrid .dx-datagrid-filter-row > td {
+  padding: 10px 16px;
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.eng-wrap .dx-datagrid .dx-editor-cell .dx-texteditor {
+  border-radius: 6px;
+  border-color: #e2e8f0;
+}
+
+.eng-wrap .dx-datagrid .dx-editor-cell .dx-texteditor:focus,
+.eng-wrap .dx-datagrid .dx-editor-cell .dx-texteditor.dx-state-focused {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
 .eng-wrap .dx-datagrid .dx-editor-cell .dx-texteditor-input {
-  font-size: 13px;
+  font-size: 14px;
+  padding: 6px 10px;
 }
 
-/* Pager */
+/* ─────────────────────────────────────────────────────────────────────────
+   Pager - Modern Clean Design
+   ───────────────────────────────────────────────────────────────────────── */
 .eng-wrap .dx-datagrid .dx-pager {
-  background: #ffffff;
-  border-top: 1px solid #e5e7eb;
-  padding: 12px 14px;
-  color: #334155;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  padding: 12px 16px;
+  color: #475569;
 }
-.eng-wrap .dx-pages .dx-page.dx-selection,
-.eng-wrap .dx-page-sizes .dx-selection {
-  background: #111827;
-  color: #ffffff;
-  border-radius: 8px;
-}
+
 .eng-wrap .dx-pages .dx-page,
 .eng-wrap .dx-page-sizes .dx-page-size {
-  border-radius: 8px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  font-weight: 500;
 }
 
-/* Custom cells */
+.eng-wrap .dx-pages .dx-page:hover,
+.eng-wrap .dx-page-sizes .dx-page-size:hover {
+  background: #e2e8f0;
+}
+
+.eng-wrap .dx-pages .dx-page.dx-selection,
+.eng-wrap .dx-page-sizes .dx-selection {
+  background: #2563eb;
+  color: #ffffff;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Custom Cell Components
+   ───────────────────────────────────────────────────────────────────────── */
 .eng-wrap .eng-engine-cell .eng-name {
-  font-weight: 800;
+  font-weight: 700;
   color: #0f172a;
   font-size: 15px;
-  line-height: 1.2;
+  line-height: 1.3;
+  margin-bottom: 4px;
 }
+
 .eng-wrap .eng-engine-cell .eng-sub {
-  margin-top: 4px;
-  color: #475569;
+  color: #64748b;
   font-size: 12px;
+  line-height: 1.4;
 }
+
 .eng-wrap .mono {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
@@ -88,38 +174,178 @@
   align-items: center;
   gap: 8px;
 }
+
 .eng-wrap .eng-dot {
-  color: #94a3b8;
+  color: #cbd5e1;
 }
 
-/* Chips */
+/* ─────────────────────────────────────────────────────────────────────────
+   Modern Chips - Status Badges
+   ───────────────────────────────────────────────────────────────────────── */
 .eng-wrap .eng-chip {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 4px 10px;
-  border-radius: 999px;
+  padding: 6px 12px;
+  border-radius: 8px;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 600;
   border: 1px solid transparent;
+  transition: all 0.2s ease;
 }
+
 .eng-wrap .eng-db {
   color: #1e3a8a;
   background: #dbeafe;
-  border-color: #60a5fa55;
+  border-color: #93c5fd;
 }
+
+.eng-wrap .eng-db:hover {
+  background: #bfdbfe;
+  transform: scale(1.02);
+}
+
 .eng-wrap .eng-ip {
   color: #0f766e;
   background: #ccfbf1;
-  border-color: #14b8a655;
+  border-color: #5eead4;
 }
+
+.eng-wrap .eng-ip:hover {
+  background: #99f6e4;
+  transform: scale(1.02);
+}
+
 .eng-wrap .eng-port {
   color: #92400e;
   background: #fef3c7;
-  border-color: #f59e0b55;
+  border-color: #fcd34d;
 }
 
-/* Actions cell layout */
+.eng-wrap .eng-port:hover {
+  background: #fde68a;
+  transform: scale(1.02);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Modern Action Buttons - Enterprise Design System
+   ───────────────────────────────────────────────────────────────────────── */
+.eng-wrap .eng-actions-modern {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 4px;
+  background: #f8fafc;
+  border-radius: 8px;
+}
+
+/* Modern IconButton styling for actions */
+.eng-wrap .eng-action-connect,
+.eng-wrap .eng-action-delete {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  padding: 6px;
+}
+
+/* Connect button - Primary blue */
+.eng-wrap .eng-action-connect {
+  background: transparent !important;
+  color: #2563eb !important;
+}
+
+.eng-wrap .eng-action-connect:hover {
+  background: #dbeafe !important;
+  transform: scale(1.05);
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.15);
+}
+
+.eng-wrap .eng-action-connect:active {
+  transform: scale(0.95);
+}
+
+.eng-wrap .eng-action-connect:disabled {
+  color: #94a3b8 !important;
+  background: transparent !important;
+  cursor: not-allowed;
+}
+
+/* Delete button - Semantic danger red */
+.eng-wrap .eng-action-delete {
+  background: transparent !important;
+  color: #dc2626 !important;
+}
+
+.eng-wrap .eng-action-delete:hover {
+  background: #fee2e2 !important;
+  transform: scale(1.05);
+  box-shadow: 0 2px 4px rgba(220, 38, 38, 0.15);
+}
+
+.eng-wrap .eng-action-delete:active {
+  transform: scale(0.95);
+}
+
+.eng-wrap .eng-action-delete:disabled {
+  color: #94a3b8 !important;
+  background: transparent !important;
+  cursor: not-allowed;
+}
+
+/* MUI IconButton refinements */
+.eng-wrap .eng-action-connect .MuiSvgIcon-root,
+.eng-wrap .eng-action-delete .MuiSvgIcon-root {
+  font-size: 18px;
+  stroke-width: 0.5px;
+}
+
+/* Hover background for grouped actions */
+.eng-wrap .eng-actions-modern:hover {
+  background: #f1f5f9;
+}
+
+/* 3-dot menu option (if enabled) */
+.eng-wrap .eng-action-menu {
+  min-width: 36px;
+  height: 36px;
+}
+
+.eng-wrap .eng-action-menu .dx-button-content {
+  padding: 6px;
+}
+
+.eng-wrap .eng-action-menu:hover {
+  background: #f1f5f9;
+}
+
+/* Loading spinner in connect button */
+.eng-wrap .eng-action-connect .fa-spinner {
+  color: #2563eb;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Tooltip styling */
+.eng-wrap .MuiTooltip-tooltip {
+  background: #1e293b;
+  color: #ffffff;
+  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.eng-wrap .MuiTooltip-arrow {
+  color: #1e293b;
+}
+
+/* Legacy actions (fallback) */
 .eng-wrap .eng-actions {
   display: inline-flex;
   align-items: center;
@@ -127,32 +353,79 @@
   gap: 8px;
 }
 
-/* Make DevExtreme icon buttons compact & circular */
 .eng-wrap .eng-actions .dx-button {
-  width: 34px;
-  height: 34px;
-  border-radius: 999px;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
   padding: 0;
+  transition: all 0.2s ease;
 }
 
-/* Primary connect */
-.eng-wrap .eng-actions .dx-button-mode-contained.dx-button-type-default {
-  background-color: #111827; /* Neutral dark */
-  color: #fff;
+/* Primary connect button */
+.eng-wrap .eng-actions .dx-button-mode-contained.dx-button-default {
+  background-color: #2563eb;
+  color: #ffffff;
+  border: none;
 }
 
-/* Optional style (if you add a danger button later) */
-.eng-wrap .eng-actions .dx-button-mode-outlined.dx-button-type-danger {
-  border-color: #ef4444;
-  color: #b91c1c;
+.eng-wrap .eng-actions .dx-button-mode-contained.dx-button-default:hover {
+  background-color: #1d4ed8;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.3);
 }
 
-/* Subtle loading spin when icon='refresh' and disabled */
+/* Danger button */
+.eng-wrap .eng-actions .dx-button-mode-contained.dx-button-danger {
+  background-color: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fca5a5;
+}
+
+.eng-wrap .eng-actions .dx-button-mode-contained.dx-button-danger:hover {
+  background-color: #fee2e2;
+  border-color: #f87171;
+  transform: translateY(-1px);
+}
+
+/* Loading spinner animation */
 .eng-wrap .eng-actions .dx-state-disabled .dx-icon-refresh {
   animation: eng-spin 0.9s linear infinite;
-  opacity: 0.85;
+  opacity: 0.7;
 }
+
 @keyframes eng-spin {
-  0% { transform: rotate(0); }
+  0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Toolbar Styling
+   ───────────────────────────────────────────────────────────────────────── */
+.eng-wrap .dx-toolbar {
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 12px 16px;
+}
+
+.eng-wrap .dx-toolbar .dx-button {
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Responsive Design
+   ───────────────────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .eng-wrap .eng-title {
+    font-size: 20px;
+  }
+  
+  .eng-wrap .eng-subtitle {
+    font-size: 12px;
+  }
+  
+  .eng-wrap .eng-surface {
+    border-radius: 8px;
+  }
 }

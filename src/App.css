@@ -1,21 +1,27 @@
-/* LOGIN STYLES */
+/* ═══════════════════════════════════════════════════════════════════════════
+   Global Styles - Modern Enterprise Design System
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Base font and scrollbar styles */
 * {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  /* Firefox */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Firefox scrollbar */
   scrollbar-width: thin;
   scrollbar-color: transparent transparent;
-  /* thumb | track */
 }
 
 *:hover {
-  /* Firefox */
+  /* Firefox scrollbar on hover */
   scrollbar-color: rgba(148, 148, 148, 0.6) transparent !important;
-  /* thumb | track */
 }
 
-/* Chrome, Edge, Safari */
+/* Chrome, Edge, Safari scrollbar */
 *::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
+  height: 8px;
 }
 
 *::-webkit-scrollbar-track {
@@ -24,59 +30,119 @@
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.3);
-  /* subtle thumb */
-  border-radius: 3px;
+  background-color: rgba(100, 116, 139, 0.3);
+  border-radius: 4px;
   transition: background 0.3s ease;
 }
 
-/* Hover effect */
 *:hover::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.05);
-  /* light visible track */
+  background: rgba(0, 0, 0, 0.03);
 }
 
 *:hover::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.6);
-  /* darker thumb */
+  background-color: rgba(100, 116, 139, 0.6);
 }
 
+/* Modern CSS variables */
 :root {
-  --bg: #f5f6f8;
+  --bg: #f8fafc;
   --panel: #ffffff;
   --text: #0f172a;
-  --muted: #5b6576;
-  --outline: #e5e7ef;
-  --primary: #2563eb; /* formal blue */
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+  --border-light: #f1f5f9;
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --success: #10b981;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
   --primary-contrast: #ffffff;
   --focus-ring: 0 0 0 4px rgba(37, 99, 235, 0.18);
-  --danger: #b91c1c;
   --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
 }
 
+/* ─────────────────────────────────────────────────────────────────────────
+   Global Reset & Base Styles
+   ───────────────────────────────────────────────────────────────────────── */
 *,
 *::before,
-*::after { box-sizing: border-box; }
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
 body {
   margin: 0;
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI",
-    Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   background: var(--bg);
   color: var(--text);
-  line-height: 1.5;
+  line-height: 1.6;
+  font-size: 15px;
 }
 
 #root {
-  height: 100vh;
+  min-height: 100vh;
   overflow: auto;
 }
 
+/* ─────────────────────────────────────────────────────────────────────────
+   Modern Typography
+   ───────────────────────────────────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+
+h1 {
+  font-size: 32px;
+  font-weight: 800;
+}
+
+h2 {
+  font-size: 26px;
+}
+
+h3 {
+  font-size: 22px;
+}
+
+h4 {
+  font-size: 18px;
+}
+
+h5 {
+  font-size: 16px;
+}
+
+h6 {
+  font-size: 14px;
+}
+
+p {
+  margin: 0 0 1em;
+  line-height: 1.6;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Auth Pages Styling
+   ───────────────────────────────────────────────────────────────────────── */
 .auth-shell {
   min-height: 100dvh;
   display: grid;
   place-items: center;
   padding: 24px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
 .auth-panel {
@@ -289,4 +355,76 @@ body {
 
 .dx-datagrid-search-panel {
   margin: 0 0 0 2px !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Modern Navigation Icons - Enterprise Design System
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Navigation icon buttons */
+.nav-icon-modern {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.nav-icon-modern:hover {
+  background-color: #dbeafe;
+  transform: scale(1.05);
+}
+
+.nav-icon-modern:active {
+  transform: scale(0.95);
+}
+
+/* Icon sizing and weight consistency */
+.nav-icon-modern .MuiSvgIcon-root {
+  font-size: 22px;
+  stroke-width: 0.5px;
+}
+
+/* Primary color for navigation icons */
+.nav-icon-modern.MuiIconButton-colorPrimary {
+  color: #2563eb;
+}
+
+.nav-icon-modern.MuiIconButton-colorPrimary:hover {
+  color: #1d4ed8;
+}
+
+/* Tooltip styling for navigation icons */
+.MuiTooltip-tooltip {
+  background-color: #1e293b;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.MuiTooltip-arrow {
+  color: #1e293b;
+}
+
+/* Focus states for accessibility */
+.nav-icon-modern:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
+/* Dark mode support (optional) */
+@media (prefers-color-scheme: dark) {
+  .nav-icon-modern:hover {
+    background-color: rgba(37, 99, 235, 0.1);
+  }
+  
+  .nav-icon-modern.MuiIconButton-colorPrimary {
+    color: #60a5fa;
+  }
+  
+  .nav-icon-modern.MuiIconButton-colorPrimary:hover {
+    color: #93c5fd;
+  }
 }

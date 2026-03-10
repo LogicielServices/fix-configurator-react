@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import TabPanel from 'devextreme-react/tab-panel';
 import SessionsGrid from './SessionsGridsComponent';
-import { Monitor, Settings } from '@mui/icons-material';
+import { Monitor, Add } from '@mui/icons-material';
 import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
 import { Popup } from 'devextreme-react';
 import SessionsDataGrid from './SessionsDataGrid';
 
@@ -78,50 +80,77 @@ export default function SessionsTabs({ tabs, activeEngineID, onActivate, onClose
       >
         <div className="sess-wrap"><SessionsDataGrid /></div>
       </Popup>
-      <div className="d-flex justify-content-between">
-        <div className="d-flex align-items-center gap-4">
-          <div className="sess-head">
+      
+      {/* Modern Header Section - Clean Title and Action */}
+      <div className="sess-header-modern">
+        <div className="sess-header-left">
+          <div className="sess-header-content">
             <h3 className="sess-title">Engine Sessions</h3>
-            <p className="sess-sub">Tabs appear as you connect engines</p>
+            <p className="sess-sub">Manage and monitor FIX engine sessions in real-time</p>
           </div>
-          <Settings
-            color="primary"
-            style={{ cursor: 'pointer' }}
-            fontSize="large"
-            onClick={showEnginesConfig}
-          />
         </div>
-        <div className="align-content-center">
+        <div className="sess-header-right">
           <Button
             variant="contained"
-            color="primary"
             startIcon={<Monitor />}
             onClick={() => setShowSessionMonitorScreen(true)}
-            sx={{ textTransform: "none", borderRadius: "6px" }}
+            className="sess-header-action-btn"
           >
             Session Monitoring Screen
           </Button>
         </div>
       </div>
+      
+      {/* Tabs or Empty State */}
       {
         !tabs || !tabs?.length ? (
-          <div className="sess-empty-wrapper">
-            <div className="sess-empty">No data to display</div>
+          <div className="sess-surface">
+            <div className="sess-tabs-wrapper sess-tabs-wrapper-empty">
+              <div className="sess-empty-state-container">
+                <div className="sess-empty">No engines connected. Click the + button to add an engine.</div>
+              </div>
+              <div className="sess-tabs-action">
+                <Tooltip title="Add Engine" placement="left">
+                  <IconButton
+                    onClick={showEnginesConfig}
+                    className="sess-add-engine-btn"
+                    aria-label="Add engine"
+                  >
+                    <Add sx={{ fontSize: '20px' }} />
+                  </IconButton>
+                </Tooltip>
+              </div>
+            </div>
           </div>
         ) : (
           <div className="sess-surface">
-            <TabPanel
-              items={items}
-              deferRendering={false}
-              ref={tabPanelRef}
-              itemRender={itemRender}
-              itemTitleRender={titleRender}
-              selectedIndex={items?.length ? selectedIndex : 0}
-              onSelectionChanged={onSelectionChanged}
-              showNavButtons={true}
-              loop={false}
-              animationEnabled={true}
-            />
+            <div className="sess-tabs-wrapper">
+              <div className="sess-tabs-container">
+                <TabPanel
+                  items={items}
+                  deferRendering={false}
+                  ref={tabPanelRef}
+                  itemRender={itemRender}
+                  itemTitleRender={titleRender}
+                  selectedIndex={items?.length ? selectedIndex : 0}
+                  onSelectionChanged={onSelectionChanged}
+                  showNavButtons={true}
+                  loop={false}
+                  animationEnabled={true}
+                />
+              </div>
+              <div className="sess-tabs-action">
+                <Tooltip title="Add Engine" placement="left">
+                  <IconButton
+                    onClick={showEnginesConfig}
+                    className="sess-add-engine-btn"
+                    aria-label="Add engine"
+                  >
+                    <Add sx={{ fontSize: '20px' }} />
+                  </IconButton>
+                </Tooltip>
+              </div>
+            </div>
           </div>
         )
       }

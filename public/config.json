@@ -1,5 +1,5 @@
 {
-    "API_URL": "https://localhost:7124",
+    "API_URL": "http://localhost:27368",
     "GITHUB_REPO_URL": "https://github.com/LogicielServices/FIXHubConfigurations",
     "GRAFANA_URL": "http://54.205.17.39:3000/d/bNJWSROVz/main?orgId=1&refresh=1m"
 }
