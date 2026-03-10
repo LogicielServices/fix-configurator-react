@@ -12,6 +12,7 @@ export default function SessionsTabs({ tabs, activeEngineID, onActivate, onClose
   const [items, setItems] = useState([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [showSessionMonitorScreen, setShowSessionMonitorScreen] = useState(false);
+  const [previousItemsLength, setPreviousItemsLength] = useState(0);
   const tabPanelRef = useRef();
 
   useEffect(() => {
@@ -25,10 +26,26 @@ export default function SessionsTabs({ tabs, activeEngineID, onActivate, onClose
   }, [tabs]);
 
   useEffect(() => {
-    const idx = items?.findIndex?.((i) => i?.engineID === activeEngineID);
-    const selectIdx = idx >= 0 ? idx : 0;
+    if (items.length === 0) return;
+
+    let selectIdx = 0;
+
+    // Check if a new tab was added
+    if (items.length > previousItemsLength) {
+      // Select the newly added tab (last one)
+      selectIdx = items.length - 1;
+    } else if (activeEngineID) {
+      // Find tab by activeEngineID
+      const idx = items?.findIndex?.((i) => i?.engineID === activeEngineID);
+      selectIdx = idx >= 0 ? idx : items.length - 1;
+    } else {
+      // On initial load with no activeEngineID, select the last tab
+      selectIdx = items.length - 1;
+    }
+
     tabPanelRef?.current?.instance?.option?.('selectedIndex', selectIdx);
     setSelectedIndex(selectIdx);
+    setPreviousItemsLength(items.length);
   }, [items, activeEngineID]);
 
   const onSelectionChanged = (e) => {
