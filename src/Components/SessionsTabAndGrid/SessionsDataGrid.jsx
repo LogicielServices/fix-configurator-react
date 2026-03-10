@@ -31,6 +31,7 @@ import {
   FaRotateRight,
   FaSliders,
   FaPen,
+  FaEnvelope,
   StatusBadge,
   handleRowPrepared,
   sessionStatusEnum,
@@ -39,7 +40,6 @@ import {
   jobConfigFormOptions,
   editSessionRowFields,
   cfgSessionsFilesEnum,
-  FaEnvelope,
   sessionEmailConfigFormOptions,
 } from "./handler.js";
 import CFGSessionFormPopup from "./PopupComponents/CFGSessionFormPopup.jsx";
@@ -109,6 +109,25 @@ export default function SessionsDataGrid({
     };
     loadInitialData();
   }, []);
+
+  // Fix column width calculation after fonts/icons load
+  useEffect(() => {
+    const recalculateGridDimensions = async () => {
+      // Wait for fonts to load
+      if (document.fonts && document.fonts.ready) {
+        await document.fonts.ready;
+      }
+      
+      // Add small delay to ensure icons are rendered
+      setTimeout(() => {
+        if (dataGridRef?.current?.instance) {
+          dataGridRef.current.instance.updateDimensions();
+        }
+      }, 100);
+    };
+    
+    recalculateGridDimensions();
+  }, [updates, sessions]);
 
   // Jenkins Configuration Handlers
   const handleJenkinsConfigPopUp = async () => {
@@ -419,6 +438,7 @@ export default function SessionsDataGrid({
             type="buttons"
             caption="Actions"
             width={220}
+            minWidth={220}
             fixed
             fixedPosition="right"
             alignment="center"

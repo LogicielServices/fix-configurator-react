@@ -1,8 +1,8 @@
-import { Drawer, IconButton, Menu, MenuItem, Typography } from "@mui/material";
+import { Drawer, IconButton, Menu, MenuItem, Typography, Tooltip } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import BreadCrumbs from "../BreadCrumbsComponent/BreadCrumbs";
 import { authConstants } from "../../utils/constants";
-import { AccountCircle, ArrowDropDown, Dashboard, GitHub, Logout, Notifications, Person, Power } from "@mui/icons-material";
+import { AccountCircle, ArrowDropDown, Dashboard, GitHub, Logout, Person, Terminal, History } from "@mui/icons-material";
 import { useContext, useRef, useState } from "react";
 import { iconButtonOptions, menuOptions } from "./MenuBarHandler";
 import CreateUser from "../CreateUser";
@@ -99,20 +99,26 @@ const MenuBar = ({ handleDrawerToggle }) => {
         <BreadCrumbs />
       </div>
       <div className="col-12 col-md-2 d-flex justify-content-end">
-        <IconButton
-          color="primary"
-          onClick={() => telnetPopUpRef?.current?.handleOpenTelnetDialog?.()}
-          aria-label="telnet"
-        >
-          <Power />
-        </IconButton>
-        <IconButton
-          color="primary"
-          onClick={() => setOpenSessionStatuses(true)}
-          aria-label="session statuses"
-        >
-          <Notifications />
-        </IconButton>
+        <Tooltip title="Connection Checker (Telnet)" arrow>
+          <IconButton
+            color="primary"
+            onClick={() => telnetPopUpRef?.current?.handleOpenTelnetDialog?.()}
+            aria-label="telnet"
+            className="nav-icon-modern"
+          >
+            <Terminal />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Session Status History" arrow>
+          <IconButton
+            color="primary"
+            onClick={() => setOpenSessionStatuses(true)}
+            aria-label="session statuses"
+            className="nav-icon-modern"
+          >
+            <History />
+          </IconButton>
+        </Tooltip>
         <IconButton {...iconButtonOptions} onClick={handleMenu}>
           <AccountCircle fontSize="12" />
           <Typography fontFamily="system-ui" marginLeft={1}>
