@@ -1,8 +1,9 @@
 import { useState, useEffect, useMemo, useRef } from "react";
-import { DataGrid, Column, Paging } from "devextreme-react/data-grid";
+import { DataGrid, Column, Paging, HeaderFilter } from "devextreme-react/data-grid";
 import { getFixMessages } from "../../Services/FixSessionService";
 import { formatFixSendingTime } from "./handler";
 import useFixMsgs from "../../SignalR/useFixMsgs";
+import { fixMessagesList } from "../../utils/constants";
 
 const GRID_ROW_HEIGHT = 52; // Approximate height of one row in pixels
 const GRID_HEADER_HEIGHT = 90; // Approximate height of header + pager
@@ -156,12 +157,14 @@ export default function FixMessagesPanel({ engineID, sessionID }) {
                   caption="Session ID"
                   width={200}
                   allowSorting={false}
+                  allowHeaderFiltering={false}
                 />
                 <Column
                   dataField="sendingTime"
                   caption="Sending Time"
                   width={200}
                   allowSorting={false}
+                  allowHeaderFiltering={false}
                   calculateCellValue={(row) =>
                     formatFixSendingTime(row?.sendingTime)
                   }
@@ -172,16 +175,22 @@ export default function FixMessagesPanel({ engineID, sessionID }) {
                   width={150}
                   alignment="center"
                   allowSorting={false}
+                  allowHeaderFiltering
+                  headerFilter={{
+                    dataSource: fixMessagesList
+                      .map(type => ({ value: type, text: type })),
+                  }}
                 />
                 <Column
                   dataField="message"
                   caption="Message"
                   allowSorting={false}
+                  allowHeaderFiltering={false}
                   calculateCellValue={(row) =>
                     row?.message?.replaceAll?.("\u0001", " | ")
                   }
                 />
-
+                <HeaderFilter visible />
                 <Paging defaultPageSize={messagesPageSize} pageSize={messagesPageSize} />
               </DataGrid>
             </div>
@@ -194,7 +203,7 @@ export default function FixMessagesPanel({ engineID, sessionID }) {
         )}
       </div>
     );
-  }, [datasource, emptyState, messagesGridHeight, messagesPageSize]);
+  }, [datasource, emptyState, messagesGridHeight, messagesPageSize, fixMessagesList]);
 
   const fixMessagesDescriptionGrid = useMemo(() => {
     return (
