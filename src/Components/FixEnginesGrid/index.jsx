@@ -433,6 +433,7 @@ export default function EnginesGrid({ handleEngineConnected, connectedEngines, s
                 }}
               />
               <ButtonItem
+                cssClass="pt-1"
                 buttonOptions={{
                   disabled: isFormLoading,
                   width: "100%",
