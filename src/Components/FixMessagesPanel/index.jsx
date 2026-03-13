@@ -1,13 +1,84 @@
 import { useState, useEffect, useMemo, useRef } from "react";
-import { DataGrid, Column, Paging, Pager } from "devextreme-react/data-grid";
+import { DataGrid, Column, Paging, HeaderFilter } from "devextreme-react/data-grid";
 import { getFixMessages } from "../../Services/FixSessionService";
 import { formatFixSendingTime } from "./handler";
 import useFixMsgs from "../../SignalR/useFixMsgs";
+import { fixMessagesList } from "../../utils/constants";
+
+const GRID_ROW_HEIGHT = 52; // Approximate height of one row in pixels
+const GRID_HEADER_HEIGHT = 90; // Approximate height of header + pager
 
 export default function FixMessagesPanel({ engineID, sessionID }) {
   const [selectedMessagePairs, setSelectedMessagePairs] = useState([]);
   const [datasource, setDataSource] = useState([]);
+  const [messagesGridHeight, setMessagesGridHeight] = useState(400);
+  const [descriptionGridHeight, setDescriptionGridHeight] = useState(400);
+  const [messagesPageSize, setMessagesPageSize] = useState(8);
+  const [descriptionPageSize, setDescriptionPageSize] = useState(8);
+  const [isResizingMessages, setIsResizingMessages] = useState(false);
+  const [isResizingDescription, setIsResizingDescription] = useState(false);
   const { fixMsgsRef } = useFixMsgs(engineID, sessionID);
+  const messagesGridRef = useRef();
+  const descriptionGridRef = useRef();
+
+  // Calculate page size based on grid height
+  const calculatePageSize = (height) => {
+    const availableHeight = height - GRID_HEADER_HEIGHT;
+    const newPageSize = Math.max(1, Math.floor(availableHeight / GRID_ROW_HEIGHT));
+    return newPageSize;
+  };
+
+  // Handle resize for messages grid
+  const handleMouseDownMessages = (e) => {
+    e.preventDefault();
+    setIsResizingMessages(true);
+  };
+
+  // Handle resize for description grid
+  const handleMouseDownDescription = (e) => {
+    e.preventDefault();
+    setIsResizingDescription(true);
+  };
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      if (!isResizingMessages && !isResizingDescription) return;
+
+      if (isResizingMessages && messagesGridRef.current) {
+        const container = messagesGridRef.current;
+        const rect = container.getBoundingClientRect();
+        const newHeight = e.clientY - rect.top;
+        if (newHeight > 250) {
+          setMessagesGridHeight(newHeight);
+          setMessagesPageSize(calculatePageSize(newHeight));
+        }
+      }
+
+      if (isResizingDescription && descriptionGridRef.current) {
+        const container = descriptionGridRef.current;
+        const rect = container.getBoundingClientRect();
+        const newHeight = e.clientY - rect.top;
+        if (newHeight > 250) {
+          setDescriptionGridHeight(newHeight);
+          setDescriptionPageSize(calculatePageSize(newHeight));
+        }
+      }
+    };
+
+    const handleMouseUp = () => {
+      setIsResizingMessages(false);
+      setIsResizingDescription(false);
+    };
+
+    if (isResizingMessages || isResizingDescription) {
+      document.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("mouseup", handleMouseUp);
+      return () => {
+        document.removeEventListener("mousemove", handleMouseMove);
+        document.removeEventListener("mouseup", handleMouseUp);
+      };
+    }
+  }, [isResizingMessages, isResizingDescription]);
 
   // Reset description panel upon session change
   useEffect(() => {
@@ -41,7 +112,7 @@ export default function FixMessagesPanel({ engineID, sessionID }) {
 
   const fixMessagesGrid = useMemo(() => {
     return (
-      <div className="fx-card">
+      <div className="fx-card" ref={messagesGridRef} style={{ position: 'relative' }}>
         <div className="fx-card-head">
           <h4 className="fx-card-title">Fix Messages</h4>
           {engineID && sessionID ? (
@@ -60,73 +131,83 @@ export default function FixMessagesPanel({ engineID, sessionID }) {
             <div className="fx-empty-text">No session selected</div>
           </div>
         ) : (
-          <DataGrid
-            ref={fixMsgsRef}
-            dataSource={datasource}
-            remoteOperations
-            keyExpr="streamEntryId"
-            columnAutoWidth
-            showBorders
-            width="100%"
-            rowAlternationEnabled
-            hoverStateEnabled
-            activeStateEnabled
-            selection={{ mode: "single" }}
-            onSelectionChanged={onMessageSelection}
-            noDataText="No FIX messages found"
-            allowColumnResizing
-            columnResizingMode="widget"
-            loadPanel={{ showIndicator: true, enabled: true, showPane: true, text: "Loading" }}
-          >
-            <Column
-              dataField="sessionId"
-              caption="Session ID"
-              width={200}
-              allowSorting={false}
+          <>
+            <div style={{ height: `${messagesGridHeight}px`, overflow: 'hidden', position: 'relative' }}>
+              <DataGrid
+                ref={fixMsgsRef}
+                dataSource={datasource}
+                remoteOperations
+                keyExpr="streamEntryId"
+                columnAutoWidth
+                showBorders
+                width="100%"
+                height="100%"
+                rowAlternationEnabled
+                hoverStateEnabled
+                activeStateEnabled
+                selection={{ mode: "single" }}
+                onSelectionChanged={onMessageSelection}
+                noDataText="No FIX messages found"
+                allowColumnResizing
+                columnResizingMode="widget"
+                loadPanel={{ showIndicator: true, enabled: true, showPane: true, text: "Loading" }}
+              >
+                <Column
+                  dataField="sessionId"
+                  caption="Session ID"
+                  width={200}
+                  allowSorting={false}
+                  allowHeaderFiltering={false}
+                />
+                <Column
+                  dataField="sendingTime"
+                  caption="Sending Time"
+                  width={200}
+                  allowSorting={false}
+                  allowHeaderFiltering={false}
+                  calculateCellValue={(row) =>
+                    formatFixSendingTime(row?.sendingTime)
+                  }
+                />
+                <Column
+                  dataField="messageType"
+                  caption="Message Type"
+                  width={150}
+                  alignment="center"
+                  allowSorting={false}
+                  allowHeaderFiltering
+                  headerFilter={{
+                    dataSource: fixMessagesList
+                      .map(type => ({ value: type, text: type })),
+                  }}
+                />
+                <Column
+                  dataField="message"
+                  caption="Message"
+                  allowSorting={false}
+                  allowHeaderFiltering={false}
+                  calculateCellValue={(row) =>
+                    row?.message?.replaceAll?.("\u0001", " | ")
+                  }
+                />
+                <HeaderFilter visible />
+                <Paging defaultPageSize={messagesPageSize} pageSize={messagesPageSize} />
+              </DataGrid>
+            </div>
+            <div
+              className="fx-resize-handle"
+              onMouseDown={handleMouseDownMessages}
+              title="Drag to resize grid height"
             />
-            <Column
-              dataField="sendingTime"
-              caption="Sending Time"
-              width={200}
-              allowSorting={false}
-              calculateCellValue={(row) =>
-                formatFixSendingTime(row?.sendingTime)
-              }
-            />
-            <Column
-              dataField="messageType"
-              caption="Message Type"
-              width={150}
-              alignment="center"
-              allowSorting={false}
-            />
-            <Column
-              dataField="message"
-              caption="Message"
-              allowSorting={false}
-              calculateCellValue={(row) =>
-                row?.message?.replaceAll?.("\u0001", " | ")
-              }
-            />
-
-            <Paging defaultPageSize={8} />
-            <Pager
-              showInfo
-              showNavigationButtons
-              showPageSizeSelector
-              visible
-              allowedPageSizes={[8, 12, 20]}
-              infoText="Page {0} of {1} ({2} items)"
-            />
-          </DataGrid>
+          </>
         )}
       </div>
     );
-  }, [datasource, emptyState]);
+  }, [datasource, emptyState, messagesGridHeight, messagesPageSize, fixMessagesList]);
 
   const fixMessagesDescriptionGrid = useMemo(() => {
     return (
-      <div className="fx-card">
+      <div className="fx-card" ref={descriptionGridRef} style={{ position: 'relative' }}>
         <div className="fx-card-head">
           <h4 className="fx-card-title">Fix Message Description</h4>
           <div className="fx-card-sub">Tag / Name / Value</div>
@@ -136,41 +217,43 @@ export default function FixMessagesPanel({ engineID, sessionID }) {
             <div className="fx-empty-text">Select a message to see fields</div>
           </div>
         ) : (
-          <DataGrid
-            dataSource={selectedMessagePairs}
-            showBorders
-            rowAlternationEnabled
-            hoverStateEnabled
-            columnAutoWidth
-            noDataText="No fields"
-            allowColumnResizing
-            columnResizingMode="widget"
-            width="100%"
-          >
-            <Column
-              dataField="item1"
-              caption="Tag"
-              width="15%"
-              alignment="center"
-              dataType="number"
-            />
-            <Column dataField="item2" caption="Name" width="34%" />
-            <Column dataField="item3" caption="Value" width="33%" />
+          <>
+            <div style={{ height: `${descriptionGridHeight}px`, overflow: 'hidden', position: 'relative' }}>
+              <DataGrid
+                dataSource={selectedMessagePairs}
+                showBorders
+                rowAlternationEnabled
+                hoverStateEnabled
+                columnAutoWidth
+                noDataText="No fields"
+                allowColumnResizing
+                columnResizingMode="widget"
+                width="100%"
+                height="100%"
+              >
+                <Column
+                  dataField="item1"
+                  caption="Tag"
+                  width="15%"
+                  alignment="center"
+                  dataType="number"
+                />
+                <Column dataField="item2" caption="Name" width="34%" />
+                <Column dataField="item3" caption="Value" width="33%" />
 
-            <Paging defaultPageSize={8} />
-            <Pager
-              showInfo
-              showNavigationButtons
-              showPageSizeSelector
-              visible
-              allowedPageSizes={[8, 12, 20]}
-              infoText="Page {0} of {1} ({2} items)"
+                <Paging defaultPageSize={descriptionPageSize} pageSize={descriptionPageSize} />
+              </DataGrid>
+            </div>
+            <div
+              className="fx-resize-handle"
+              onMouseDown={handleMouseDownDescription}
+              title="Drag to resize grid height"
             />
-          </DataGrid>
+          </>
         )}
       </div>
     );
-  }, [selectedMessagePairs]);
+  }, [selectedMessagePairs, descriptionGridHeight, descriptionPageSize]);
 
   return (
     <div className="fx-msgs">

@@ -17,6 +17,7 @@ const JenkinsConfigPopup = ({
 }) => {
   const addJenkinsConfig = async (e) => {
     e?.preventDefault?.();
+    jenkinsConfigFormData.engineName = undefined;
     const response = await upsertJenkinsConfig({
       ...jenkinsConfigFormData,
     });
@@ -38,6 +39,7 @@ const JenkinsConfigPopup = ({
     const response = await deleteJenkinsConfig(engineID);
     if (response?.isSuccess) {
       showSuccessToast(response?.message);
+      setJenkinsConfigPopUpVisible(false);
       return;
     }
     showErrorToast(response?.message || textMessages?.anErrorOccurred);

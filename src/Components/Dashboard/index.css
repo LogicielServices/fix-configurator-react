@@ -1,8 +1,18 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Modern FIX Dashboard Styles - Enterprise Design System
+   ═══════════════════════════════════════════════════════════════════════════ */
 
-/* two-pane.css — scoped container */
+/* Base dashboard container */
+.fx-dashboard {
+  background: #f8fafc;
+  min-height: calc(100vh - 108px);
+  padding: 24px;
+}
+
+/* Two-pane layout (legacy support) */
 .fx-dashboard .fx-two-pane {
   display: flex;
-  gap: 18px;
+  gap: 24px;
 }
 .fx-dashboard .fx-pane-left {
   width: 65%;
@@ -23,175 +33,845 @@
   }
 }
 
-/* Tabs area wrapper (scoped) */
+/* Tabs area wrapper */
 .fx-dashboard .fx-tabs-area {
+  margin-top: 0;
+  background: transparent;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Sessions Wrapper - Modern Header & Controls
+   ───────────────────────────────────────────────────────────────────────── */
+.sess-wrap {
+  background: transparent;
+}
+
+.sess-wrap .d-flex {
+  display: flex;
+}
+.sess-wrap .justify-content-between {
+  justify-content: space-between;
+}
+.sess-wrap .align-items-center {
+  align-items: center;
+}
+.sess-wrap .gap-4 {
+  gap: 16px;
+}
+.sess-wrap .align-content-center {
+  align-content: center;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Modern Header Section - Clean Layout without Settings Icon
+   ───────────────────────────────────────────────────────────────────────── */
+.sess-wrap .sess-header-modern {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  gap: 24px;
+}
+
+/* Left section - Title and subtitle */
+.sess-wrap .sess-header-left {
+  flex: 1;
+  min-width: 0;
+}
+
+.sess-wrap .sess-header-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sess-wrap .sess-title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: -0.025em;
+  line-height: 1.3;
+}
+
+/* Subtitle styling */
+.sess-wrap .sess-sub {
+  margin: 0;
+  font-size: 14px;
+  color: #64748b;
+  font-weight: 400;
+  line-height: 1.5;
+  padding-left: 0;
+}
+
+/* Right section - Action button */
+.sess-wrap .sess-header-right {
+  display: flex;
+  align-items: flex-start;
+  padding-top: 2px;
+}
+
+/* Action button styling */
+.sess-wrap .sess-header-action-btn {
+  text-transform: none !important;
+  border-radius: 8px !important;
+  padding: 10px 20px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  background: #2563eb !important;
+  box-shadow: 0 1px 3px rgba(37, 99, 235, 0.3) !important;
+  height: 40px;
+  white-space: nowrap;
+}
+
+.sess-wrap .sess-header-action-btn:hover {
+  background: #1d4ed8 !important;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.4) !important;
+  transform: translateY(-1px);
+}
+
+/* Responsive layout for smaller screens */
+@media (max-width: 992px) {
+  .sess-wrap .sess-header-modern {
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .sess-wrap .sess-header-right {
+    width: 100%;
+    padding-top: 0;
+  }
+  
+  .sess-wrap .sess-header-action-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .sess-wrap .sess-title {
+    font-size: 20px;
+  }
+  
+  .sess-wrap .sess-sub {
+    font-size: 13px;
+  }
+  
+  .sess-wrap .sess-header-settings-icon {
+    width: 32px;
+    height: 32px;
+    padding: 6px;
+  }
+  
+  .sess-wrap .sess-header-settings-icon .MuiSvgIcon-root {
+    font-size: 20px !important;
+  }
+}
+
+/* Legacy header support (for backwards compatibility) */
+.sess-wrap .sess-head {
+  margin: 0;
+  padding: 0;
+}
+
+/* Modern card surface with subtle shadow */
+.sess-wrap .sess-surface {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+  overflow: hidden;
   margin-top: 20px;
 }
 
-/* Sessions tabs (scoped under .sess-wrap) */
-.sess-wrap .sess-head {
-  margin: 6px 2px 10px;
-}
-.sess-wrap .sess-title {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 800;
-  color: #0f172a;
-}
-.sess-wrap .sess-sub {
-  margin: 4px 0 0;
-  font-size: 12px;
-  color: #64748b;
+/* ─────────────────────────────────────────────────────────────────────────
+   Tabs Header Wrapper - Container for tabs and action button
+   Button is absolutely positioned to avoid affecting grid/table layout
+   ───────────────────────────────────────────────────────────────────────── */
+.sess-wrap .sess-tabs-header-wrapper {
+  position: relative;
+  width: 100%;
 }
 
-.sess-wrap .sess-surface {
+.sess-wrap .sess-tabs-wrapper {
+  width: 100%;
+}
+
+.sess-wrap .sess-tabs-action {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  padding: 10px 20px 0 12px;
+  background: #f8fafc;
+  z-index: 10;
+  pointer-events: auto;
+}
+
+/* Add Engine Icon Button - Properly positioned away from corner */
+.sess-wrap .sess-add-engine-btn {
+  width: 36px !important;
+  height: 36px !important;
+  padding: 8px !important;
+  background: #ffffff !important;
+  border: 1.5px solid #cbd5e1 !important;
+  border-radius: 8px !important;
+  transition: all 0.2s ease !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+  margin-top: 2px;
+}
+
+.sess-wrap .sess-add-engine-btn:hover {
+  background: #f0f4ff !important;
+  border-color: #2563eb !important;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.2) !important;
+  transform: translateY(-1px);
+}
+
+.sess-wrap .sess-add-engine-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+}
+
+.sess-wrap .sess-add-engine-btn .MuiSvgIcon-root {
+  color: #2563eb;
+  transition: color 0.2s ease;
+}
+
+.sess-wrap .sess-add-engine-btn:hover .MuiSvgIcon-root {
+  color: #1d4ed8;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Empty State - Structured Component
+   ───────────────────────────────────────────────────────────────────────── */
+.sess-wrap .sess-empty-state-wrapper {
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #F8FAFC;
+  border: 1px solid #E5E7EB;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  margin-top: 20px;
+  padding: 32px 24px;
+}
+
+.sess-wrap .sess-empty-state-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 520px;
+  text-align: center;
+}
+
+.sess-wrap .sess-empty-icon {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #F1F5F9;
+  border-radius: 50%;
+  margin-bottom: 24px;
+}
+
+.sess-wrap .sess-empty-icon .MuiSvgIcon-root {
+  color: #64748B;
+}
+
+.sess-wrap .sess-empty-title {
+  margin: 0 0 12px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #0F172A;
+  letter-spacing: -0.025em;
+  line-height: 1.4;
+}
+
+.sess-wrap .sess-empty-description {
+  margin: 0 0 32px 0;
+  font-size: 15px;
+  font-weight: 400;
+  color: #6B7280;
+  line-height: 1.6;
+  max-width: 480px;
+}
+
+.sess-wrap .sess-empty-cta {
+  height: 44px !important;
+  padding: 0 28px !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+  border-radius: 8px !important;
+  background: #2563EB !important;
+  box-shadow: 0 1px 3px rgba(37, 99, 235, 0.3) !important;
+  transition: all 0.2s ease !important;
+}
+
+.sess-wrap .sess-empty-cta:hover {
+  background: #1D4ED8 !important;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4) !important;
+  transform: translateY(-2px);
+}
+
+.sess-wrap .sess-empty-cta:focus {
+  outline: 2px solid #3B82F6;
+  outline-offset: 2px;
+}
+
+.sess-wrap .sess-empty-cta:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 3px rgba(37, 99, 235, 0.3) !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+  .sess-wrap .sess-empty-state-wrapper {
+    min-height: 320px;
+    padding: 24px 16px;
+  }
+  
+  .sess-wrap .sess-empty-title {
+    font-size: 16px;
+  }
+  
+  .sess-wrap .sess-empty-description {
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+  
+  .sess-wrap .sess-empty-icon {
+    width: 56px;
+    height: 56px;
+    margin-bottom: 20px;
+  }
+  
+  .sess-wrap .sess-empty-icon .MuiSvgIcon-root {
+    font-size: 48px !important;
+  }
+}
+
+/* TabPanel customization for modern look */
+.sess-wrap .dx-tabpanel {
+  background: transparent;
+  width: 100%;
+}
+
+.sess-wrap .dx-tabpanel .dx-tabs {
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 8px 80px 0 16px;
+}
+
+.sess-wrap .dx-tabpanel .dx-multiview-wrapper {
+  width: 100%;
+}
+
+.sess-wrap .dx-tabpanel .dx-multiview {
+  width: 100%;
+}
+
+.sess-wrap .dx-tabpanel .dx-tab {
+  border-radius: 8px 8px 0 0;
+  padding: 10px 16px;
+  margin: 0 4px;
+  font-weight: 500;
+  color: #64748b;
+  transition: all 0.2s ease;
+}
+
+.sess-wrap .dx-tabpanel .dx-tab:hover {
+  background: #f1f5f9;
+  color: #334155;
+}
+
+.sess-wrap .dx-tabpanel .dx-tab.dx-tab-selected {
   background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 14px;
-  box-shadow: 0 8px 24px rgba(2, 6, 23, 0.06);
-  overflow: hidden;
+  color: #1e40af;
+  border-bottom: 2px solid #2563eb;
+  font-weight: 600;
 }
 
 /* TabPanel title with close button */
 .sess-wrap .sess-tab-title {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
   max-width: 560px;
+  padding: 2px 0;
 }
+
 .sess-wrap .sess-tab-text {
   display: inline-block;
   max-width: 520px;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-}
-.sess-wrap .sess-tab-close {
-  appearance: none;
-  border: 1px solid transparent;
-  background: #f1f5f9;
-  color: #0f172a;
-  border-radius: 8px;
-  width: 22px;
-  height: 22px;
-  line-height: 20px;
   font-size: 14px;
-  cursor: pointer;
-}
-.sess-wrap .sess-tab-close:hover {
-  background: #e2e8f0;
 }
 
-/* Empty state container for sessions tab panel */
-.sess-empty-wrapper {
-  min-height: 200px;
+.sess-wrap .sess-tab-close {
+  appearance: none;
+  border: none;
+  background: rgba(71, 85, 105, 0.1);
+  color: #475569;
+  border-radius: 6px;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
 }
 
-.sess-empty {
-  color: #64748b;
-  font-size: 16px;
-  font-weight: 600;
-  opacity: 0.8;
+.sess-wrap .sess-tab-close:hover {
+  background: rgba(239, 68, 68, 0.12);
+  color: #dc2626;
+  transform: scale(1.1);
 }
 
-/* Sessions grid surface */
+.sess-wrap .sess-tab-close:active {
+  transform: scale(0.95);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Sessions Grid Surface - Modern Table Styling
+   ───────────────────────────────────────────────────────────────────────── */
+.sess-wrap .sg-surface {
+  background: transparent;
+  padding: 16px;
+}
+
 .sess-wrap .sg-surface .dx-datagrid {
   background: transparent;
-}
-.sess-wrap .dx-datagrid-rowsview .dx-row:nth-child(even) > td {
-  background: #f8fafc;
-}
-.sess-wrap .dx-datagrid .dx-row.dx-state-hover > td {
-  background: #eef2ff !important; /* indigo hint */
-}
-.sess-wrap .dx-datagrid .dx-row.dx-selection > td {
-  background: #eef2ff !important; /* indigo hint */
+  font-size: 14px;
 }
 
-/* ── Mode chip with Font Awesome icon (scoped) ───────────────────────── */
+.sess-wrap .sg-surface .dx-datagrid-headers {
+  background: #f8fafc;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.sess-wrap .sg-surface .dx-header-row > td {
+  font-weight: 600;
+  color: #475569;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  padding: 12px 16px;
+  border-right: 1px solid #f1f5f9;
+}
+
+/* Modern table rows with better spacing */
+.sess-wrap .dx-datagrid-rowsview .dx-row > td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #f1f5f9;
+  border-right: 1px solid #f8fafc;
+}
+
+.sess-wrap .dx-datagrid-rowsview .dx-row:nth-child(even) > td {
+  background: #fafbfc;
+}
+
+.sess-wrap .dx-datagrid-rowsview .dx-row:nth-child(odd) > td {
+  background: #ffffff;
+}
+
+.sess-wrap .dx-datagrid .dx-row.dx-state-hover > td {
+  background: #f1f5f9 !important;
+  cursor: pointer;
+}
+
+.sess-wrap .dx-datagrid .dx-row.dx-selection > td {
+  background: #e0f2fe !important;
+  color: #0c4a6e;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Mode Chip - Modern Badge Design
+   ───────────────────────────────────────────────────────────────────────── */
 .sess-wrap .sg-mode {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 4px 12px;
+  padding: 6px 14px;
   font-size: 12px;
-  font-weight: 800;
-  border-radius: 999px;
-  border: 1px solid #e5e7eb;
-  color: #1f2937;
-  background: #f8fafc;
-  line-height: 1;
+  font-weight: 600;
+  border-radius: 8px;
+  line-height: 1.3;
+  transition: all 0.2s ease;
 }
 
 .sess-wrap .sg-mode-initiator {
-  box-shadow: 0 0 0 1px #93c5fd inset;
-  /* blue hint */
+  background: #dbeafe;
+  color: #1e3a8a;
+  border: 1px solid #93c5fd;
 }
 
 .sess-wrap .sg-mode-acceptor {
-  box-shadow: 0 0 0 1px #c4b5fd inset;
-  /* violet hint */
+  background: #e0e7ff;
+  color: #3730a3;
+  border: 1px solid #a5b4fc;
 }
 
 .sess-wrap .sg-mode-initiator .sg-mode-icon {
-  color: #6cb1ff;
+  color: #2563eb;
 }
 
 .sess-wrap .sg-mode-acceptor .sg-mode-icon {
-  color: #957bff;
+  color: #4f46e5;
 }
 
-/* Icon sizing/alignment */
 .sess-wrap .sg-mode-icon {
-  font-size: 13px !important;
-  /* FA icon size */
-  color: inherit;
+  font-size: 12px !important;
+  line-height: 1;
 }
 
 .sess-wrap .sg-mode-text {
-  letter-spacing: .2px;
+  letter-spacing: 0.01em;
 }
 
-/* ── Colored row backgrounds by status (scoped) ───────────────────────── */
-/* Base background (light tint) + a slim left accent using inset shadow */
+/* ─────────────────────────────────────────────────────────────────────────
+   Row Status Indicators - Subtle Left Border Strips (Modern Design)
+   ───────────────────────────────────────────────────────────────────────── */
+/* Connected rows */
 .sess-wrap .dx-datagrid-rowsview .sg-row-connected > td {
-  background: #ecfdf5 !important; /* emerald-50 */
-  box-shadow: inset 3px 0 0 0 #10b981; /* emerald-500 */
-}
-.sess-wrap .dx-datagrid-rowsview .sg-row-disconnected > td {
-  background: #fef2f2 !important; /* red-50 */
-  box-shadow: inset 3px 0 0 0 #ef4444; /* red-500 */
-}
-.sess-wrap .dx-datagrid-rowsview .sg-row-unavailable > td {
-  background: #f1f5f9 !important; /* slate-100 */
-  box-shadow: inset 3px 0 0 0 #94a3b8; /* slate-400 */
+  background: #ffffff !important;
+  border-left: 3px solid #10b981 !important;
 }
 
-/* Hover states (slightly stronger tint, keep the accent) */
+.sess-wrap .dx-datagrid-rowsview .sg-row-connected:nth-child(even) > td {
+  background: #f9fafb !important;
+}
+
 .sess-wrap .dx-datagrid-rowsview .sg-row-connected.dx-row.dx-state-hover > td {
-  background: #d1fae5 !important; /* emerald-100 */
-}
-.sess-wrap .dx-datagrid-rowsview .sg-row-disconnected.dx-row.dx-state-hover > td {
-  background: #fee2e2 !important; /* red-100 */
-}
-.sess-wrap .dx-datagrid-rowsview .sg-row-unavailable.dx-row.dx-state-hover > td {
-  background: #e2e8f0 !important; /* slate-200 */
+  background: #ecfdf5 !important;
 }
 
-/* Selection states (clear and readable) */
 .sess-wrap .dx-datagrid-rowsview .sg-row-connected.dx-row.dx-selection > td {
-  background: #a7f3d0 !important; /* emerald-200 */
+  background: #d1fae5 !important;
 }
+
+/* Disconnected rows */
+.sess-wrap .dx-datagrid-rowsview .sg-row-disconnected > td {
+  background: #ffffff !important;
+  border-left: 3px solid #ef4444 !important;
+}
+
+.sess-wrap .dx-datagrid-rowsview .sg-row-disconnected:nth-child(even) > td {
+  background: #f9fafb !important;
+}
+
+.sess-wrap .dx-datagrid-rowsview .sg-row-disconnected.dx-row.dx-state-hover > td {
+  background: #fef2f2 !important;
+}
+
 .sess-wrap .dx-datagrid-rowsview .sg-row-disconnected.dx-row.dx-selection > td {
-  background: #fecaca !important; /* red-200 */
+  background: #fee2e2 !important;
 }
+
+/* Unavailable rows - Gray for inactive/offline status */
+.sess-wrap .dx-datagrid-rowsview .sg-row-unavailable > td {
+  background: #ffffff !important;
+  border-left: 3px solid #9CA3AF !important;
+}
+
+.sess-wrap .dx-datagrid-rowsview .sg-row-unavailable:nth-child(even) > td {
+  background: #f9fafb !important;
+}
+
+.sess-wrap .dx-datagrid-rowsview .sg-row-unavailable.dx-row.dx-state-hover > td {
+  background: #F3F4F6 !important;
+}
+
 .sess-wrap .dx-datagrid-rowsview .sg-row-unavailable.dx-row.dx-selection > td {
-  background: #cbd5e1 !important; /* slate-300 */
+  background: #E5E7EB !important;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Action Buttons & Status Icons - Modern Design
+   ───────────────────────────────────────────────────────────────────────── */
+.sess-wrap .sg-actions-col {
+  padding: 8px 12px !important;
+  background: transparent !important;
+  min-width: 220px !important;
+  width: 220px !important;
+}
+
+.sess-wrap .sg-actions-col .dx-command-buttons {
+  justify-content: center;
+  gap: 4px;
+  flex-wrap: nowrap;
+  background: #f8fafc;
+  padding: 4px;
+  border-radius: 8px;
+  display: inline-flex;
+}
+
+/* Modern icon buttons - cleaner, more grouped appearance */
+.sess-wrap .sg-action-btn,
+.sess-wrap .sg-status-btn {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #64748b;
+}
+
+.sess-wrap .sg-action-btn:hover {
+  background: #e2e8f0;
+  border-color: #cbd5e1;
+  transform: scale(1.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.sess-wrap .sg-action-btn:active {
+  transform: scale(0.95);
+}
+
+/* Status-specific button colors - subtle and professional */
+.sess-wrap .sg-row-connected .sg-actions-col .dx-command-buttons {
+  background: rgba(236, 253, 245, 0.5);
+}
+
+.sess-wrap .sg-row-connected .sg-action-btn,
+.sess-wrap .sg-row-connected .sg-status-btn {
+  color: #059669;
+}
+
+.sess-wrap .sg-row-connected .sg-action-btn:hover {
+  background: #d1fae5;
+  border-color: #6ee7b7;
+}
+
+.sess-wrap .sg-row-disconnected .sg-actions-col .dx-command-buttons {
+  background: rgba(254, 242, 242, 0.5);
+}
+
+.sess-wrap .sg-row-disconnected .sg-action-btn,
+.sess-wrap .sg-row-disconnected .sg-status-btn {
+  color: #dc2626;
+}
+
+.sess-wrap .sg-row-disconnected .sg-action-btn:hover {
+  background: #fee2e2;
+  border-color: #fca5a5;
+}
+
+.sess-wrap .sg-row-unavailable .sg-actions-col .dx-command-buttons {
+  background: rgba(243, 244, 246, 0.5);
+}
+
+.sess-wrap .sg-row-unavailable .sg-action-btn,
+.sess-wrap .sg-row-unavailable .sg-status-btn {
+  color: #6B7280;
+}
+
+.sess-wrap .sg-row-unavailable .sg-action-btn:hover {
+  background: #E5E7EB;
+  border-color: #9CA3AF;
+}
+
+/* Icon sizing */
+.sess-wrap .sg-action-btn i,
+.sess-wrap .sg-status-btn i {
+  font-size: 13px;
+  line-height: 1;
+}
+
+/* Add separator between action groups (visual organization) */
+.sess-wrap .sg-actions-col .dx-command-buttons > :nth-child(4)::before {
+  content: "";
+  position: absolute;
+  left: -6px;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 20px;
+  width: 1px;
+  background: #e2e8f0;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Toolbar - Modern Button Styling
+   ───────────────────────────────────────────────────────────────────────── */
+.sess-wrap .dx-toolbar {
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 12px 16px;
+}
+
+.sess-wrap .dx-toolbar .dx-button {
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+/* Primary buttons (solid blue) */
+.sess-wrap .dx-toolbar .dx-button.dx-button-mode-contained.dx-button-default {
+  background: #2563eb;
+  color: #ffffff;
+  border: none;
+}
+
+.sess-wrap .dx-toolbar .dx-button.dx-button-mode-contained.dx-button-default:hover {
+  background: #1d4ed8;
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+  transform: translateY(-1px);
+}
+
+/* Success buttons */
+.sess-wrap .dx-toolbar .dx-button.dx-button-mode-contained.dx-button-success {
+  background: #10b981;
+  color: #ffffff;
+  border: none;
+}
+
+.sess-wrap .dx-toolbar .dx-button.dx-button-mode-contained.dx-button-success:hover {
+  background: #059669;
+  box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
+}
+
+/* Danger buttons */
+.sess-wrap .dx-toolbar .dx-button.dx-button-mode-contained.dx-button-danger {
+  background: #ef4444;
+  color: #ffffff;
+  border: none;
+}
+
+.sess-wrap .dx-toolbar .dx-button.dx-button-mode-contained.dx-button-danger:hover {
+  background: #dc2626;
+  box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
+}
+
+/* Secondary buttons (outlined) */
+.sess-wrap .dx-toolbar .dx-button.dx-button-mode-outlined {
+  border: 1px solid #cbd5e1;
+  color: #475569;
+  background: #ffffff;
+}
+
+.sess-wrap .dx-toolbar .dx-button.dx-button-mode-outlined:hover {
+  border-color: #94a3b8;
+  background: #f8fafc;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Filter & Search Panel - Modern Styling
+   ───────────────────────────────────────────────────────────────────────── */
+.sess-wrap .dx-datagrid .dx-datagrid-filter-row > td {
+  padding: 10px 16px;
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.sess-wrap .dx-datagrid .dx-editor-cell .dx-texteditor {
+  border-radius: 6px;
+  border-color: #e2e8f0;
+}
+
+.sess-wrap .dx-datagrid .dx-editor-cell .dx-texteditor:focus,
+.sess-wrap .dx-datagrid .dx-editor-cell .dx-texteditor.dx-state-focused {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.sess-wrap .dx-datagrid .dx-editor-cell .dx-texteditor-input {
+  font-size: 14px;
+  /* padding: 6px 10px; */
+}
+
+/* Search panel */
+.sess-wrap .dx-datagrid .dx-searchbox {
+  border-radius: 8px;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Pager - Modern Clean Design
+   ───────────────────────────────────────────────────────────────────────── */
+.sess-wrap .dx-datagrid .dx-pager {
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  padding: 12px 16px;
+  color: #475569;
+}
+
+.sess-wrap .dx-pages .dx-page,
+.sess-wrap .dx-page-sizes .dx-page-size {
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.sess-wrap .dx-pages .dx-page:hover,
+.sess-wrap .dx-page-sizes .dx-page-size:hover {
+  background: #e2e8f0;
+}
+
+.sess-wrap .dx-pages .dx-page.dx-selection,
+.sess-wrap .dx-page-sizes .dx-selection {
+  background: #2563eb;
+  color: #ffffff;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Responsive Typography
+   ───────────────────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .fx-dashboard {
+    padding: 16px;
+  }
+  
+  .sess-wrap .sess-title {
+    font-size: 20px;
+  }
+  
+  .sess-wrap .sess-sub {
+    font-size: 12px;
+  }
+  
+  /* Adjust tabs padding for smaller screens */
+  .sess-wrap .dx-tabpanel .dx-tabs {
+    padding: 8px 70px 0 12px;
+  }
+  
+  .sess-wrap .sess-tabs-action {
+    padding: 10px 16px 0 8px;
+  }
+}
+
+@media (max-width: 576px) {
+  .sess-wrap .dx-tabpanel .dx-tabs {
+    padding: 8px 60px 0 8px;
+  }
+  
+  .sess-wrap .sess-tabs-action {
+    padding: 10px 12px 0 4px;
+  }
+  
+  .sess-wrap .sess-add-engine-btn {
+    width: 32px !important;
+    height: 32px !important;
+  }
+  
+  .sess-wrap .sess-add-engine-btn .MuiSvgIcon-root {
+    font-size: 18px !important;
+  }
 }

@@ -3,6 +3,7 @@ import { Button as DevBtn } from "devextreme-react/button";
 import { getConfigDetails, updateCfgIni } from "../../../Services/GithubService";
 import { showErrorToast, showSuccessToast } from "../../../utils/toastsService";
 import { clonableGitFilesEnum } from "../handler";
+import { textMessages } from "../../../utils/constants";
 
 const GitHubConfigurationPopup = ({
   engineID,
@@ -20,6 +21,10 @@ const GitHubConfigurationPopup = ({
       clonableGitFilesEnum.config,
       engineName
     );
+    if (response?.title === "Error") {
+      showErrorToast(response?.detail || textMessages?.anErrorOccurred);
+      return;
+    }
     setConfigJson(JSON?.stringify?.(response, null, 2) || "");
     setCloneGitHubFilePopupVisible(clonableGitFilesEnum.config);
   };
@@ -30,6 +35,10 @@ const GitHubConfigurationPopup = ({
       clonableGitFilesEnum.store,
       engineName
     );
+    if (response?.title === "Error") {
+      showErrorToast(response?.detail || textMessages?.anErrorOccurred);
+      return;
+    }
     setStoreIni(JSON?.stringify?.(response, null, 2) || "");
     setCloneGitHubFilePopupVisible(clonableGitFilesEnum.store);
   };

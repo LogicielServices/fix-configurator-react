@@ -90,6 +90,110 @@ export const getRemoteDataSource = (props) => {
   })
 }
 
+export const getRemoteDataSourceForFixMessages = (props) => {
+  const apiUrl = getApiUrl();
+  return new CustomStore({
+    key: props.key,
+    async load(loadOptions) {
+      console.log('loadOptions', loadOptions);
+      if (props.filter) {
+        loadOptions.filter = props.filter;
+      }
+      if (props.customFilter) {
+        loadOptions.filter = loadOptions.filter
+          ? [loadOptions.filter, 'and', props.customFilter]
+          : props.customFilter;
+      }
+      if (loadOptions?.filter?.[0] === 'messageType') {
+        loadOptions.messageTypes = `${loadOptions?.filter?.[2]}`;
+        loadOptions.messageTypeFilterMode = 'INCLUDE';
+        loadOptions.hasFilterChanged = true;
+      } else if (loadOptions?.filter?.[0]?.[0] === 'messageType') {
+        loadOptions.messageTypeFilterMode = 'INCLUDE';
+        loadOptions.hasFilterChanged = true;
+        loadOptions?.filter?.forEach?.((filter) => {
+          if (filter?.[0] === 'messageType') {
+            console.log(filter?.[2]);
+            if (!loadOptions.messageTypes) {
+              loadOptions.messageTypes = `${filter?.[2]}`;
+            } else {
+              loadOptions.messageTypes = `${loadOptions.messageTypes},${filter?.[2]}`;
+            }
+          }
+        });
+      }
+      if (props.defaultSort) {
+        loadOptions.defaultSort = props.defaultSort;
+      }
+      let params = '?';
+      if (props.paramsInUrl) {
+        params = '&';
+      }
+      ;[
+        'skip',
+        'take',
+        'requireTotalCount',
+        'requireGroupCount',
+        'sort',
+        'filter',
+        'totalSummary',
+        'group',
+        'groupSummary',
+        'defaultSort',
+        'messageTypes',
+        'messageTypeFilterMode',
+        'hasFilterChanged',
+      ].forEach((i) => {
+        if (i in loadOptions) {
+          if (loadOptions?.[i]) {
+            if (props?.isPageSize && i === 'take') {
+              params += `pageSize=${JSON.stringify(loadOptions[i])}&`;
+            } else if (typeof loadOptions[i] === 'string') {
+              params += `${i}=${loadOptions[i]}&`;
+            } else {
+              params += `${i}=${JSON.stringify(loadOptions[i])}&`;
+            }
+          }
+        }
+      })
+      params = params.slice(0, -1);
+      const headers = {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+      };
+      return fetch(`${apiUrl}${props.url}${params}`, {
+        headers,
+      })
+        .then((response) => {
+          return response.json()
+        })
+        .then((data) => {
+          if (props.modifier) {
+            props.modifier(data)
+          }
+          return {
+            data: data?.data ?? [],
+            totalCount: data?.totalCount ?? 0,
+            summary: data?.summary ?? null,
+            groupCount: data?.groupCount ?? 0,
+          }
+        })
+        .catch(() => {
+          return {
+            data: [],
+            totalCount: 0,
+            summary: null,
+            groupCount: 0,
+          }
+        });
+    },
+    remove: async (key) => {
+      const res = await remove(`${props.url}?id=${key}`)
+      return res
+    },
+  })
+}
+
 export const lookupRemote = (props, isGet = true) => {
   const apiUrl = getApiUrl()
   const lookupDataSource = {

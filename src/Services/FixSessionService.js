@@ -1,5 +1,5 @@
 import { ApiWithTextResponse, Delete, Get, Put, Post } from "./ApiService";
-import { getRemoteDataSource } from "./DatasourceService";
+import { getRemoteDataSourceForFixMessages } from "./DatasourceService";
 
 export const getSessionsConnectivityStatus = async () => {
   const response = await Get('/api/fixengines/sessionsconnectivitystatus');
@@ -38,9 +38,10 @@ export const deleteFixEngine = async (engineId) => {
 
 export const getFixMessages = async (engineID, sessionID) => {
   // "fixengines/10.0.10.130:6379::5/fixSessions/FHBLSL-INFIXABC/fixMessages/load?startID=0-0&skip=0&pageSize=8&hasFilterChanged=false&messageTypeFilterMode=INCLUDE"
-  const response = getRemoteDataSource({
+  const url = `/api/fixengines/${engineID}/fixSessions/${sessionID}/fixMessages/load?startID=0-0`;
+  const response = getRemoteDataSourceForFixMessages({
     key: "streamEntryId",
-    url: `/api/fixengines/${engineID}/fixSessions/${sessionID}/fixMessages/load?startID=0-0`,
+    url,
     paramsInUrl: true,
     isPageSize: true,
   });

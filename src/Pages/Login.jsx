@@ -4,6 +4,7 @@ import { login } from "../Services/AuthService";
 import GlobalContext from "../Provider/GlobalProvider";
 import { authConstants, pathConstants } from "../utils/constants";
 import { useNavigate } from "react-router-dom";
+import { Visibility, VisibilityOff, Email, Lock } from "@mui/icons-material";
 
 const loginDefaults = {
   brand: { name: "Fix Configurator" },
@@ -83,8 +84,8 @@ export default function Login() {
               <img
                 alt={`${loginDefaults?.brand.name} logo`}
                 className="auth-logo"
-                width="40"
-                height="40"
+                width="56"
+                height="56"
                 loading="eager"
               />
             ) : (
@@ -92,11 +93,11 @@ export default function Login() {
                 {(loginDefaults?.brand?.name || "P").slice(0, 1).toUpperCase()}
               </div>
             )}
-            <div className="auth-title-wrap">
+            <div>
               <h1 id="authTitle" className="auth-title">
                 {loginDefaults?.brand?.name?.toUpperCase()}
               </h1>
-              <p className="auth-subtitle">{"Sign in to continue"}</p>
+              <p className="auth-subtitle">Sign in to your account</p>
             </div>
           </div>
         </header>
@@ -104,25 +105,31 @@ export default function Login() {
         <form className="auth-form" onSubmit={handleSubmit} noValidate>
           {serverError && (
             <div className="alert alert-error" role="alert">
-              {serverError}
+              <span>{serverError}</span>
             </div>
           )}
 
+          {/* Username / Email Field */}
           <div className="field">
             <label htmlFor={usernameId}>Username</label>
-            <input
-              id={usernameId}
-              type="text"
-              name="username"
-              inputMode="text"
-              autoComplete="username"
-              placeholder="Enter your username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              aria-invalid={Boolean(errors.username)}
-              aria-describedby={errors.username ? `${usernameId}-error` : undefined}
-              disabled={loading}
-            />
+            <div className="field-wrapper">
+              <span className={`field-icon ${username ? "active" : ""}`}>
+                <Email fontSize="small" />
+              </span>
+              <input
+                id={usernameId}
+                type="text"
+                name="username"
+                inputMode="text"
+                autoComplete="username"
+                placeholder="Enter your username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                aria-invalid={Boolean(errors.username)}
+                aria-describedby={errors.username ? `${usernameId}-error` : undefined}
+                disabled={loading}
+              />
+            </div>
             {errors.username && (
               <div className="field-error" id={`${usernameId}-error`}>
                 {errors.username}
@@ -130,9 +137,13 @@ export default function Login() {
             )}
           </div>
 
+          {/* Password Field */}
           <div className="field">
             <label htmlFor={passwordId}>Password</label>
-            <div className="password-row">
+            <div className="field-wrapper password-row">
+              <span className={`field-icon ${password ? "active" : ""}`}>
+                <Lock fontSize="small" />
+              </span>
               <input
                 id={passwordId}
                 type={showPassword ? "text" : "password"}
@@ -147,11 +158,17 @@ export default function Login() {
               />
               <button
                 type="button"
-                className="tertiary-btn"
+                className="password-toggle-btn"
                 onClick={() => setShowPassword((s) => !s)}
                 aria-pressed={showPassword}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+                disabled={loading}
               >
-                {showPassword ? "Hide" : "Show"}
+                {showPassword ? (
+                  <VisibilityOff fontSize="small" />
+                ) : (
+                  <Visibility fontSize="small" />
+                )}
               </button>
             </div>
             {errors.password && (
@@ -161,6 +178,7 @@ export default function Login() {
             )}
           </div>
 
+          {/* Form Meta - Remember Me & Forgot Password */}
           <div className="form-meta">
             <label className="checkbox">
               <input
@@ -178,16 +196,18 @@ export default function Login() {
             </a>
           </div>
 
+          {/* Login Button */}
           <button
             type="submit"
             className="primary-btn"
             disabled={loading}
             aria-busy={loading}
           >
-            {loading ? "Logging in…" : "Login"}
+            {loading ? "Signing in…" : "Sign In"}
           </button>
         </form>
 
+        {/* Footer */}
         <footer className="auth-footer" aria-hidden="true">
           <small>
             © {new Date().getFullYear()} {loginDefaults?.brand?.name || "Portal"}. All rights reserved.

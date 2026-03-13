@@ -48,6 +48,7 @@ const TelnetComponent = forwardRef((props, ref) => {
   }));
 
   const handleCheckConnection = useCallback(async () => {
+    setResult(null);
     setIsLoading(true);
     const dataToSubmit = {
       ip: fieldsData?.destinationIP,
@@ -55,14 +56,16 @@ const TelnetComponent = forwardRef((props, ref) => {
     };
     const response = await checkConnectivity(dataToSubmit);
     setIsLoading(false);
-    if (!response?.success) {
-      return showErrorToast(
-        response?.message || textMessages?.unableToCheckConnectivity
-      );
+    if (!response?.isSuccess) {
+      setResult({
+        success: response?.isSuccess,
+        message: response?.message || textMessages?.unableToCheckConnectivity,
+      });
+      return;
     }
     setResult({
-      success: response?.data?.success,
-      message: response?.data?.message || "",
+      success: response?.isSuccess,
+      message: response?.message || textMessages?.connectionSuccessful,
     });
   }, [
     fieldsData?.destinationIP,
