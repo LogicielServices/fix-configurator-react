@@ -137,7 +137,7 @@ const MenuBar = ({ handleDrawerToggle }) => {
             <History fontSize="20" />
           </IconButton>
         </Tooltip>
-        <Tooltip title="User Menu" arrow placement="bottom">
+        <Tooltip title={localStorage.getItem(authConstants.username)} arrow placement="bottom">
           <IconButton
             {...iconButtonOptions}
             onClick={handleMenu}
