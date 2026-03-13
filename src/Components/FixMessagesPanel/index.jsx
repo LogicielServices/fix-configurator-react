@@ -225,17 +225,23 @@ export default function FixMessagesPanel({ engineID, engineName, sessionID }) {
               {/* update these three buttons */}
               <Button
                 icon="fa-solid fa-arrow-right-arrow-left fa-rotate-90"
+                type="default"
+                stylingMode="text"
                 disabled={!sessionID}
                 onClick={() => setConfiguredFixMessagesPopupVisible(true)}
                 hint="View configured fix messages streams"
               />
               <Button
                 icon="fa-solid fa-gears"
+                type="default"
+                stylingMode="text"
                 onClick={() => setFixMessageDescriptionPopupVisible(true)}
                 hint="Configure email notification for this message"
               />
               <Button
                 icon="fa-solid fa-bars"
+                type="default"
+                stylingMode="text"
                 onClick={() => setMessageEmailConfigurationsPopupVisible(true)}
                 hint="View all message email configurations"
               />
