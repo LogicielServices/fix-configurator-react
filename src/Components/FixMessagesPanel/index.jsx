@@ -15,10 +15,10 @@ const GRID_HEADER_HEIGHT = 90; // Approximate height of header + pager
 export default function FixMessagesPanel({ engineID, engineName, sessionID }) {
   const [selectedMessagePairs, setSelectedMessagePairs] = useState([]);
   const [datasource, setDataSource] = useState([]);
-  const [messagesGridHeight, setMessagesGridHeight] = useState(400);
-  const [descriptionGridHeight, setDescriptionGridHeight] = useState(400);
-  const [messagesPageSize, setMessagesPageSize] = useState(8);
-  const [descriptionPageSize, setDescriptionPageSize] = useState(8);
+  const [messagesGridHeight, setMessagesGridHeight] = useState(280);
+  const [descriptionGridHeight, setDescriptionGridHeight] = useState(280);
+  const [messagesPageSize, setMessagesPageSize] = useState(4);
+  const [descriptionPageSize, setDescriptionPageSize] = useState(4);
   const [isResizingMessages, setIsResizingMessages] = useState(false);
   const [isResizingDescription, setIsResizingDescription] = useState(false);
   const [fixMessageDescriptionPopupVisible, setFixMessageDescriptionPopupVisible] = useState(false);
