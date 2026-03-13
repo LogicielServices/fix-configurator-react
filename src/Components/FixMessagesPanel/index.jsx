@@ -291,6 +291,7 @@ export default function FixMessagesPanel({ engineID, sessionID }) {
       />
       {/* Configured Fix Messages Popup */}
       <ConfiguredFixMessagesPopup
+        engineID={engineID}
         sessionID={sessionID}
         configuredFixMessagesPopupVisible={configuredFixMessagesPopupVisible}
         setConfiguredFixMessagesPopupVisible={setConfiguredFixMessagesPopupVisible}
