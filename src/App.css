@@ -51,8 +51,8 @@
   --text-muted: #64748b;
   --border: #e2e8f0;
   --border-light: #f1f5f9;
-  --primary: #2563eb;
-  --primary-hover: #1d4ed8;
+  --primary: #1976d2;
+  --primary-hover: #42a5f5;
   --success: #10b981;
   --danger: #ef4444;
   --warning: #f59e0b;
@@ -63,7 +63,7 @@
   --radius-md: 8px;
   --radius-lg: 12px;
   --primary-contrast: #ffffff;
-  --focus-ring: 0 0 0 4px rgba(37, 99, 235, 0.18);
+  --focus-ring: 0 0 0 4px rgba(25, 118, 210, 0.18);
   --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
 }
 
@@ -232,10 +232,10 @@ p {
   width: 56px;
   height: 56px;
   border-radius: 14px;
-  border: 1px solid rgba(59, 130, 246, 0.2);
+  border: 1px solid rgba(25, 118, 210, 0.2);
   object-fit: cover;
-  background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
-  box-shadow: 0 12px 32px rgba(59, 130, 246, 0.4);
+  background: linear-gradient(135deg, #1976d2, #42a5f5);
+  box-shadow: 0 12px 32px rgba(25, 118, 210, 0.4);
 }
 
 .auth-logo--placeholder {
@@ -247,8 +247,8 @@ p {
   font-weight: 700;
   font-size: 24px;
   color: #ffffff;
-  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-  box-shadow: 0 12px 32px rgba(37, 99, 235, 0.4);
+  background: linear-gradient(135deg, #1976d2, #42a5f5);
+  box-shadow: 0 12px 32px rgba(25, 118, 210, 0.4);
   border: none;
 }
 
@@ -314,7 +314,7 @@ p {
 }
 
 .field-icon.active {
-  color: #3b82f6;
+  color: #1976d2;
 }
 
 .field input[type="email"],
@@ -323,7 +323,7 @@ p {
   width: 100%;
   padding: 14px 16px 14px 48px;
   border-radius: 14px;
-  border: 2px solid rgba(59, 130, 246, 0.2);
+  border: 2px solid rgba(25, 118, 210, 0.2);
   background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(20, 29, 45, 0.9) 100%);
   color: #e2e8f0;
   font-size: 15px;
@@ -341,9 +341,9 @@ p {
 }
 
 .field input:focus-visible {
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.25),
-              inset 0 2px 12px rgba(59, 130, 246, 0.1),
+  border-color: #1976d2;
+  box-shadow: 0 0 0 4px rgba(25, 118, 210, 0.25),
+              inset 0 2px 12px rgba(25, 118, 210, 0.1),
               inset 0 1px 0 rgba(255, 255, 255, 0.08);
   background: linear-gradient(135deg, rgba(30, 41, 59, 1) 0%, rgba(20, 29, 45, 0.95) 100%);
   color: #ffffff;
@@ -376,12 +376,12 @@ p {
 }
 
 .password-toggle-btn:hover {
-  color: #3b82f6;
-  background: rgba(59, 130, 246, 0.12);
+  color: #1976d2;
+  background: rgba(25, 118, 210, 0.12);
 }
 
 .password-toggle-btn:focus-visible {
-  outline: 2px solid #3b82f6;
+  outline: 2px solid #1976d2;
   outline-offset: 2px;
 }
 
@@ -435,7 +435,7 @@ p {
   width: 18px;
   height: 18px;
   cursor: pointer;
-  accent-color: #3b82f6;
+  accent-color: #1976d2;
   border-radius: 4px;
   border: 2px solid rgba(148, 163, 184, 0.3);
   transition: all 0.2s ease;
@@ -443,18 +443,18 @@ p {
 }
 
 .checkbox input:hover {
-  border-color: #3b82f6;
+  border-color: #1976d2;
   background: rgba(30, 41, 59, 0.6);
 }
 
 .checkbox input:checked {
-  background: #3b82f6;
-  border-color: #3b82f6;
+  background: #1976d2;
+  border-color: #1976d2;
 }
 
 .primary-btn {
   width: 100%;
-  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  background: linear-gradient(135deg, #1976d2, #42a5f5);
   color: #ffffff;
   border: none;
   border-radius: 12px;
@@ -463,7 +463,7 @@ p {
   font-size: 15px;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 12px 32px rgba(37, 99, 235, 0.35);
+  box-shadow: 0 12px 32px rgba(25, 118, 210, 0.35);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   display: flex;
@@ -487,7 +487,7 @@ p {
 
 .primary-btn:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 16px 40px rgba(37, 99, 235, 0.45);
+  box-shadow: 0 16px 40px rgba(25, 118, 210, 0.45);
 }
 
 .primary-btn:hover:not(:disabled)::before {
@@ -510,7 +510,7 @@ p {
 }
 
 .link {
-  color: #60a5fa;
+  color: #42a5f5;
   text-decoration: none;
   font-weight: 600;
   font-size: 13px;
@@ -525,12 +525,12 @@ p {
   left: 0;
   width: 0;
   height: 2px;
-  background: #60a5fa;
+  background: #42a5f5;
   transition: width 0.2s ease;
 }
 
 .link:hover {
-  color: #93c5fd;
+  color: #64b5f6;
 }
 
 .link:hover::after {
@@ -538,7 +538,7 @@ p {
 }
 
 .link:focus-visible {
-  outline: 2px solid #3b82f6;
+  outline: 2px solid #1976d2;
   outline-offset: 2px;
   border-radius: 2px;
 }

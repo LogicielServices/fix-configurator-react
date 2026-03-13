@@ -6,6 +6,7 @@ import { formatFixSendingTime } from "./handler";
 import useFixMsgs from "../../SignalR/useFixMsgs";
 import { fixMessagesList } from "../../utils/constants";
 import FixMessageDescriptionPopup from "./FixMessageDescriptionPopup";
+import ConfiguredFixMessagesPopup from "./ConfiguredFixMessagesPopup";
 
 const GRID_ROW_HEIGHT = 52; // Approximate height of one row in pixels
 const GRID_HEADER_HEIGHT = 90; // Approximate height of header + pager
@@ -20,6 +21,7 @@ export default function FixMessagesPanel({ engineID, sessionID }) {
   const [isResizingMessages, setIsResizingMessages] = useState(false);
   const [isResizingDescription, setIsResizingDescription] = useState(false);
   const [fixMessageDescriptionPopupVisible, setFixMessageDescriptionPopupVisible] = useState(false);
+  const [configuredFixMessagesPopupVisible, setConfiguredFixMessagesPopupVisible] = useState(false);
   const { fixMsgsRef } = useFixMsgs(engineID, sessionID);
   const messagesGridRef = useRef();
   const descriptionGridRef = useRef();
@@ -217,11 +219,19 @@ export default function FixMessagesPanel({ engineID, sessionID }) {
               <h4 className="fx-card-title">Fix Message Description</h4>
               <div className="fx-card-sub">Tag / Name / Value</div>
             </div>
-            <Button
-              icon="menu"
-              onClick={() => setFixMessageDescriptionPopupVisible(true)}
-              title="Configure email notification for this message"
-            />
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <Button
+                icon="fa-solid fa-arrow-right-arrow-left fa-rotate-90"
+                disabled={!sessionID}
+                onClick={() => setConfiguredFixMessagesPopupVisible(true)}
+                title="View configured fix messages streams"
+              />
+              <Button
+                icon="fa-solid fa-gears"
+                onClick={() => setFixMessageDescriptionPopupVisible(true)}
+                title="Configure email notification for this message"
+              />
+            </div>
           </div>
         </div>
         {!selectedMessagePairs?.length ? (
@@ -278,6 +288,12 @@ export default function FixMessagesPanel({ engineID, sessionID }) {
         sessionID={sessionID}
         fixMessageDescriptionPopupVisible={fixMessageDescriptionPopupVisible}
         setFixMessageDescriptionPopupVisible={setFixMessageDescriptionPopupVisible}
+      />
+      {/* Configured Fix Messages Popup */}
+      <ConfiguredFixMessagesPopup
+        sessionID={sessionID}
+        configuredFixMessagesPopupVisible={configuredFixMessagesPopupVisible}
+        setConfiguredFixMessagesPopupVisible={setConfiguredFixMessagesPopupVisible}
       />
     </div>
   );

@@ -9,3 +9,9 @@ export const saveFixMessageDescription = async (data) => {
   const response = await Post(`/api/FixTagValuesConfiguration/Upsert`, data);
   return response;
 }
+
+export const getConfiguredFixMessagesStreams = async (sessionId) => {
+  const response = await Get(`/api/FixTagValuesConfiguration/GetConfiguredFixMessagesStreams?sessionId=${sessionId}`);
+  return response;
+};
+
