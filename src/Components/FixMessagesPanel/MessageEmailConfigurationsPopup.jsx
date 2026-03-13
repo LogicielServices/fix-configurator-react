@@ -3,6 +3,8 @@ import { getAllMessageEmailConfigurations, deleteMessageEmailConfiguration } fro
 import DataGrid, { Column, HeaderFilter, LoadPanel, Scrolling } from "devextreme-react/data-grid";
 import { Popup, Button } from "devextreme-react";
 import "./index.css";
+import { confirm } from "devextreme/ui/dialog";
+import { textMessages } from "../../utils/constants";
 
 const MessageEmailConfigurationsPopup = ({
   messageEmailConfigurationsPopupVisible,
@@ -49,16 +51,14 @@ const MessageEmailConfigurationsPopup = ({
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this configuration?")) {
-      try {
-        setLoading(true);
-        await deleteMessageEmailConfiguration(id);
-        await loadMessageEmailConfigurations();
-      } catch (error) {
-        console.error("Error deleting configuration:", error);
-      } finally {
-        setLoading(false);
-      }
+    try {
+      setLoading(true);
+      await deleteMessageEmailConfiguration(id);
+      await loadMessageEmailConfigurations();
+    } catch (error) {
+      console.error("Error deleting configuration:", error);
+    } finally {
+      setLoading(false);
     }
   };
 

@@ -13,7 +13,7 @@
 ```css
 /* Primary Actions */
 --primary: #2563eb;          /* Blue 600 - Connect, Primary actions */
---primary-hover: #1d4ed8;    /* Blue 700 - Hover state */
+--primary-hover: #1c7fcf;    /* Blue 700 - Hover state */
 --primary-light: #dbeafe;    /* Blue 100 - Background hover */
 
 /* Danger Actions */

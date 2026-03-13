@@ -125,7 +125,7 @@
 }
 
 .sess-wrap .sess-header-action-btn:hover {
-  background: #1d4ed8 !important;
+  background: #1c7fcf !important;
   box-shadow: 0 2px 6px rgba(33, 150, 243, 0.4) !important;
   transform: translateY(-1px);
 }
@@ -239,7 +239,7 @@
 }
 
 .sess-wrap .sess-add-engine-btn:hover .MuiSvgIcon-root {
-  color: #1d4ed8;
+  color: #1c7fcf;
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
@@ -312,7 +312,7 @@
 }
 
 .sess-wrap .sess-empty-cta:hover {
-  background: #1D4ED8 !important;
+  background: #1c7fcf !important;
   box-shadow: 0 4px 12px rgba(33, 150, 243, 0.4) !important;
   transform: translateY(-2px);
 }
@@ -732,7 +732,7 @@
 }
 
 .sess-wrap .dx-toolbar .dx-button.dx-button-mode-contained.dx-button-default:hover {
-  background: #1d4ed8;
+  background: #1c7fcf;
   box-shadow: 0 2px 4px rgba(33, 150, 243, 0.2);
   transform: translateY(-1px);
 }
