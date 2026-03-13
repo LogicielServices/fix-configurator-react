@@ -1,9 +1,11 @@
 import { useState, useEffect, useMemo, useRef } from "react";
 import { DataGrid, Column, Paging, HeaderFilter } from "devextreme-react/data-grid";
+import { Button } from "devextreme-react/button";
 import { getFixMessages } from "../../Services/FixSessionService";
 import { formatFixSendingTime } from "./handler";
 import useFixMsgs from "../../SignalR/useFixMsgs";
 import { fixMessagesList } from "../../utils/constants";
+import FixMessageDescriptionPopup from "./FixMessageDescriptionPopup";
 
 const GRID_ROW_HEIGHT = 52; // Approximate height of one row in pixels
 const GRID_HEADER_HEIGHT = 90; // Approximate height of header + pager
@@ -17,6 +19,7 @@ export default function FixMessagesPanel({ engineID, sessionID }) {
   const [descriptionPageSize, setDescriptionPageSize] = useState(8);
   const [isResizingMessages, setIsResizingMessages] = useState(false);
   const [isResizingDescription, setIsResizingDescription] = useState(false);
+  const [fixMessageDescriptionPopupVisible, setFixMessageDescriptionPopupVisible] = useState(false);
   const { fixMsgsRef } = useFixMsgs(engineID, sessionID);
   const messagesGridRef = useRef();
   const descriptionGridRef = useRef();
@@ -209,8 +212,17 @@ export default function FixMessagesPanel({ engineID, sessionID }) {
     return (
       <div className="fx-card" ref={descriptionGridRef} style={{ position: 'relative' }}>
         <div className="fx-card-head">
-          <h4 className="fx-card-title">Fix Message Description</h4>
-          <div className="fx-card-sub">Tag / Name / Value</div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+            <div>
+              <h4 className="fx-card-title">Fix Message Description</h4>
+              <div className="fx-card-sub">Tag / Name / Value</div>
+            </div>
+            <Button
+              icon="menu"
+              onClick={() => setFixMessageDescriptionPopupVisible(true)}
+              title="Configure email notification for this message"
+            />
+          </div>
         </div>
         {!selectedMessagePairs?.length ? (
           <div className="fx-empty">
@@ -260,6 +272,13 @@ export default function FixMessagesPanel({ engineID, sessionID }) {
       {fixMessagesGrid}
       {/* Message Description (local, paginated) */}
       {fixMessagesDescriptionGrid}
+      {/* Fix Message Description Popup */}
+      <FixMessageDescriptionPopup
+        engineID={engineID}
+        sessionID={sessionID}
+        fixMessageDescriptionPopupVisible={fixMessageDescriptionPopupVisible}
+        setFixMessageDescriptionPopupVisible={setFixMessageDescriptionPopupVisible}
+      />
     </div>
   );
 }

@@ -24,3 +24,16 @@ export function formatFixSendingTime(fixTime) {
     second: "2-digit",
   });
 }
+
+export const fixMessageDescriptionFormOptions = Object.freeze({
+  id: 0,
+  engine: undefined,
+  sessionId: undefined,
+  fixTag: undefined,
+  fixValue: undefined,
+  emailStatus: false,
+  toEmails: [],
+  ccEmails: [],
+  subject: undefined,
+  body: undefined,
+});
