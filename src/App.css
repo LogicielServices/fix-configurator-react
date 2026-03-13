@@ -51,8 +51,8 @@
   --text-muted: #64748b;
   --border: #e2e8f0;
   --border-light: #f1f5f9;
-  --primary: #1976d2;
-  --primary-hover: #42a5f5;
+  --primary: #2196F3;
+  --primary-hover: #64B5F6;
   --success: #10b981;
   --danger: #ef4444;
   --warning: #f59e0b;
@@ -63,7 +63,7 @@
   --radius-md: 8px;
   --radius-lg: 12px;
   --primary-contrast: #ffffff;
-  --focus-ring: 0 0 0 4px rgba(25, 118, 210, 0.18);
+  --focus-ring: 0 0 0 4px rgba(33, 150, 243, 0.18);
   --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
 }
 
@@ -232,10 +232,10 @@ p {
   width: 56px;
   height: 56px;
   border-radius: 14px;
-  border: 1px solid rgba(25, 118, 210, 0.2);
+  border: 1px solid rgba(33, 150, 243, 0.2);
   object-fit: cover;
-  background: linear-gradient(135deg, #1976d2, #42a5f5);
-  box-shadow: 0 12px 32px rgba(25, 118, 210, 0.4);
+  background: linear-gradient(135deg, #2196F3, #64B5F6);
+  box-shadow: 0 12px 32px rgba(33, 150, 243, 0.4);
 }
 
 .auth-logo--placeholder {
@@ -247,8 +247,8 @@ p {
   font-weight: 700;
   font-size: 24px;
   color: #ffffff;
-  background: linear-gradient(135deg, #1976d2, #42a5f5);
-  box-shadow: 0 12px 32px rgba(25, 118, 210, 0.4);
+  background: linear-gradient(135deg, #2196F3, #64B5F6);
+  box-shadow: 0 12px 32px rgba(33, 150, 243, 0.4);
   border: none;
 }
 
@@ -314,7 +314,7 @@ p {
 }
 
 .field-icon.active {
-  color: #1976d2;
+  color: #2196F3;
 }
 
 .field input[type="email"],
@@ -323,7 +323,7 @@ p {
   width: 100%;
   padding: 14px 16px 14px 48px;
   border-radius: 14px;
-  border: 2px solid rgba(25, 118, 210, 0.2);
+  border: 2px solid rgba(33, 150, 243, 0.2);
   background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(20, 29, 45, 0.9) 100%);
   color: #e2e8f0;
   font-size: 15px;
@@ -341,9 +341,9 @@ p {
 }
 
 .field input:focus-visible {
-  border-color: #1976d2;
-  box-shadow: 0 0 0 4px rgba(25, 118, 210, 0.25),
-              inset 0 2px 12px rgba(25, 118, 210, 0.1),
+  border-color: #2196F3;
+  box-shadow: 0 0 0 4px rgba(33, 150, 243, 0.25),
+              inset 0 2px 12px rgba(33, 150, 243, 0.1),
               inset 0 1px 0 rgba(255, 255, 255, 0.08);
   background: linear-gradient(135deg, rgba(30, 41, 59, 1) 0%, rgba(20, 29, 45, 0.95) 100%);
   color: #ffffff;
@@ -376,12 +376,12 @@ p {
 }
 
 .password-toggle-btn:hover {
-  color: #1976d2;
-  background: rgba(25, 118, 210, 0.12);
+  color: #2196F3;
+  background: rgba(33, 150, 243, 0.12);
 }
 
 .password-toggle-btn:focus-visible {
-  outline: 2px solid #1976d2;
+  outline: 2px solid #2196F3;
   outline-offset: 2px;
 }
 
@@ -435,7 +435,7 @@ p {
   width: 18px;
   height: 18px;
   cursor: pointer;
-  accent-color: #1976d2;
+  accent-color: #2196F3;
   border-radius: 4px;
   border: 2px solid rgba(148, 163, 184, 0.3);
   transition: all 0.2s ease;
@@ -443,18 +443,18 @@ p {
 }
 
 .checkbox input:hover {
-  border-color: #1976d2;
+  border-color: #2196F3;
   background: rgba(30, 41, 59, 0.6);
 }
 
 .checkbox input:checked {
-  background: #1976d2;
-  border-color: #1976d2;
+  background: #2196F3;
+  border-color: #2196F3;
 }
 
 .primary-btn {
   width: 100%;
-  background: linear-gradient(135deg, #1976d2, #42a5f5);
+  background: linear-gradient(135deg, #2196F3, #64B5F6);
   color: #ffffff;
   border: none;
   border-radius: 12px;
@@ -463,7 +463,7 @@ p {
   font-size: 15px;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 12px 32px rgba(25, 118, 210, 0.35);
+  box-shadow: 0 12px 32px rgba(33, 150, 243, 0.35);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   display: flex;
@@ -487,7 +487,7 @@ p {
 
 .primary-btn:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 16px 40px rgba(25, 118, 210, 0.45);
+  box-shadow: 0 16px 40px rgba(33, 150, 243, 0.45);
 }
 
 .primary-btn:hover:not(:disabled)::before {
@@ -510,7 +510,7 @@ p {
 }
 
 .link {
-  color: #42a5f5;
+  color: #64B5F6;
   text-decoration: none;
   font-weight: 600;
   font-size: 13px;
@@ -525,7 +525,7 @@ p {
   left: 0;
   width: 0;
   height: 2px;
-  background: #42a5f5;
+  background: #64B5F6;
   transition: width 0.2s ease;
 }
 
@@ -538,7 +538,7 @@ p {
 }
 
 .link:focus-visible {
-  outline: 2px solid #1976d2;
+  outline: 2px solid #2196F3;
   outline-offset: 2px;
   border-radius: 2px;
 }
@@ -677,7 +677,7 @@ p {
 
 /* GLOBAL POPUP TOOLBAR TITLE STYLE */
 .dx-toolbar.dx-popup-title {
-  background: linear-gradient(135deg, #1976d2, #42a5f5);
+  background: linear-gradient(135deg, #2196F3, #64B5F6);
   color: #fff;
   .dx-icon {
     color: #fff;
@@ -715,7 +715,7 @@ p {
 
 /* Primary color for navigation icons */
 .nav-icon-modern.MuiIconButton-colorPrimary {
-  color: #2563eb;
+  color: #2196F3;
 }
 
 .nav-icon-modern.MuiIconButton-colorPrimary:hover {
@@ -739,7 +739,7 @@ p {
 
 /* Focus states for accessibility */
 .nav-icon-modern:focus-visible {
-  outline: 2px solid #2563eb;
+  outline: 2px solid #2196F3;
   outline-offset: 2px;
 }
 
@@ -756,4 +756,793 @@ p {
   .nav-icon-modern.MuiIconButton-colorPrimary:hover {
     color: #93c5fd;
   }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   DevExtreme Popup Styling - Modern Eye-Catching Design
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* Popup Overlay/Backdrop */
+.dx-overlay {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.25s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+  }
+  to {
+    opacity: 1;
+    backdrop-filter: blur(4px);
+  }
+}
+
+/* Popup Container */
+.dx-popup {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 1px rgba(33, 150, 243, 0.5) inset;
+  background: #ffffff;
+  animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dx-popup.dx-state-focused {
+  box-shadow: 0 25px 70px rgba(33, 150, 243, 0.4), 0 0 1px rgba(33, 150, 243, 0.5) inset;
+}
+
+/* Popup Title - Eye-Catching Gradient */
+.dx-popup .dx-popup-title {
+  background: linear-gradient(135deg, #2196F3 0%, #64B5F6 100%);
+  color: #ffffff;
+  font-weight: 700;
+  padding: 18px 24px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+  text-transform: uppercase;
+  letter-spacing: 0.75px;
+  font-size: 13px;
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.2);
+}
+
+.dx-popup.dx-state-focused .dx-popup-title {
+  box-shadow: 0 4px 16px rgba(33, 150, 243, 0.3);
+}
+
+/* Popup Close Button */
+.dx-popup .dx-closebutton {
+  color: #ffffff;
+  opacity: 0.8;
+  transition: all 0.2s ease;
+  margin: 8px 12px 0 0;
+}
+
+.dx-popup .dx-closebutton:hover {
+  color: #ffffff;
+  opacity: 1;
+  transform: scale(1.1);
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+}
+
+/* Popup Content Area */
+.dx-popup .dx-popup-content {
+  padding: 24px;
+  background: #ffffff;
+}
+
+.dx-popup .dx-popup-hole {
+  border-color: transparent;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   DevExtreme Button Styling - Eye-Catching Blue Theme
+   ───────────────────────────────────────────────────────────────────────── */
+
+.dx-button.dx-button-mode-contained.dx-button-default {
+  background: linear-gradient(135deg, #2196F3, #42A4F7);
+  border-color: #2196F3;
+  color: #ffffff;
+  font-weight: 600;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.25);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dx-button.dx-button-mode-contained.dx-button-default:hover {
+  background: linear-gradient(135deg, #64B5F6, #42A4F7);
+  border-color: #64B5F6;
+  box-shadow: 0 8px 20px rgba(33, 150, 243, 0.35);
+  transform: translateY(-2px);
+}
+
+.dx-button.dx-button-mode-contained.dx-button-default:active,
+.dx-button.dx-button-mode-contained.dx-button-default.dx-state-active {
+  background: linear-gradient(135deg, #1976D2, #1565C0);
+  border-color: #1565c0;
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(33, 150, 243, 0.2);
+}
+
+.dx-button.dx-button-mode-contained.dx-button-default:focus-visible {
+  outline: 2px solid #2196F3;
+  outline-offset: 2px;
+}
+
+/* Danger/Delete Buttons */
+.dx-button.dx-button-mode-contained.dx-button-danger {
+  background: linear-gradient(135deg, #FF5252, #FF6E40);
+  border-color: #FF5252;
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(255, 82, 82, 0.25);
+}
+
+.dx-button.dx-button-mode-contained.dx-button-danger:hover {
+  background: linear-gradient(135deg, #FF6E40, #FF7043);
+  box-shadow: 0 8px 20px rgba(255, 82, 82, 0.35);
+  transform: translateY(-2px);
+}
+
+/* Secondary/Outlined Buttons */
+.dx-button.dx-button-mode-outlined {
+  border: 2px solid #2196F3;
+  color: #2196F3;
+  background: #ffffff;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.dx-button.dx-button-mode-outlined:hover {
+  background: #E3F2FD;
+  border-color: #64B5F6;
+  color: #1976D2;
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.15);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   DevExtreme Toolbar Styling
+   ───────────────────────────────────────────────────────────────────────── */
+.dx-toolbar {
+  background: linear-gradient(to right, #f8fafc, #f1f5f9);
+  border-bottom: 2px solid #e2e8f0;
+  padding: 12px 16px;
+}
+
+.dx-toolbar .dx-toolbar-item {
+  border-color: #e2e8f0;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   DevExtreme Form Styling - Modern, Eye-Catching
+   ───────────────────────────────────────────────────────────────────────── */
+
+.dx-form {
+  background: transparent;
+}
+
+.dx-form .dx-field-label {
+  color: #1e293b;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+/* Form Fields - Input Styling */
+.dx-form .dx-texteditor {
+  border-radius: 8px;
+  border: 2px solid #e2e8f0;
+  transition: all 0.3s ease;
+}
+
+.dx-form .dx-texteditor:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.08);
+}
+
+.dx-form .dx-texteditor:focus,
+.dx-form .dx-texteditor.dx-state-focused {
+  border-color: #2196F3 !important;
+  box-shadow: 0 0 0 4px rgba(33, 150, 243, 0.15), 0 2px 12px rgba(33, 150, 243, 0.2) !important;
+  background: #ffffff !important;
+}
+
+/* Checkbox - Modern Style */
+.dx-checkbox .dx-checkbox-icon {
+  border-radius: 6px;
+  border: 2px solid #cbd5e1;
+  transition: all 0.2s ease;
+}
+
+.dx-checkbox:hover .dx-checkbox-icon {
+  border-color: #2196F3;
+  box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.08);
+}
+
+.dx-checkbox.dx-state-focused .dx-checkbox-icon {
+  border-color: #2196F3;
+  box-shadow: 0 0 0 4px rgba(33, 150, 243, 0.2);
+}
+
+.dx-checkbox.dx-state-focused .dx-checkbox-icon::after {
+  background-color: #2196F3;
+}
+
+.dx-checkbox.dx-state-hover .dx-checkbox-icon {
+  border-color: #2196F3;
+}
+
+/* SelectBox - Modern Styling */
+.dx-selectbox {
+  border-radius: 8px;
+}
+
+.dx-selectbox.dx-state-focused .dx-texteditor-input-border {
+  border-color: #2196F3 !important;
+  box-shadow: 0 0 0 4px rgba(33, 150, 243, 0.15) !important;
+}
+
+.dx-selectbox:hover .dx-texteditor-input-border {
+  border-color: #2196F3;
+}
+
+/* TagBox - Modern Styling */
+.dx-tagbox {
+  border-radius: 8px;
+}
+
+.dx-tagbox.dx-state-focused .dx-texteditor-input-border {
+  border-color: #2196F3 !important;
+  box-shadow: 0 0 0 4px rgba(33, 150, 243, 0.15) !important;
+}
+
+.dx-tagbox:hover .dx-texteditor-input-border {
+  border-color: #2196F3;
+}
+
+.dx-tagbox .dx-tag {
+  background: linear-gradient(135deg, #2196F3, #64B5F6);
+  border-radius: 6px;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+/* TextArea - Modern Styling */
+.dx-textarea {
+  border-radius: 8px;
+  border: 2px solid #e2e8f0;
+  transition: all 0.3s ease;
+}
+
+.dx-textarea:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.08);
+}
+
+.dx-textarea:focus,
+.dx-textarea.dx-state-focused {
+  border-color: #2196F3 !important;
+  box-shadow: 0 0 0 4px rgba(33, 150, 243, 0.15), 0 2px 12px rgba(33, 150, 243, 0.2) !important;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   DevExtreme DataGrid Styling - Inside Popups
+   ───────────────────────────────────────────────────────────────────────── */
+
+.dx-datagrid {
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+}
+
+.dx-datagrid .dx-datagrid-headers {
+  background: linear-gradient(to right, #f1f5f9, #e8eef7);
+  border-bottom: 2px solid #2196F3;
+}
+
+.dx-datagrid .dx-header-row > td {
+  font-weight: 700;
+  color: #1e293b;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 14px 16px;
+  border-right: 1px solid #e2e8f0;
+}
+
+/* DataGrid Rows */
+.dx-datagrid-rowsview .dx-row {
+  border-bottom: 1px solid #f1f5f9;
+  transition: all 0.2s ease;
+}
+
+.dx-datagrid-rowsview .dx-row:nth-child(even) > td {
+  background: #fafbfc;
+}
+
+.dx-datagrid-rowsview .dx-row:nth-child(odd) > td {
+  background: #ffffff;
+}
+
+.dx-datagrid-rowsview .dx-row:hover > td {
+  background: #e3f2fd !important;
+  cursor: pointer;
+}
+
+.dx-datagrid-rowsview .dx-row.dx-selection > td {
+  background: #bbdefb !important;
+  color: #1565c0;
+  font-weight: 500;
+}
+
+/* DataGrid Header Focus */
+.dx-datagrid .dx-header-row .dx-cell:focus {
+  border-color: #2196F3;
+  box-shadow: inset 0 0 0 2px #2196F3;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   DevExtreme Required Indicator
+   ───────────────────────────────────────────────────────────────────────── */
+
+.dx-form .dx-required-mark {
+  color: #FF5252;
+  font-weight: 700;
+  margin-left: 4px;
+}
+
+/* Disabled Form Fields */
+.dx-form .dx-texteditor.dx-state-disabled,
+.dx-form .dx-numberbox.dx-state-disabled,
+.dx-form .dx-textarea.dx-state-disabled {
+  background-color: #f5f5f5 !important;
+  border-color: #e0e0e0 !important;
+  color: #757575 !important;
+  opacity: 0.7;
+}
+
+.dx-form .dx-texteditor.dx-state-disabled .dx-texteditor-input,
+.dx-form .dx-numberbox.dx-state-disabled .dx-numberbox-spin-up,
+.dx-form .dx-numberbox.dx-state-disabled .dx-numberbox-spin-down,
+.dx-form .dx-textarea.dx-state-disabled textarea {
+  background-color: #f5f5f5 !important;
+  color: #757575 !important;
+}
+
+/* NumberBox Styling */
+.dx-numberbox {
+  border-radius: 8px;
+}
+
+.dx-numberbox.dx-state-focused {
+  border-color: #2196F3 !important;
+  box-shadow: 0 0 0 4px rgba(33, 150, 243, 0.15) !important;
+}
+
+/* Form Group/Item Spacing */
+.dx-form .dx-field {
+  margin-bottom: 16px;
+}
+
+.dx-form .dx-field:last-child {
+  margin-bottom: 0;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   DevExtreme Alert Box in Popups
+   ───────────────────────────────────────────────────────────────────────── */
+
+.dx-dxvalidationsummary {
+  background: #FFF3E0;
+  border-left: 4px solid #FF9800;
+  border-radius: 6px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+}
+
+.dx-validationsummary-item {
+  color: #E65100;
+  font-weight: 500;
+  font-size: 13px;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   DevExtreme Radio Button Group
+   ───────────────────────────────────────────────────────────────────────── */
+
+.dx-radiogroup .dx-radiobutton-icon {
+  border-color: #cbd5e1;
+  border-width: 2px;
+  transition: all 0.2s ease;
+}
+
+.dx-radiogroup .dx-radiobutton:hover .dx-radiobutton-icon {
+  border-color: #2196F3;
+  box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.08);
+}
+
+.dx-radiogroup .dx-radiobutton.dx-state-focused .dx-radiobutton-icon {
+  border-color: #2196F3;
+  box-shadow: 0 0 0 4px rgba(33, 150, 243, 0.15);
+}
+
+.dx-radiogroup .dx-radiobutton-checked .dx-radiobutton-icon {
+  background: linear-gradient(135deg, #2196F3, #64B5F6) !important;
+  border-color: #2196F3 !important;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   DevExtreme Button Group in Forms
+   ───────────────────────────────────────────────────────────────────────── */
+
+.dx-form .dx-button-group {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.dx-form .dx-button-group .dx-button {
+  flex: 1;
+}
+
+/* Form Field Group */
+.dx-form .dx-field-group {
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+  border: 1px solid #e2e8f0;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   DevExtreme LoadPanel Styling
+   ───────────────────────────────────────────────────────────────────────── */
+
+.dx-loadpanel {
+  border-radius: 8px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+}
+
+.dx-loadpanel-content {
+  background: rgba(255, 255, 255, 0.98);
+  padding: 32px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.dx-loadpanel-message {
+  color: #2196F3;
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   DevExtreme DataGrid Pagination Inside Popups
+   ───────────────────────────────────────────────────────────────────────── */
+
+.dx-datagrid .dx-pager {
+  background: linear-gradient(to right, #f8fafc, #f1f5f9);
+  border-top: 2px solid #e2e8f0;
+  padding: 12px 16px;
+}
+
+.dx-datagrid .dx-pager .dx-page,
+.dx-datagrid .dx-pager .dx-page-size {
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.dx-datagrid .dx-pager .dx-page:hover,
+.dx-datagrid .dx-pager .dx-page-size:hover {
+  background: #e2e8f0;
+  transform: translateY(-1px);
+}
+
+.dx-datagrid .dx-pager .dx-page.dx-selection,
+.dx-datagrid .dx-pager .dx-page-size.dx-selection {
+  background: linear-gradient(135deg, #2196F3, #64B5F6);
+  color: #ffffff;
+  font-weight: 600;
+  border-radius: 6px;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   DevExtreme Scrollbar Styling
+   ───────────────────────────────────────────────────────────────────────── */
+
+.dx-scrollbar-vertical .dx-scrollbar-thumb {
+  background: rgba(33, 150, 243, 0.3);
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.dx-scrollbar-vertical:hover .dx-scrollbar-thumb,
+.dx-scrollable:hover .dx-scrollbar-vertical .dx-scrollbar-thumb {
+  background: rgba(33, 150, 243, 0.6);
+}
+
+.dx-scrollbar-horizontal .dx-scrollbar-thumb {
+  background: rgba(33, 150, 243, 0.3);
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.dx-scrollable:hover .dx-scrollbar-horizontal .dx-scrollbar-thumb {
+  background: rgba(33, 150, 243, 0.6);
+}
+
+.dx-texteditor.dx-editor-filled::after {
+  border-bottom: 0 !important;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Material-UI Dialog Styling
+   ───────────────────────────────────────────────────────────────────────── */
+
+.MuiDialog-paper {
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.MuiBackdrop-root {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Material-UI MenuBar & Navigation
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* Menu Items */
+.MuiMenuItem-root {
+  transition: all 0.2s ease;
+  font-weight: 500;
+  color: #475569;
+}
+
+.MuiMenuItem-root:hover {
+  background: linear-gradient(to right, #e3f2fd, #f0f7ff);
+  color: #2196F3;
+  font-weight: 600;
+}
+
+.MuiMenuItem-root.Mui-disabled {
+  opacity: 0.5;
+}
+
+/* Menu Paper */
+.MuiMenu-paper {
+  border-radius: 8px;
+  box-shadow: 0 10px 40px rgba(33, 150, 243, 0.2);
+  border: 1px solid rgba(33, 150, 243, 0.1);
+  animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Icon Buttons */
+.MuiIconButton-colorPrimary {
+  color: #2196F3;
+  transition: all 0.2s ease;
+}
+
+.MuiIconButton-colorPrimary:hover {
+  color: #64B5F6;
+  background: rgba(33, 150, 243, 0.08);
+  transform: scale(1.1);
+}
+
+.MuiIconButton-colorPrimary:active {
+  transform: scale(0.95);
+  color: #1976D2;
+}
+
+/* Tooltip */
+.MuiTooltip-tooltip {
+  background-color: rgba(33, 150, 243, 0.95);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: 6px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+}
+
+.MuiTooltip-arrow::before {
+  background-color: rgba(33, 150, 243, 0.95);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Material-UI BreadCrumbs
+   ───────────────────────────────────────────────────────────────────────── */
+
+.MuiBreadcrumbs-root {
+  font-size: 0.95rem;
+  padding: 12px 16px;
+  background: linear-gradient(to right, #ffffff, #f8fafc);
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.05);
+}
+
+.MuiBreadcrumbs-ol {
+  gap: 12px;
+}
+
+.MuiBreadcrumbs-separator {
+  color: #cbd5e1;
+  font-size: 18px;
+}
+
+.MuiBreadcrumbs-li > .MuiLink-root {
+  color: #64748b;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.MuiBreadcrumbs-li > .MuiLink-root:hover {
+  color: #2196F3;
+  text-decoration: none;
+  transform: translateX(2px);
+}
+
+.MuiBreadcrumbs-li > .MuiTypography-root {
+  color: #2196F3;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Home Icon in Breadcrumbs */
+.MuiBreadcrumbs-li .MuiSvgIcon-root {
+  font-size: 18px;
+  transition: all 0.2s ease;
+}
+
+.MuiBreadcrumbs-li > .MuiLink-root:hover .MuiSvgIcon-root {
+  color: #2196F3;
+  transform: scale(1.15);
+}
+
+.MuiBreadcrumbs-li > .MuiTypography-root .MuiSvgIcon-root {
+  color: #2196F3;
+  font-size: 18px;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Material-UI Drawer Styling (SessionStatusGrid)
+   ───────────────────────────────────────────────────────────────────────── */
+
+.MuiDrawer-paper {
+  background: linear-gradient(to bottom, #ffffff, #f8fafc);
+  border-left: 1px solid #e2e8f0;
+  box-shadow: -2px 0 12px rgba(33, 150, 243, 0.1);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Material-UI Button Styling (override defaults)
+   ───────────────────────────────────────────────────────────────────────── */
+
+.MuiButton-containedPrimary {
+  background: linear-gradient(135deg, #2196F3 0%, #42A4F7 100%);
+  color: #ffffff;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.25);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.MuiButton-containedPrimary:hover {
+  background: linear-gradient(135deg, #64B5F6 0%, #42A4F7 100%);
+  box-shadow: 0 8px 20px rgba(33, 150, 243, 0.35);
+  transform: translateY(-2px);
+}
+
+.MuiButton-containedPrimary:active {
+  background: linear-gradient(135deg, #1976D2 0%, #1565C0 100%);
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(33, 150, 243, 0.2);
+}
+
+.MuiButton-outlinedPrimary {
+  border: 2px solid #2196F3;
+  color: #2196F3;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+}
+
+.MuiButton-outlinedPrimary:hover {
+  background: #E3F2FD;
+  border-color: #64B5F6;
+  color: #1976D2;
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.15);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Material-UI TextField Styling
+   ───────────────────────────────────────────────────────────────────────── */
+
+.MuiTextField-root .MuiOutlinedInput-root {
+  border-radius: 8px;
+  border: 2px solid #e2e8f0;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.MuiTextField-root .MuiOutlinedInput-root:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.08);
+}
+
+.MuiTextField-root .MuiOutlinedInput-root.Mui-focused {
+  border-color: #2196F3;
+  box-shadow: 0 0 0 4px rgba(33, 150, 243, 0.15), 0 2px 12px rgba(33, 150, 243, 0.2);
+}
+
+.MuiTextField-root .MuiInputLabel-root {
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  color: #475569;
+}
+
+.MuiTextField-root .MuiInputLabel-root.Mui-focused {
+  color: #2196F3;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Material-UI FormHelperText
+   ───────────────────────────────────────────────────────────────────────── */
+
+.MuiFormHelperText-root {
+  font-size: 12px;
+  font-weight: 500;
+  color: #64748b;
+  margin-top: 4px;
+}
+
+.MuiFormHelperText-root.Mui-error {
+  color: #d32f2f;
+  font-weight: 600;
 }

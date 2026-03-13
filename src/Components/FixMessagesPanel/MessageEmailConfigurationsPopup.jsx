@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, memo } from "react";
 import { getAllMessageEmailConfigurations, deleteMessageEmailConfiguration } from "../../Services/FixFiltersService";
 import DataGrid, { Column, HeaderFilter, LoadPanel, Scrolling } from "devextreme-react/data-grid";
 import { Popup, Button } from "devextreme-react";
@@ -160,4 +160,4 @@ const MessageEmailConfigurationsPopup = ({
   );
 };
 
-export default MessageEmailConfigurationsPopup;
+export default memo(MessageEmailConfigurationsPopup);

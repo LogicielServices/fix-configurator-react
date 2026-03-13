@@ -222,21 +222,22 @@ export default function FixMessagesPanel({ engineID, engineName, sessionID }) {
               <div className="fx-card-sub">Tag / Name / Value</div>
             </div>
             <div style={{ display: 'flex', gap: '8px' }}>
+              {/* update these three buttons */}
               <Button
                 icon="fa-solid fa-arrow-right-arrow-left fa-rotate-90"
                 disabled={!sessionID}
                 onClick={() => setConfiguredFixMessagesPopupVisible(true)}
-                title="View configured fix messages streams"
+                hint="View configured fix messages streams"
               />
               <Button
                 icon="fa-solid fa-gears"
                 onClick={() => setFixMessageDescriptionPopupVisible(true)}
-                title="Configure email notification for this message"
+                hint="Configure email notification for this message"
               />
               <Button
                 icon="fa-solid fa-bars"
                 onClick={() => setMessageEmailConfigurationsPopupVisible(true)}
-                title="View all message email configurations"
+                hint="View all message email configurations"
               />
             </div>
           </div>

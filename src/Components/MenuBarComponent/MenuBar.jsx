@@ -98,38 +98,90 @@ const MenuBar = ({ handleDrawerToggle }) => {
         </IconButton>
         <BreadCrumbs />
       </div>
-      <div className="col-12 col-md-2 d-flex justify-content-end">
-        <Tooltip title="Connection Checker (Telnet)" arrow>
+      <div className="col-12 col-md-2 d-flex justify-content-end gap-2">
+        <Tooltip title="Connection Checker (Telnet)" arrow placement="bottom">
           <IconButton
             color="primary"
             onClick={() => telnetPopUpRef?.current?.handleOpenTelnetDialog?.()}
             aria-label="telnet"
             className="nav-icon-modern"
+            sx={{
+              transition: "all 0.2s ease",
+              "&:hover": {
+                transform: "scale(1.1)",
+              },
+              "&:active": {
+                transform: "scale(0.95)",
+              },
+            }}
           >
-            <Terminal />
+            <Terminal fontSize="20" />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Session Status History" arrow>
+        <Tooltip title="Session Status History" arrow placement="bottom">
           <IconButton
             color="primary"
             onClick={() => setOpenSessionStatuses(true)}
             aria-label="session statuses"
             className="nav-icon-modern"
+            sx={{
+              transition: "all 0.2s ease",
+              "&:hover": {
+                transform: "scale(1.1)",
+              },
+              "&:active": {
+                transform: "scale(0.95)",
+              },
+            }}
           >
-            <History />
+            <History fontSize="20" />
           </IconButton>
         </Tooltip>
-        <IconButton {...iconButtonOptions} onClick={handleMenu}>
-          <AccountCircle fontSize="12" />
-          <Typography fontFamily="system-ui" marginLeft={1}>
-            {localStorage.getItem(authConstants.username)}
-          </Typography>
-          {menuItems?.length ? (
-            <ArrowDropDown fontSize="small" sx={{ marginBottom: "-2px" }} />
-          ) : (
-            <></>
-          )}
-        </IconButton>
+        <Tooltip title="User Menu" arrow placement="bottom">
+          <IconButton
+            {...iconButtonOptions}
+            onClick={handleMenu}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+              padding: "6px 8px",
+              borderRadius: "8px",
+              transition: "all 0.2s ease",
+              "&:hover": {
+                background: "rgba(33, 150, 243, 0.08)",
+                transform: "scale(1.05)",
+              },
+              "&:active": {
+                transform: "scale(0.95)",
+              },
+            }}
+          >
+            <AccountCircle fontSize="22" sx={{ color: "#2196F3" }} />
+            <Typography
+              fontFamily="system-ui"
+              sx={{
+                fontSize: "13px",
+                fontWeight: 600,
+                color: "#2196F3",
+                textTransform: "uppercase",
+                letterSpacing: "0.5px",
+                display: { xs: "none", sm: "inline" },
+                maxWidth: "100px",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {localStorage.getItem(authConstants.username)}
+            </Typography>
+            {menuItems?.length ? (
+              <ArrowDropDown fontSize="small" sx={{ marginBottom: "-2px", color: "#2196F3" }} />
+            ) : (
+              <></>
+            )}
+          </IconButton>
+        </Tooltip>
       </div>
       {profileMenu()}
     </div>

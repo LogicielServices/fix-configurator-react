@@ -6,7 +6,7 @@ import {
   PatternRule,
   SimpleItem,
 } from "devextreme-react/form";
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, memo } from "react";
 import { reportEmailsValidation } from "../../utils/formValidator";
 import { showErrorToast, showSuccessToast } from "../../utils/toastsService";
 import { textMessages } from "../../utils/constants";
@@ -317,4 +317,4 @@ const FixMessageDescriptionPopup = ({
   );
 };
 
-export default FixMessageDescriptionPopup;
+export default memo(FixMessageDescriptionPopup);

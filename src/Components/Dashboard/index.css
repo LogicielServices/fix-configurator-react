@@ -118,15 +118,15 @@
   padding: 10px 20px !important;
   font-size: 14px !important;
   font-weight: 600 !important;
-  background: #2563eb !important;
-  box-shadow: 0 1px 3px rgba(37, 99, 235, 0.3) !important;
+  background: #2196F3 !important;
+  box-shadow: 0 1px 3px rgba(33, 150, 243, 0.3) !important;
   height: 40px;
   white-space: nowrap;
 }
 
 .sess-wrap .sess-header-action-btn:hover {
   background: #1d4ed8 !important;
-  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.4) !important;
+  box-shadow: 0 2px 6px rgba(33, 150, 243, 0.4) !important;
   transform: translateY(-1px);
 }
 
@@ -223,8 +223,8 @@
 
 .sess-wrap .sess-add-engine-btn:hover {
   background: #f0f4ff !important;
-  border-color: #2563eb !important;
-  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.2) !important;
+  border-color: #2196F3 !important;
+  box-shadow: 0 2px 6px rgba(33, 150, 243, 0.2) !important;
   transform: translateY(-1px);
 }
 
@@ -234,7 +234,7 @@
 }
 
 .sess-wrap .sess-add-engine-btn .MuiSvgIcon-root {
-  color: #2563eb;
+  color: #2196F3;
   transition: color 0.2s ease;
 }
 
@@ -306,14 +306,14 @@
   font-weight: 600 !important;
   text-transform: none !important;
   border-radius: 8px !important;
-  background: #2563EB !important;
-  box-shadow: 0 1px 3px rgba(37, 99, 235, 0.3) !important;
+  background: #2196F3 !important;
+  box-shadow: 0 1px 3px rgba(33, 150, 243, 0.3) !important;
   transition: all 0.2s ease !important;
 }
 
 .sess-wrap .sess-empty-cta:hover {
   background: #1D4ED8 !important;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4) !important;
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.4) !important;
   transform: translateY(-2px);
 }
 
@@ -324,7 +324,7 @@
 
 .sess-wrap .sess-empty-cta:active {
   transform: translateY(0);
-  box-shadow: 0 1px 3px rgba(37, 99, 235, 0.3) !important;
+  box-shadow: 0 1px 3px rgba(33, 150, 243, 0.3) !important;
 }
 
 /* Responsive adjustments */
@@ -363,7 +363,8 @@
 .sess-wrap .dx-tabpanel .dx-tabs {
   background: #f8fafc;
   border-bottom: 1px solid #e2e8f0;
-  padding: 8px 80px 0 16px;
+  padding: 0 80px 0 16px;
+  position: relative;
 }
 
 .sess-wrap .dx-tabpanel .dx-multiview-wrapper {
@@ -375,12 +376,13 @@
 }
 
 .sess-wrap .dx-tabpanel .dx-tab {
-  border-radius: 8px 8px 0 0;
+  border-radius: 0;
   padding: 10px 16px;
   margin: 0 4px;
   font-weight: 500;
   color: #64748b;
   transition: all 0.2s ease;
+  border-bottom: 2px solid transparent;
 }
 
 .sess-wrap .dx-tabpanel .dx-tab:hover {
@@ -389,9 +391,9 @@
 }
 
 .sess-wrap .dx-tabpanel .dx-tab.dx-tab-selected {
-  background: #ffffff;
-  color: #1e40af;
-  border-bottom: 2px solid #2563eb;
+  background: transparent;
+  color: #2196F3;
+  border-bottom: 3px solid #2196F3;
   font-weight: 600;
 }
 
@@ -521,7 +523,7 @@
 }
 
 .sess-wrap .sg-mode-initiator .sg-mode-icon {
-  color: #2563eb;
+  color: #2196F3;
 }
 
 .sess-wrap .sg-mode-acceptor .sg-mode-icon {
@@ -724,14 +726,14 @@
 
 /* Primary buttons (solid blue) */
 .sess-wrap .dx-toolbar .dx-button.dx-button-mode-contained.dx-button-default {
-  background: #2563eb;
+  background: #2196F3;
   color: #ffffff;
   border: none;
 }
 
 .sess-wrap .dx-toolbar .dx-button.dx-button-mode-contained.dx-button-default:hover {
   background: #1d4ed8;
-  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+  box-shadow: 0 2px 4px rgba(33, 150, 243, 0.2);
   transform: translateY(-1px);
 }
 
@@ -787,8 +789,8 @@
 
 .sess-wrap .dx-datagrid .dx-editor-cell .dx-texteditor:focus,
 .sess-wrap .dx-datagrid .dx-editor-cell .dx-texteditor.dx-state-focused {
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  border-color: #2196F3;
+  box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
 }
 
 .sess-wrap .dx-datagrid .dx-editor-cell .dx-texteditor-input {
@@ -825,7 +827,7 @@
 
 .sess-wrap .dx-pages .dx-page.dx-selection,
 .sess-wrap .dx-page-sizes .dx-selection {
-  background: #2563eb;
+  background: #2196F3;
   color: #ffffff;
   border-radius: 6px;
   font-weight: 600;

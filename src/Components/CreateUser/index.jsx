@@ -258,9 +258,9 @@ const CreateUser = forwardRef((props, ref) => {
                 }
                 color="primary"
                 sx={{
-                  "& .MuiSwitch-switchBase.Mui-checked": { color: "#1976d2" },
+                  "& .MuiSwitch-switchBase.Mui-checked": { color: "#2196F3" },
                   "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
-                    backgroundColor: "#1976d2",
+                    backgroundColor: "#2196F3",
                   },
                   "& .MuiSwitch-track": { backgroundColor: "#ccc" },
                 }}
@@ -368,7 +368,7 @@ const CreateUser = forwardRef((props, ref) => {
               background:
                 "radial-gradient(1200px 600px at 80% -20%, rgba(66,165,245,0.35) 0%, transparent 60%), " +
                 "radial-gradient(1000px 500px at -20% 120%, rgba(25,118,210,0.35) 0%, transparent 60%), " +
-                "linear-gradient(135deg, #1976d2 0%, #42a5f5 100%)",
+                "linear-gradient(135deg, #2196F3 0%, #64B5F6 100%)",
               overflow: "hidden",
             }}
           >

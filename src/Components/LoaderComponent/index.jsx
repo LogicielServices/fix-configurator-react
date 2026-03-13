@@ -29,7 +29,7 @@ export const Loader = () => {
           "@keyframes fadeIn": { from: { opacity: 0 }, to: { opacity: 1 } },
         }}
       >
-        <InfinitySpin width="140" color="#1976d2" />
+        <InfinitySpin width="140" color="#2196F3" />
       </Box>
     </Box>
   );

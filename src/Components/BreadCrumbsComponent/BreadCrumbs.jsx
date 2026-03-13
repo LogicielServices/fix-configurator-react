@@ -58,17 +58,57 @@ const StylishBreadcrumbs = () => {
   return (
     <Breadcrumbs
       aria-label="breadcrumb"
-      separator={<NavigateNextIcon fontSize="small" />}
-      sx={{ fontSize: "0.95rem", alignContent: 'center' }}
+      separator={<NavigateNextIcon fontSize="small" sx={{ transition: "all 0.2s ease" }} />}
+      sx={{
+        fontSize: "0.95rem",
+        alignContent: "center",
+        padding: "12px 16px",
+        background: "linear-gradient(to right, #ffffff, #f8fafc)",
+        borderRadius: "8px",
+        border: "1px solid #e2e8f0",
+        boxShadow: "0 2px 8px rgba(33, 150, 243, 0.05)",
+        "& .MuiBreadcrumbs-ol": {
+          gap: "12px",
+        },
+        "& .MuiBreadcrumbs-separator": {
+          color: "#cbd5e1",
+          fontSize: "18px",
+        },
+      }}
     >
       <Link
         underline="hover"
         color="inherit"
         href="./"
-        sx={{ display: "flex", alignItems: "center", gap: "10px" }}
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          gap: "8px",
+          color: "#64748b",
+          transition: "all 0.2s ease",
+          fontWeight: 500,
+          "&:hover": {
+            color: "#2196F3",
+            textDecoration: "none",
+            transform: "translateX(2px)",
+            "& .MuiSvgIcon-root": {
+              color: "#2196F3",
+              transform: "scale(1.15)",
+            },
+          },
+        }}
       >
-        <HomeIcon fontSize="small" />
-        FIX CONFIGURATOR
+        <HomeIcon
+          fontSize="small"
+          sx={{
+            fontSize: "18px",
+            transition: "all 0.2s ease",
+            color: "inherit",
+          }}
+        />
+        <span style={{ textTransform: "uppercase", letterSpacing: "0.5px", fontWeight: 600 }}>
+          FIX CONFIGURATOR
+        </span>
       </Link>
 
       {(routes || []).map((route, index) => {
@@ -76,7 +116,15 @@ const StylishBreadcrumbs = () => {
         return isLast ? (
           <Typography
             key={route.i}
-            sx={{ fontWeight: "bold", color: "primary.main" }}
+            sx={{
+              fontWeight: 700,
+              color: "#2196F3",
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+              textTransform: "capitalize",
+              fontSize: "0.95rem",
+            }}
           >
             {getRouteLinkName(route.element)}
           </Typography>
@@ -86,14 +134,37 @@ const StylishBreadcrumbs = () => {
             underline="hover"
             color="inherit"
             href={getHref(routes, route.i)}
-            sx={{ textTransform: "capitalize" }}
+            sx={{
+              textTransform: "capitalize",
+              color: "#64748b",
+              transition: "all 0.2s ease",
+              fontWeight: 500,
+              "&:hover": {
+                color: "#2196F3",
+                textDecoration: "none",
+                transform: "translateX(2px)",
+              },
+            }}
           >
             {getRouteLinkName(route.element)}
           </Link>
         );
       })}
 
-      {getHostname}
+      {getHostname && (
+        <Typography
+          sx={{
+            fontWeight: 600,
+            color: "#2196F3",
+            fontSize: "0.95rem",
+            padding: "2px 8px",
+            background: "rgba(33, 150, 243, 0.08)",
+            borderRadius: "6px",
+          }}
+        >
+          {queryParams.get("id")}
+        </Typography>
+      )}
     </Breadcrumbs>
   );
 };

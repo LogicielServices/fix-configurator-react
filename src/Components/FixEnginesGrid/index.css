@@ -109,8 +109,8 @@
 
 .eng-wrap .dx-datagrid .dx-editor-cell .dx-texteditor:focus,
 .eng-wrap .dx-datagrid .dx-editor-cell .dx-texteditor.dx-state-focused {
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  border-color: #2196F3;
+  box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
 }
 
 .eng-wrap .dx-datagrid .dx-editor-cell .dx-texteditor-input {
@@ -142,7 +142,7 @@
 
 .eng-wrap .dx-pages .dx-page.dx-selection,
 .eng-wrap .dx-page-sizes .dx-selection {
-  background: #2563eb;
+  background: #2196F3;
   color: #ffffff;
   border-radius: 6px;
   font-weight: 600;
@@ -253,13 +253,13 @@
 /* Connect button - Primary blue */
 .eng-wrap .eng-action-connect {
   background: transparent !important;
-  color: #2563eb !important;
+  color: #2196F3 !important;
 }
 
 .eng-wrap .eng-action-connect:hover {
   background: #dbeafe !important;
   transform: scale(1.05);
-  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.15);
+  box-shadow: 0 2px 4px rgba(33, 150, 243, 0.15);
 }
 
 .eng-wrap .eng-action-connect:active {
@@ -322,7 +322,7 @@
 
 /* Loading spinner in connect button */
 .eng-wrap .eng-action-connect .fa-spinner {
-  color: #2563eb;
+  color: #2196F3;
   animation: spin 0.8s linear infinite;
 }
 
@@ -363,7 +363,7 @@
 
 /* Primary connect button */
 .eng-wrap .eng-actions .dx-button-mode-contained.dx-button-default {
-  background-color: #2563eb;
+  background-color: #2196F3;
   color: #ffffff;
   border: none;
 }

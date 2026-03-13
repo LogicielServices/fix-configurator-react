@@ -9,7 +9,7 @@
 
   /* To style them (e.g., color) */
   input[type="number"]::-webkit-inner-spin-button {
-    background-color: #1976d2; /* Your desired color */
+    background-color: #2196F3; /* Your desired color */
     border-radius: 50%;
   }
 

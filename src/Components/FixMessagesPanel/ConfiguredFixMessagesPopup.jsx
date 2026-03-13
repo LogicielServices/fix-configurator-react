@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, memo } from "react";
 import { getConfiguredFixMessagesStreams } from "../../Services/FixFiltersService";
 import DataGrid, { Column, HeaderFilter, LoadPanel, Scrolling } from "devextreme-react/data-grid";
 import { Popup } from "devextreme-react";
@@ -112,4 +112,4 @@ const ConfiguredFixMessagesPopup = ({
   );
 };
 
-export default ConfiguredFixMessagesPopup;
+export default memo(ConfiguredFixMessagesPopup);

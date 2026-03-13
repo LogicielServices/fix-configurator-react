@@ -50,7 +50,7 @@ const CFGSessionFormPopup = forwardRef(({ engineID, engineName, cfgPopUpVisible,
       onHiding={() => setCfgPopUpVisible(false)}
       title={isEdit ? `EDIT ${cfgSessionsTypes?.[cfgPopUpVisible]?.toUpperCase()} SESSION` : "ADD SESSION FORM"}
       showCloseButton
-      maxHeight="60vh"
+      maxHeight="70vh"
       height="auto"
     >
       <div className="custom-radio-button">
