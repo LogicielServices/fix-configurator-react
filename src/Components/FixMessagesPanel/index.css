@@ -479,3 +479,24 @@
   color: #ffffff;
   word-break: break-all;
 }
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Email Tags
+   ───────────────────────────────────────────────────────────────────────── */
+.email-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.email-tag {
+  display: inline-flex;
+  align-items: center;
+  background-color: #1976d2;
+  color: #ffffff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}

@@ -11,7 +11,7 @@ const formats = [
 ];
 
 const ConfiguredFixMessagesPopup = ({
-  engineID,
+  engineName,
   sessionID,
   configuredFixMessagesPopupVisible,
   setConfiguredFixMessagesPopupVisible,
@@ -57,7 +57,7 @@ const ConfiguredFixMessagesPopup = ({
         {/* Engine Info */}
         <div className="cfg-info-card">
           <div className="cfg-info-label">Engine</div>
-          <div className="cfg-info-value">{engineID || 'N/A'}</div>
+          <div className="cfg-info-value">{engineName || 'N/A'}</div>
         </div>
 
         {/* Session Info */}

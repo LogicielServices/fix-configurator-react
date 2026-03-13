@@ -7,11 +7,12 @@ import useFixMsgs from "../../SignalR/useFixMsgs";
 import { fixMessagesList } from "../../utils/constants";
 import FixMessageDescriptionPopup from "./FixMessageDescriptionPopup";
 import ConfiguredFixMessagesPopup from "./ConfiguredFixMessagesPopup";
+import MessageEmailConfigurationsPopup from "./MessageEmailConfigurationsPopup";
 
 const GRID_ROW_HEIGHT = 52; // Approximate height of one row in pixels
 const GRID_HEADER_HEIGHT = 90; // Approximate height of header + pager
 
-export default function FixMessagesPanel({ engineID, sessionID }) {
+export default function FixMessagesPanel({ engineID, engineName, sessionID }) {
   const [selectedMessagePairs, setSelectedMessagePairs] = useState([]);
   const [datasource, setDataSource] = useState([]);
   const [messagesGridHeight, setMessagesGridHeight] = useState(400);
@@ -22,6 +23,7 @@ export default function FixMessagesPanel({ engineID, sessionID }) {
   const [isResizingDescription, setIsResizingDescription] = useState(false);
   const [fixMessageDescriptionPopupVisible, setFixMessageDescriptionPopupVisible] = useState(false);
   const [configuredFixMessagesPopupVisible, setConfiguredFixMessagesPopupVisible] = useState(false);
+  const [messageEmailConfigurationsPopupVisible, setMessageEmailConfigurationsPopupVisible] = useState(false);
   const { fixMsgsRef } = useFixMsgs(engineID, sessionID);
   const messagesGridRef = useRef();
   const descriptionGridRef = useRef();
@@ -231,6 +233,11 @@ export default function FixMessagesPanel({ engineID, sessionID }) {
                 onClick={() => setFixMessageDescriptionPopupVisible(true)}
                 title="Configure email notification for this message"
               />
+              <Button
+                icon="fa-solid fa-bars"
+                onClick={() => setMessageEmailConfigurationsPopupVisible(true)}
+                title="View all message email configurations"
+              />
             </div>
           </div>
         </div>
@@ -291,10 +298,15 @@ export default function FixMessagesPanel({ engineID, sessionID }) {
       />
       {/* Configured Fix Messages Popup */}
       <ConfiguredFixMessagesPopup
-        engineID={engineID}
+        engineName={engineName}
         sessionID={sessionID}
         configuredFixMessagesPopupVisible={configuredFixMessagesPopupVisible}
         setConfiguredFixMessagesPopupVisible={setConfiguredFixMessagesPopupVisible}
+      />
+      {/* Message Email Configurations Popup */}
+      <MessageEmailConfigurationsPopup
+        messageEmailConfigurationsPopupVisible={messageEmailConfigurationsPopupVisible}
+        setMessageEmailConfigurationsPopupVisible={setMessageEmailConfigurationsPopupVisible}
       />
     </div>
   );

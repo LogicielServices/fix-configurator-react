@@ -19,7 +19,7 @@ export default function SessionsGrid({ sessions, engineID, title }) {
         setSelectedSessionID={setSelectedSessionID}
       />
       <div className="sg-messages-block">
-        <FixMessagesPanel engineID={engineID} sessionID={selectedSessionID} />
+        <FixMessagesPanel engineID={engineID} engineName={title} sessionID={selectedSessionID} />
       </div>
     </div>
   );
