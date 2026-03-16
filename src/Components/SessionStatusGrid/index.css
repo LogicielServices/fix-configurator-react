@@ -1,208 +1,589 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Session Status Grid — Enterprise Design System
+   Theme: Matches project conventions (Dashboard, FixEnginesGrid, SessionsGrid)
+   Primary: #2196F3 | Surface: #ffffff | BG: #f8fafc | Radius: 12px/8px/6px
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 .session-status-datagrid.dxl-wrap {
-    padding: 15px;
+    padding: 16px;
+    width: 100%;
+    max-width: 620px;
+    min-width: 320px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
 
-    /* Header (scoped) */
-    .dxl-head {
-        margin: 8px 2px 12px;
-    }
+/* ── Sticky Header ──────────────────────────────────────────────────────── */
+.session-status-datagrid.dxl-wrap .dxl-head {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    margin: 0 4px 20px;
+    padding: 0;
+    background: #f8fafc;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    line-height: 1.5;
+}
 
-    .dxl-h2 {
-        margin: 0;
-        font-size: 17px;
-        font-weight: 700;
-        color: #0f172a;
-    }
+.session-status-datagrid.dxl-wrap .dxl-head-left {
+    min-width: 0;
+}
 
-    .dxl-subtitle {
-        margin: 4px 0 0;
-        font-size: 12px;
-        color: #64748b;
-        /* slate-500 */
-    }
+.session-status-datagrid.dxl-wrap .dxl-h2 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+    color: #0f172a;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+}
 
-    /* Surface/card container for the grid */
-    .dxl-surface {
-        background: #ffffff;
-        border: 1px solid #e5e7eb;
-        /* neutral stroke */
-        border-radius: 14px;
-        box-shadow: 0 8px 24px rgba(2, 6, 23, 0.06);
-        overflow: hidden;
-    }
+.session-status-datagrid.dxl-wrap .dxl-subtitle {
+    margin: 6px 0 0;
+    font-size: 14px;
+    color: #64748b;
+    font-weight: 400;
+    line-height: 1.5;
+}
 
-    /* DataGrid base (scoped via ancestor) */
-    .dx-datagrid {
-        background: transparent;
-    }
+.session-status-datagrid.dxl-wrap .dxl-count-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #475569;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    white-space: nowrap;
+}
 
-    /* Hide row background to let our card style shine */
-    .dx-datagrid-rowsview .dx-row {
-        background: transparent;
-    }
+/* ── Surface / Card Container ───────────────────────────────────────────── */
+.session-status-datagrid.dxl-wrap .dxl-surface {
+    position: relative;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+    overflow: hidden;
+    flex: 1;
+    min-height: 0;
+}
 
-    /* Card-like row styling */
-    .dxl-card {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 14px;
-        padding: 14px 16px;
-        margin: 10px 10px;
-        border-radius: 12px;
-        border: 1px solid #e5e7eb;
-        /* light border */
-        background: linear-gradient(180deg, #ffffff, #f9fafb);
-        transition: box-shadow 160ms ease, transform 160ms ease, border-color 160ms ease;
-    }
+/* Scroll shadows — top & bottom fade cue */
+.session-status-datagrid.dxl-wrap .dxl-surface::before,
+.session-status-datagrid.dxl-wrap .dxl-surface::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 20px;
+    pointer-events: none;
+    z-index: 3;
+    opacity: 0.4;
+}
 
-    .dxl-card:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 10px 24px rgba(2, 6, 23, 0.08);
-        border-color: #d1d5db;
-        /* slightly darker on hover */
-    }
+.session-status-datagrid.dxl-wrap .dxl-surface::before {
+    top: 0;
+    background: linear-gradient(180deg, #ffffff 0%, transparent 100%);
+}
 
-    .dxl-left {
+.session-status-datagrid.dxl-wrap .dxl-surface::after {
+    bottom: 0;
+    background: linear-gradient(0deg, #ffffff 0%, transparent 100%);
+}
+
+/* ── DataGrid Base ──────────────────────────────────────────────────────── */
+.session-status-datagrid.dxl-wrap .dx-datagrid {
+    background: transparent;
+    font-size: 14px;
+}
+
+.session-status-datagrid.dxl-wrap .dx-datagrid-rowsview .dx-row {
+    background: transparent;
+}
+
+.session-status-datagrid.dxl-wrap .dx-datagrid .dx-row > td {
+    padding: 0 12px;
+}
+
+/* ── Card Row ───────────────────────────────────────────────────────────── */
+.session-status-datagrid.dxl-wrap .dxl-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 14px 18px;
+    margin: 6px 10px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    background: #ffffff;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+/* Left accent bar — matches project's row-status left-border convention */
+.session-status-datagrid.dxl-wrap .dxl-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    bottom: 12px;
+    width: 3px;
+    border-radius: 0 3px 3px 0;
+    background: #e2e8f0;
+    transition: all 0.2s ease;
+}
+
+/* Accent colors match project's sg-row-connected / sg-row-disconnected */
+.session-status-datagrid.dxl-wrap .dxl-card[data-status="connected"]::before {
+    background: #10b981;
+}
+
+.session-status-datagrid.dxl-wrap .dxl-card[data-status="disconnected"]::before {
+    background: #ef4444;
+}
+
+.session-status-datagrid.dxl-wrap .dxl-card[data-status="unavailable"]::before {
+    background: #9CA3AF;
+}
+
+/* Alternating rows — matches project's odd/even pattern */
+.session-status-datagrid.dxl-wrap .dx-datagrid-rowsview .dx-row:nth-child(odd) .dxl-card {
+    background: #ffffff;
+}
+
+.session-status-datagrid.dxl-wrap .dx-datagrid-rowsview .dx-row:nth-child(even) .dxl-card {
+    background: #fafbfc;
+}
+
+/* Hover — matches project's translateY(-1px) pattern */
+.session-status-datagrid.dxl-wrap .dxl-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border-color: #cbd5e1;
+}
+
+.session-status-datagrid.dxl-wrap .dxl-card:hover::before {
+    width: 4px;
+}
+
+/* Active / Pressed — matches project's scale(0.95) or translateY(0) */
+.session-status-datagrid.dxl-wrap .dxl-card:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* Keyboard Focus — matches project's focus convention: 2196F3 ring */
+.session-status-datagrid.dxl-wrap .dxl-card:focus-visible {
+    outline: 2px solid #2196F3;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+}
+
+/* ── Card Left — Text ───────────────────────────────────────────────────── */
+.session-status-datagrid.dxl-wrap .dxl-left {
+    min-width: 0;
+    display: grid;
+    gap: 6px;
+    flex: 1;
+}
+
+.session-status-datagrid.dxl-wrap .dxl-title .dxl-conn-id {
+    color: #0f172a;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 1.3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
+}
+
+.session-status-datagrid.dxl-wrap .dxl-sub {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    color: #64748b;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.session-status-datagrid.dxl-wrap .dxl-sub .dxl-label {
+    color: #475569;
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+.session-status-datagrid.dxl-wrap .dxl-sub .dxl-value {
+    color: #0f172a;
+    font-weight: 500;
+}
+
+.session-status-datagrid.dxl-wrap .dxl-sub .dxl-mono {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 12px;
+}
+
+.session-status-datagrid.dxl-wrap .dxl-sub .dxl-divider {
+    color: #cbd5e1;
+}
+
+/* ── Card Right — Chips ─────────────────────────────────────────────────── */
+.session-status-datagrid.dxl-wrap .dxl-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: none;
+}
+
+/* ── Status Badge — matches project's sg-mode / eng-chip pattern (8px radius) ── */
+.session-status-datagrid.dxl-wrap .dxl-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    line-height: 1.3;
+}
+
+/* CSS dot indicator — cross-platform consistent */
+.session-status-datagrid.dxl-wrap .dxl-status-badge .dxl-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: inline-block;
+}
+
+/* Connected — project green palette */
+.session-status-datagrid.dxl-wrap .dxl-badge-connected {
+    color: #065f46;
+    background: #d1fae5;
+    border-color: #6ee7b7;
+}
+
+.session-status-datagrid.dxl-wrap .dxl-badge-connected .dxl-dot {
+    background: #10b981;
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25);
+    animation: dxl-pulse-green 2s ease-in-out infinite;
+}
+
+/* Disconnected — project red palette */
+.session-status-datagrid.dxl-wrap .dxl-badge-disconnected {
+    color: #7f1d1d;
+    background: #fee2e2;
+    border-color: #fca5a5;
+}
+
+.session-status-datagrid.dxl-wrap .dxl-badge-disconnected .dxl-dot {
+    background: #ef4444;
+    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+}
+
+/* Unavailable — project gray palette */
+.session-status-datagrid.dxl-wrap .dxl-badge-unavailable {
+    color: #374151;
+    background: #f3f4f6;
+    border-color: #d1d5db;
+}
+
+.session-status-datagrid.dxl-wrap .dxl-badge-unavailable .dxl-dot {
+    background: #9CA3AF;
+    box-shadow: 0 0 0 2px rgba(156, 163, 175, 0.2);
+}
+
+/* Default / Unknown */
+.session-status-datagrid.dxl-wrap .dxl-badge-default {
+    color: #334155;
+    background: #e2e8f0;
+    border-color: #cbd5e1;
+}
+
+.session-status-datagrid.dxl-wrap .dxl-badge-default .dxl-dot {
+    background: #94a3b8;
+    box-shadow: 0 0 0 2px rgba(148, 163, 184, 0.2);
+}
+
+/* Connected dot pulse */
+@keyframes dxl-pulse-green {
+    0%, 100% { box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25); }
+    50%      { box-shadow: 0 0 0 5px rgba(16, 185, 129, 0.08); }
+}
+
+/* ── Mode Chip — Matches project's sg-mode convention ───────────────────── */
+.session-status-datagrid.dxl-wrap .dxl-mode-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    border: 1px solid #e2e8f0;
+    color: #374151;
+    background: #f8fafc;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    line-height: 1.3;
+}
+
+.session-status-datagrid.dxl-wrap .dxl-mode-chip .dxl-mode-icon {
+    font-size: 12px;
+    line-height: 1;
+}
+
+/* Initiator — matches project's sg-mode-initiator: #dbeafe / #1e3a8a / #93c5fd */
+.session-status-datagrid.dxl-wrap .dxl-mode-initiator {
+    background: #dbeafe;
+    color: #1e3a8a;
+    border-color: #93c5fd;
+}
+
+.session-status-datagrid.dxl-wrap .dxl-mode-initiator .dxl-mode-icon {
+    color: #2196F3;
+}
+
+/* Acceptor — matches project's sg-mode-acceptor: #e0e7ff / #3730a3 / #a5b4fc */
+.session-status-datagrid.dxl-wrap .dxl-mode-acceptor {
+    background: #e0e7ff;
+    color: #3730a3;
+    border-color: #a5b4fc;
+}
+
+.session-status-datagrid.dxl-wrap .dxl-mode-acceptor .dxl-mode-icon {
+    color: #4f46e5;
+}
+
+/* ── Pager — Matches project: #f8fafc bg, #2196F3 selection ─────────────── */
+.session-status-datagrid.dxl-wrap .dx-datagrid .dx-pager {
+    background: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+    padding: 12px 16px;
+    color: #475569;
+}
+
+.session-status-datagrid.dxl-wrap .dx-pages .dx-page,
+.session-status-datagrid.dxl-wrap .dx-page-sizes .dx-page-size {
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.session-status-datagrid.dxl-wrap .dx-pages .dx-page:hover,
+.session-status-datagrid.dxl-wrap .dx-page-sizes .dx-page-size:hover {
+    background: #e2e8f0;
+}
+
+.session-status-datagrid.dxl-wrap .dx-pages .dx-page.dx-selection,
+.session-status-datagrid.dxl-wrap .dx-page-sizes .dx-selection {
+    background: #2196F3;
+    color: #ffffff;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+/* ── Empty State — Matches project's sess-empty-state convention ─────────── */
+.session-status-datagrid.dxl-wrap .dxl-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 24px;
+    text-align: center;
+    min-height: 300px;
+}
+
+.session-status-datagrid.dxl-wrap .dxl-empty-state .dxl-empty-icon {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #F1F5F9;
+    border-radius: 50%;
+    margin-bottom: 20px;
+    color: #64748B;
+    font-size: 24px;
+}
+
+.session-status-datagrid.dxl-wrap .dxl-empty-state .dxl-empty-title {
+    margin: 0 0 8px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #0F172A;
+    letter-spacing: -0.025em;
+    line-height: 1.4;
+}
+
+.session-status-datagrid.dxl-wrap .dxl-empty-state .dxl-empty-desc {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 400;
+    color: #6B7280;
+    line-height: 1.6;
+    max-width: 320px;
+}
+
+/* ── Loading Skeleton ───────────────────────────────────────────────────── */
+.session-status-datagrid.dxl-wrap .dxl-skeleton {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.session-status-datagrid.dxl-wrap .dxl-skeleton-card {
+    height: 80px;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #f1f5f9 25%, #e8ecf1 50%, #f1f5f9 75%);
+    background-size: 200% 100%;
+    animation: dxl-shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes dxl-shimmer {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Responsive — Compact / Mobile
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 600px) {
+    .session-status-datagrid.dxl-wrap {
+        padding: 8px;
         min-width: 0;
-        display: grid;
-        gap: 6px;
     }
 
-    .dxl-title .dxl-conn-id {
-        color: #0f172a;
-        font-weight: 800;
-        font-size: 16px;
-        letter-spacing: 0.2px;
+    .session-status-datagrid.dxl-wrap .dxl-h2 {
+        font-size: 20px;
     }
 
-    .dxl-sub {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 3px;
-        color: #64748b;
+    .session-status-datagrid.dxl-wrap .dxl-subtitle {
         font-size: 13px;
     }
 
-    .dxl-sub .dxl-label {
-        color: #475569;
-        font-weight: 600;
+    .session-status-datagrid.dxl-wrap .dxl-surface {
+        border-radius: 8px;
     }
 
-    .dxl-sub .dxl-value {
-        color: #0f172a;
-    }
-
-    .dxl-sub .dxl-mono {
-        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    }
-
-    .dxl-sub .dxl-divider {
-        color: #94a3b8;
-    }
-
-    /* Right side chips */
-    .dxl-right {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        flex: none;
-    }
-
-    /* Status badge (soft, accessible) */
-    .dxl-status-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 6px 10px;
-        font-size: 12px;
-        font-weight: 800;
-        letter-spacing: 0.3px;
-        border-radius: 999px;
-        border: 1px solid transparent;
-    }
-
-    .dxl-status-badge .dxl-dot {
-        font-size: 12px;
-        line-height: 1;
-    }
-
-    /* Status colors */
-    .dxl-badge-connected {
-        color: #065f46;
-        background: #d1fae5;
-        /* emerald-100 */
-        border-color: #10b98155;
-    }
-
-    .dxl-badge-disconnected {
-        color: #7f1d1d;
-        background: #fee2e2;
-        /* red-100 */
-        border-color: #ef444455;
-    }
-
-    .dxl-badge-unavailable {
-        color: #374151;
-        background: #E5E7EB;
-        /* gray-200 */
-        border-color: #9CA3AF55;
-    }
-
-    .dxl-badge-default {
-        color: #334155;
-        background: #e2e8f0;
-        border-color: #cbd5e1;
-    }
-
-    /* Mode chip */
-    .dxl-mode-chip {
-        display: inline-flex;
-        align-items: center;
-        padding: 6px 12px;
-        border-radius: 999px;
-        font-size: 12px;
-        font-weight: 800;
-        border: 1px solid #e5e7eb;
-        color: #1f2937;
-        background: #f8fafc;
-    }
-
-    .dxl-mode-initiator {
-        box-shadow: 0 0 0 1px #93c5fd inset;
-        /* blue hint */
-    }
-
-    .dxl-mode-acceptor {
-        box-shadow: 0 0 0 1px #c4b5fd inset;
-        /* violet hint */
-    }
-
-    /* Pager, scoped */
-    .dx-datagrid .dx-pager {
-        background: #ffffff;
-        border-top: 1px solid #e5e7eb;
+    .session-status-datagrid.dxl-wrap .dxl-card {
+        flex-direction: column;
+        align-items: flex-start;
         padding: 12px 14px;
-        color: #334155;
+        margin: 4px 6px;
+        gap: 10px;
     }
 
-    .dx-pages .dx-page.dx-selection,
-    .dx-page-sizes .dx-selection {
-        background: #111827;
-        /* neutral dark */
-        color: #ffffff;
-        border-radius: 8px;
+    .session-status-datagrid.dxl-wrap .dxl-right {
+        width: 100%;
+        justify-content: flex-start;
+        flex-wrap: wrap;
     }
 
-    .dx-pages .dx-page,
-    .dx-page-sizes .dx-page-size {
-        border-radius: 8px;
+    .session-status-datagrid.dxl-wrap .dxl-status-badge,
+    .session-status-datagrid.dxl-wrap .dxl-mode-chip {
+        font-size: 11px;
+        padding: 4px 10px;
     }
 
-    .dxl-card {
-        cursor: pointer;
+    .session-status-datagrid.dxl-wrap .dxl-title .dxl-conn-id {
+        font-size: 14px;
     }
 
-    .dx-datagrid .dx-row>td {
-        padding: 0px 16px;
+    .session-status-datagrid.dxl-wrap .dxl-sub .dxl-label {
+        font-size: 11px;
+    }
+
+    .session-status-datagrid.dxl-wrap .dxl-empty-state {
+        min-height: 240px;
+        padding: 32px 16px;
+    }
+
+    .session-status-datagrid.dxl-wrap .dxl-empty-state .dxl-empty-title {
+        font-size: 16px;
+    }
+
+    .session-status-datagrid.dxl-wrap .dxl-empty-state .dxl-empty-desc {
+        font-size: 14px;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Accessibility — Reduced Motion
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+    .session-status-datagrid.dxl-wrap .dxl-card {
+        transition: none;
+    }
+
+    .session-status-datagrid.dxl-wrap .dxl-card:hover {
+        transform: none;
+    }
+
+    .session-status-datagrid.dxl-wrap .dxl-badge-connected .dxl-dot {
+        animation: none;
+    }
+
+    .session-status-datagrid.dxl-wrap .dxl-skeleton-card {
+        animation: none;
+        background: #f1f5f9;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Accessibility — High Contrast Mode
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media (prefers-contrast: more) {
+    .session-status-datagrid.dxl-wrap .dxl-card {
+        border-width: 2px;
+        border-color: #000000;
+    }
+
+    .session-status-datagrid.dxl-wrap .dxl-status-badge {
+        border-width: 2px;
+        font-weight: 800;
+    }
+
+    .session-status-datagrid.dxl-wrap .dxl-badge-connected {
+        color: #000000;
+        background: #bbf7d0;
+        border-color: #065f46;
+    }
+
+    .session-status-datagrid.dxl-wrap .dxl-badge-disconnected {
+        color: #000000;
+        background: #fecaca;
+        border-color: #7f1d1d;
+    }
+
+    .session-status-datagrid.dxl-wrap .dxl-badge-unavailable {
+        color: #000000;
+        background: #d1d5db;
+        border-color: #374151;
+    }
+
+    .session-status-datagrid.dxl-wrap .dxl-mode-chip {
+        border-width: 2px;
+        border-color: #000000;
+    }
+
+    .session-status-datagrid.dxl-wrap .dxl-title .dxl-conn-id {
+        font-weight: 800;
     }
 }
