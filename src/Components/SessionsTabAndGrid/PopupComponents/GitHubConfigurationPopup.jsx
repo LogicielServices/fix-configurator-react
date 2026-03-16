@@ -2,7 +2,7 @@ import { Popup, TextArea } from "devextreme-react";
 import { Button as DevBtn } from "devextreme-react/button";
 import { getConfigDetails, updateCfgIni } from "../../../Services/GithubService";
 import { showErrorToast, showSuccessToast } from "../../../utils/toastsService";
-import { clonableGitFilesEnum } from "../handler";
+import { clonableGitFilesEnum } from "../handler.jsx";
 import { textMessages } from "../../../utils/constants";
 
 const GitHubConfigurationPopup = ({

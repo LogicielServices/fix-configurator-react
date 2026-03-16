@@ -3,7 +3,7 @@ import { ButtonItem, GroupItem, SimpleItem } from "devextreme-react/form";
 import { getJobStatus, triggerJenkins } from "../../../Services/JenkinsConfigService";
 import { showErrorToast, showSuccessToast } from "../../../utils/toastsService";
 import { textMessages } from "../../../utils/constants";
-import { jobConfigFormOptions, osList } from "../handler";
+import { jobConfigFormOptions, osList } from "../handler.jsx";
 
 const JobDeploymentPopup = ({
   engineID,

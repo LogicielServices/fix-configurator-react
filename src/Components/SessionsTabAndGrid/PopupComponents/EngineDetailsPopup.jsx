@@ -1,7 +1,7 @@
 import { Popup, Form } from "devextreme-react";
 import { SimpleItem } from "devextreme-react/form";
 import { forwardRef, useImperativeHandle, useState } from "react";
-import { cfgSessionsTypes } from "../handler";
+import { cfgSessionsTypes } from "../handler.jsx";
 
 const EngineDetailsPopup = forwardRef(({ engineDetails, ipAddress }, ref) => {
   const [isVisible, setIsVisible] = useState(false);

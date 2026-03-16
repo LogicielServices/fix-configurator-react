@@ -1,7 +1,7 @@
 import { Popup, Form } from "devextreme-react";
 import { SimpleItem } from "devextreme-react/form";
 import { forwardRef, useImperativeHandle, useState } from "react";
-import { editSessionRowFields } from "../handler";
+import { editSessionRowFields } from "../handler.jsx";
 
 // Helper function to determine field data type based on field name
 const getFieldDataType = (fieldName) => {

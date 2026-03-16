@@ -6,7 +6,7 @@ import {
   PatternRule,
   SimpleItem,
 } from "devextreme-react/form";
-import { sessionEmailConfigFormOptions, timeUnitEnum } from "../handler";
+import { sessionEmailConfigFormOptions, timeUnitEnum } from "../handler.jsx";
 import { reportEmailsValidation } from "../../../utils/formValidator";
 import { useRef } from "react";
 import { enumToList } from "../../../utils/helper";

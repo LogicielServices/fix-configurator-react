@@ -3,7 +3,7 @@ import { ButtonItem, GroupItem, SimpleItem } from "devextreme-react/form";
 import { deleteJenkinsConfig, upsertJenkinsConfig } from "../../../Services/JenkinsConfigService";
 import { showErrorToast, showSuccessToast } from "../../../utils/toastsService";
 import { textMessages } from "../../../utils/constants";
-import { jenkinsConfigFormOptions } from "../handler";
+import { jenkinsConfigFormOptions } from "../handler.jsx";
 
 const JenkinsConfigPopup = ({
   engineID,

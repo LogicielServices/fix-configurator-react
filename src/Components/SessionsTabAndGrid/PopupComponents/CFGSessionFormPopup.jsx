@@ -5,7 +5,7 @@ import {
   cfgInitiatorSessionFormOptions,
   cfgSessionsFilesEnum,
   cfgSessionsTypes,
-} from "../handler";
+} from "../handler.jsx";
 import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import { addAcceptor, addInitiator } from "../../../Services/GithubService";
 import { showErrorToast, showSuccessToast } from "../../../utils/toastsService";

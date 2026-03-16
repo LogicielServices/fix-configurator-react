@@ -41,7 +41,7 @@ import {
   editSessionRowFields,
   cfgSessionsFilesEnum,
   sessionEmailConfigFormOptions,
-} from "./handler.js";
+} from "./handler.jsx";
 import CFGSessionFormPopup from "./PopupComponents/CFGSessionFormPopup.jsx";
 import SequenceNumbersPopup from "./PopupComponents/SequenceNumbersPopup.jsx";
 import JenkinsConfigPopup from "./PopupComponents/JenkinsConfigPopup.jsx";
