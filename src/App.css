@@ -767,6 +767,13 @@ p {
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(4px);
   animation: fadeIn 0.25s ease-out;
+  position: absolute;
+  z-index: 1501;
+}
+
+.dx-overlay-wrapper {
+  height: 100vh !important;
+  transform: translate(0px, -100vh) !important;
 }
 
 @keyframes fadeIn {
