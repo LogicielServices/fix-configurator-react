@@ -765,6 +765,7 @@ p {
 /* Popup Overlay/Backdrop */
 .dx-overlay {
   background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
   animation: fadeIn 0.25s ease-out;
 }
 
