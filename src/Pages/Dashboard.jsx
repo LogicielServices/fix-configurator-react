@@ -77,17 +77,6 @@ export default function FixDashboard() {
 
   return (
     <div className="fx-dashboard">
-      {/* Top: two panes (left Engines, right Connections list) */}
-      {/* <CollapsibleSection title="Engines Details & Sessions History" defaultOpen={true}>
-          <div className="fx-two-pane">
-            <div className="fx-pane-left">
-              <FixEnginesGrid handleEngineConnected={handleEngineConnected} />
-            </div>
-            <div className="fx-pane-right">
-              <SessionStatusGrid />
-            </div>
-          </div>
-        </CollapsibleSection> */}
       <Dialog
         open={showPopup}
         onClose={() => setShowPopup(false)}
@@ -96,7 +85,6 @@ export default function FixDashboard() {
       >
         <FixEnginesGrid handleEngineConnected={handleEngineConnected} connectedEngines={tabs} setShowPopup={setShowPopup} />
       </Dialog>
-      {/* Bottom: tabs for sessions of connected engines */}
       <div className="fx-tabs-area">
         <SessionsTabs
           tabs={tabs}

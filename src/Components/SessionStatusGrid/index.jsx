@@ -1,26 +1,12 @@
-
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback } from 'react';
 import { DataGrid, Column, Paging, Pager } from 'devextreme-react/data-grid';
 import { ConnectionCard } from './handler';
-import { getSessionsConnectivityStatus } from '../../Services/FixSessionService';
 import './index.css';
+import useFixSessionStatusFeed from '../../SignalR/useFixSessionStatusFeed';
 
 export default function SessionStatusGrid() {
-  const [rows, setRows] = useState([]);
+  const updates = useFixSessionStatusFeed();
   const cellRender = useCallback((cellData) => <ConnectionCard data={cellData.data} />, []);
-
-  const getData = async () => {
-    const response = await getSessionsConnectivityStatus();
-    if (response?.length) {
-      setRows(response);
-      return;
-    }
-    setRows([]);
-  }
-
-  useEffect(() => {
-    getData();
-  }, [])
 
   return (
     <div className="session-status-datagrid dxl-wrap">
@@ -30,7 +16,7 @@ export default function SessionStatusGrid() {
 
       <div className="dxl-surface">
         <DataGrid
-          dataSource={rows}
+          dataSource={updates}
           keyExpr="connectionID"
           showBorders={false}
           showColumnHeaders={false}
