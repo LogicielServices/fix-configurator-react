@@ -771,11 +771,6 @@ p {
   z-index: 1501;
 }
 
-.dx-overlay-wrapper {
-  height: 100vh !important;
-  transform: translate(0px, -100vh) !important;
-}
-
 @keyframes fadeIn {
   from {
     opacity: 0;
