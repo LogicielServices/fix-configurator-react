@@ -58,7 +58,7 @@ const JenkinsConfigPopup = ({
       showCloseButton
       width="800px"
       maxWidth="70vw"
-      maxHeight="410px"
+      maxHeight="425px"
     >
       <form onSubmit={addJenkinsConfig}>
         <Form

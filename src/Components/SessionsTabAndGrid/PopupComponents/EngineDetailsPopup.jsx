@@ -32,7 +32,7 @@ const EngineDetailsPopup = forwardRef(({ engineDetails, ipAddress }, ref) => {
       showCloseButton
       width="400px"
       maxWidth="85vw"
-      maxHeight="440px"
+      maxHeight="455px"
     >
       <Form formData={formData} colCount={1}>
         <SimpleItem

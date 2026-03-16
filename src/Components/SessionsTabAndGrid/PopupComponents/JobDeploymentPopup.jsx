@@ -61,7 +61,7 @@ const JobDeploymentPopup = ({
       showCloseButton
       width="800px"
       maxWidth="70vw"
-      maxHeight="370px"
+      maxHeight="380px"
     >
       <form onSubmit={triggerJob}>
         <Form
