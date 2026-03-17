@@ -3,7 +3,6 @@ import { getAllMessageEmailConfigurations, deleteMessageEmailConfiguration } fro
 import DataGrid, { Column, HeaderFilter, LoadPanel, Scrolling } from "devextreme-react/data-grid";
 import { Popup, Button } from "devextreme-react";
 import "./index.css";
-import { confirm } from "devextreme/ui/dialog";
 import { textMessages } from "../../utils/constants";
 import { showErrorToast, showSuccessToast } from "../../utils/toastsService";
 
