@@ -80,7 +80,7 @@ const EngineStartStopPopup = forwardRef(
         width="350px"
         maxWidth="85vw"
         height="auto"
-        maxHeight="197px"
+        maxHeight="205px"
       >
         <Form formData={formData} colCount={1}>
           <SimpleItem
