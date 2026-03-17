@@ -8,38 +8,43 @@
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  height: 100vh;
+  overflow: auto;
   /* Firefox scrollbar */
   scrollbar-width: thin;
   scrollbar-color: transparent transparent;
 }
 
-*:hover {
+#root:hover {
   /* Firefox scrollbar on hover */
   scrollbar-color: rgba(148, 148, 148, 0.6) transparent !important;
 }
 
 /* Chrome, Edge, Safari scrollbar */
-*::-webkit-scrollbar {
+#root::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
-*::-webkit-scrollbar-track {
+#root::-webkit-scrollbar-track {
   background: transparent;
   transition: background 0.3s ease;
 }
 
-*::-webkit-scrollbar-thumb {
+#root::-webkit-scrollbar-thumb {
   background-color: rgba(100, 116, 139, 0.3);
   border-radius: 4px;
   transition: background 0.3s ease;
 }
 
-*:hover::-webkit-scrollbar-track {
+#root:hover::-webkit-scrollbar-track {
   background: rgba(0, 0, 0, 0.03);
 }
 
-*:hover::-webkit-scrollbar-thumb {
+#root:hover::-webkit-scrollbar-thumb {
   background-color: rgba(100, 116, 139, 0.6);
 }
 
