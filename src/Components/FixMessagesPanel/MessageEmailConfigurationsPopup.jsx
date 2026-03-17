@@ -5,6 +5,7 @@ import { Popup, Button } from "devextreme-react";
 import "./index.css";
 import { confirm } from "devextreme/ui/dialog";
 import { textMessages } from "../../utils/constants";
+import { showErrorToast, showSuccessToast } from "../../utils/toastsService";
 
 const MessageEmailConfigurationsPopup = ({
   messageEmailConfigurationsPopupVisible,
@@ -53,8 +54,13 @@ const MessageEmailConfigurationsPopup = ({
   const handleDelete = async (id) => {
     try {
       setLoading(true);
-      await deleteMessageEmailConfiguration(id);
-      await loadMessageEmailConfigurations();
+      const res = await deleteMessageEmailConfiguration(id);
+      if (res?.isSuccessful) {
+        showSuccessToast(res?.message || textMessages.fixMessageEmailConfigurationDeleted);
+        await loadMessageEmailConfigurations();
+      } else {
+        showErrorToast(res?.message || textMessages.anErrorOccurred);
+      }
     } catch (error) {
       console.error("Error deleting configuration:", error);
     } finally {

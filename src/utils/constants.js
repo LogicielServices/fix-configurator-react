@@ -38,6 +38,7 @@ export const textMessages = Object.freeze({
   jenkinsConfigurationsWereSavedSuccessfully: "Jenkins configurations were saved successfully.",
   errorInSavingJenkinsConfig: "There was an error in saving jenkins configurations.",
   anErrorOccurred: "An error occurred.",
+  fixMessageEmailConfigurationDeleted: "Message email configuration removed successfully.",
 });
 
 export const fixMessagesList = Object.freeze([
