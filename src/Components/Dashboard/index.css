@@ -6,7 +6,7 @@
 .fx-dashboard {
   background: #f8fafc;
   min-height: calc(100vh - 108px);
-  padding: 24px;
+  padding: 13px;
 }
 
 /* Two-pane layout (legacy support) */
