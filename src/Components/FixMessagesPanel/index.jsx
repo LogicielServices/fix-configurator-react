@@ -221,12 +221,14 @@ export default function FixMessagesPanel({ engineID, engineName, sessionID }) {
               <h4 className="fx-card-title">Fix Message Description</h4>
               <div className="fx-card-sub">Tag / Name / Value</div>
             </div>
-            <div style={{ display: 'flex', gap: '8px' }}>
+            <div style={{ display: 'flex', gap: '3px' }}>
               {/* update these three buttons */}
               <Button
                 icon="fa-solid fa-arrow-right-arrow-left fa-rotate-90"
                 type="default"
                 stylingMode="text"
+                height={35}
+                width={35}
                 disabled={!sessionID}
                 onClick={() => setConfiguredFixMessagesPopupVisible(true)}
                 hint="View configured fix messages streams"
@@ -235,6 +237,8 @@ export default function FixMessagesPanel({ engineID, engineName, sessionID }) {
                 icon="fa-solid fa-gears"
                 type="default"
                 stylingMode="text"
+                height={35}
+                width={35}
                 onClick={() => setFixMessageDescriptionPopupVisible(true)}
                 hint="Configure email notification for this message"
               />
@@ -242,6 +246,8 @@ export default function FixMessagesPanel({ engineID, engineName, sessionID }) {
                 icon="fa-solid fa-bars"
                 type="default"
                 stylingMode="text"
+                height={35}
+                width={35}
                 onClick={() => setMessageEmailConfigurationsPopupVisible(true)}
                 hint="View all message email configurations"
               />
