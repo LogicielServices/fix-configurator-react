@@ -776,6 +776,10 @@ p {
   z-index: 1501;
 }
 
+.dx-popup-wrapper > .dx-overlay-content {
+  border-radius: 10px;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
