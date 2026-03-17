@@ -7,8 +7,7 @@
 .session-status-datagrid.dxl-wrap {
     padding: 16px;
     width: 100%;
-    max-width: 620px;
-    min-width: 320px;
+    width: 620px;
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -449,11 +448,12 @@
 }
 
 .session-status-datagrid.dxl-wrap .dxl-skeleton-card {
-    height: 80px;
+    height: 109.5px;
     border-radius: 12px;
     background: linear-gradient(90deg, #f1f5f9 25%, #e8ecf1 50%, #f1f5f9 75%);
     background-size: 200% 100%;
     animation: dxl-shimmer 1.5s ease-in-out infinite;
+    width: 584px;
 }
 
 @keyframes dxl-shimmer {

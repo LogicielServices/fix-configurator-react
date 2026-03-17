@@ -6,17 +6,16 @@ import { fixSessionHistory } from "../Services/FixSessionHistory";
 export default function useFixSessionStatusFeed(maxItems = 200) {
   const connectionRef = useRef(null);
   const isConnectedRef = useRef(false);
-  const [updates, setUpdates] = useState([]);
+  const [updates, setUpdates] = useState(null);
 
   // ---- Initial History Fetch ---- //
   useEffect(() => {
     (async () => {
       try {
         const response = await fixSessionHistory();
-        if (response?.length) {
-          setUpdates(response);
-        }
+        setUpdates(response || []);
       } catch (err) {
+        setUpdates([]);
         console.error("Initial history fetch failed:", err);
       }
     })();
