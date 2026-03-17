@@ -751,6 +751,7 @@
 .sess-wrap .dx-toolbar .dx-button.dx-button-mode-contained.dx-button-success:hover {
   background: #059669;
   box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
+  transform: translateY(-2px);
 }
 
 /* Danger buttons */
