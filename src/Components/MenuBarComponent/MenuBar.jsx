@@ -167,7 +167,6 @@ const MenuBar = ({ handleDrawerToggle }) => {
                 textTransform: "uppercase",
                 letterSpacing: "0.5px",
                 display: { xs: "none", sm: "inline" },
-                maxWidth: "100px",
                 overflow: "hidden",
                 textOverflow: "ellipsis",
                 whiteSpace: "nowrap",
