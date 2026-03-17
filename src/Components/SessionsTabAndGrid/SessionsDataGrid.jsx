@@ -251,7 +251,7 @@ export default function SessionsDataGrid({
         showColumnLines={false}
         showRowLines={false}
         noDataText="No sessions to display"
-        style={{ maxHeight: 700 }}
+        style={{ maxHeight: 500 }}
         width="100%"
         selection={{ mode: "single" }}
         onSelectionChanged={(e) => {
