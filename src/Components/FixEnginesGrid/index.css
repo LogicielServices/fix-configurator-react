@@ -75,6 +75,10 @@
   border-right: 1px solid #f8fafc;
 }
 
+.eng-wrap .dx-data-row .eng-grid-actions-col {
+  height: 69px !important;
+}
+
 .eng-wrap .dx-datagrid-rowsview .dx-row:nth-child(odd) > td {
   background: #ffffff;
 }

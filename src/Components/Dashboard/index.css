@@ -606,6 +606,10 @@
   width: 220px !important;
 }
 
+.sess-wrap .dx-data-row .sg-actions-col {
+  height: 58.59px !important;
+}
+
 .sess-wrap .sg-actions-col .dx-command-buttons {
   justify-content: center;
   gap: 4px;

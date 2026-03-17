@@ -341,6 +341,7 @@ export default function EnginesGrid({ handleEngineConnected, connectedEngines, s
         <Column
           caption="Actions"
           width={120}
+          cssClass="eng-grid-actions-col"
           alignment="center"
           cellRender={(cell) => <ActionCell data={cell?.data} />}
           allowFiltering={false}
