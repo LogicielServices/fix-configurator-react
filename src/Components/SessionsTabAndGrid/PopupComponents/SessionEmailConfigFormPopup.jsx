@@ -1,4 +1,4 @@
-import { Form, Popup, TagBox } from "devextreme-react";
+import { Form, Popup, RadioGroup, TagBox } from "devextreme-react";
 import {
   ButtonItem,
   GroupItem,
@@ -85,13 +85,17 @@ const SequenceEmailConfigFormPopup = ({
           />
           {/* <SimpleItem editorType="dxCheckBox" colSpan={1} dataField="emailStatus" /> */}
           <SimpleItem
-            editorType="dxSelectBox"
+            editorType="dxRadioGroup"
             colSpan={2}
             dataField="recurring"
             editorOptions={{
-              dataSource: [true, false],
-              displayExpr: (value) => (value ? "Yes" : "No"),
-              valueExpr: "ID",
+              items: [
+                { text: "One Time", value: false },
+                { text: "Recurring", value: true },
+              ],
+              valueExpr: "value",
+              displayExpr: "text",
+              layout: "horizontal",
             }}
           />
           <SimpleItem

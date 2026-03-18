@@ -13,6 +13,14 @@ import { textMessages } from "../../../utils/constants";
 import { booleanEnum, enumToList } from "../../../utils/helper";
 import { useLoader } from "../../../Provider/LoaderContext.jsx";
 
+const radioGroupEditorOptions = {
+  value: 'N',
+  items: enumToList(booleanEnum),
+  valueExpr: "ID",
+  displayExpr: "Name",
+  layout: "horizontal",
+}
+
 const CFGSessionFormPopup = forwardRef(({ engineID, engineName, cfgPopUpVisible, setCfgPopUpVisible }, ref) => {
   const [isEdit, setIsEdit] = useState(false);
   const { showLoader, hideLoader } = useLoader();
@@ -30,11 +38,11 @@ const CFGSessionFormPopup = forwardRef(({ engineID, engineName, cfgPopUpVisible,
     }
     hideLoader();
     if (response?.isSuccessful) {
-      showSuccessToast(response?.message || textMessages.sessionCreatedSuccessfully)
+      showSuccessToast(response?.message || textMessages.sessionCreatedSuccessfully);
+      setCfgPopUpVisible(false);
     } else {
       showErrorToast(response?.message || textMessages.unableToCheckConnectivity)
     }
-    setCfgPopUpVisible(false);
   };
 
   useEffect(() => {
@@ -123,65 +131,41 @@ const CFGSessionFormPopup = forwardRef(({ engineID, engineName, cfgPopUpVisible,
           <SimpleItem
             dataField="useDataDictionary"
             visible={cfgPopUpVisible === cfgSessionsTypes.acceptor}
-            editorType="dxSelectBox"
+            editorType="dxRadioGroup"
             isRequired
-            editorOptions={{
-              dataSource: enumToList(booleanEnum),
-              valueExpr: "ID",
-              displayExpr: "Name",
-            }}
+            editorOptions={radioGroupEditorOptions}
           />
           <SimpleItem
             dataField="checkLatency"
-            editorType="dxSelectBox"
+            editorType="dxRadioGroup"
             isRequired
-            editorOptions={{
-              dataSource: enumToList(booleanEnum),
-              valueExpr: "ID",
-              displayExpr: "Name",
-            }}
+            editorOptions={radioGroupEditorOptions}
           />
           <SimpleItem
             dataField="resetOnLogon"
-            editorType="dxSelectBox"
+            editorType="dxRadioGroup"
             isRequired
-            editorOptions={{
-              dataSource: enumToList(booleanEnum),
-              valueExpr: "ID",
-              displayExpr: "Name",
-            }}
+            editorOptions={radioGroupEditorOptions}
           />
           <SimpleItem
             dataField="resetOnDisconnect"
             visible={cfgPopUpVisible === cfgSessionsTypes.acceptor}
-            editorType="dxSelectBox"
+            editorType="dxRadioGroup"
             isRequired
-            editorOptions={{
-              dataSource: enumToList(booleanEnum),
-              valueExpr: "ID",
-              displayExpr: "Name",
-            }}
+            editorOptions={radioGroupEditorOptions}
           />
           <SimpleItem
             dataField="persistMessages"
-            editorType="dxSelectBox"
+            editorType="dxRadioGroup"
             isRequired
-            editorOptions={{
-              dataSource: enumToList(booleanEnum),
-              valueExpr: "ID",
-              displayExpr: "Name",
-            }}
+            editorOptions={radioGroupEditorOptions}
           />
           <SimpleItem
             dataField="millisecondsInTimestamp"
             visible={cfgPopUpVisible === cfgSessionsTypes.acceptor}
-            editorType="dxSelectBox"
+            editorType="dxRadioGroup"
             isRequired
-            editorOptions={{
-              dataSource: enumToList(booleanEnum),
-              valueExpr: "ID",
-              displayExpr: "Name",
-            }}
+            editorOptions={radioGroupEditorOptions}
           />
           <SimpleItem
             dataField="timestampPrecision"
@@ -192,83 +176,51 @@ const CFGSessionFormPopup = forwardRef(({ engineID, engineName, cfgPopUpVisible,
           />
           <SimpleItem
             dataField="requiresOrigSendingTime"
-            editorType="dxSelectBox"
+            editorType="dxRadioGroup"
             isRequired
-            editorOptions={{
-              dataSource: enumToList(booleanEnum),
-              valueExpr: "ID",
-              displayExpr: "Name",
-            }}
+            editorOptions={radioGroupEditorOptions}
           />
           <SimpleItem
             dataField="socketNodelay"
-            editorType="dxSelectBox"
+            editorType="dxRadioGroup"
             isRequired
-            editorOptions={{
-              dataSource: enumToList(booleanEnum),
-              valueExpr: "ID",
-              displayExpr: "Name",
-            }}
+            editorOptions={radioGroupEditorOptions}
           />
           <SimpleItem
             dataField="validateFieldsOutOfOrder"
-            editorType="dxSelectBox"
+            editorType="dxRadioGroup"
             isRequired
-            editorOptions={{
-              dataSource: enumToList(booleanEnum),
-              valueExpr: "ID",
-              displayExpr: "Name",
-            }}
+            editorOptions={radioGroupEditorOptions}
           />
           <SimpleItem
             dataField="validateFieldsHaveValues"
-            editorType="dxSelectBox"
+            editorType="dxRadioGroup"
             isRequired
-            editorOptions={{
-              dataSource: enumToList(booleanEnum),
-              valueExpr: "ID",
-              displayExpr: "Name",
-            }}
+            editorOptions={radioGroupEditorOptions}
           />
           <SimpleItem
             dataField="validateUserDefinedFields"
-            editorType="dxSelectBox"
+            editorType="dxRadioGroup"
             isRequired
-            editorOptions={{
-              dataSource: enumToList(booleanEnum),
-              valueExpr: "ID",
-              displayExpr: "Name",
-            }}
+            editorOptions={radioGroupEditorOptions}
           />
           <SimpleItem
             dataField="validateRequiredFields"
-            editorType="dxSelectBox"
+            editorType="dxRadioGroup"
             isRequired
-            editorOptions={{
-              dataSource: enumToList(booleanEnum),
-              valueExpr: "ID",
-              displayExpr: "Name",
-            }}
+            editorOptions={radioGroupEditorOptions}
           />
           <SimpleItem
             dataField="validateUnknownFields"
-            editorType="dxSelectBox"
+            editorType="dxRadioGroup"
             isRequired
-            editorOptions={{
-              dataSource: enumToList(booleanEnum),
-              valueExpr: "ID",
-              displayExpr: "Name",
-            }}
+            editorOptions={radioGroupEditorOptions}
           />
           <SimpleItem
             dataField="validateUnknownMsgType"
-            editorType="dxSelectBox"
+            editorType="dxRadioGroup"
             isRequired
-            editorOptions={{
-              dataSource: enumToList(booleanEnum),
-              valueExpr: "ID",
-              displayExpr: "Name",
-            }}
+            editorOptions={radioGroupEditorOptions}
           />
           <SimpleItem
             dataField="sendBufferSize"
