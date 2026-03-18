@@ -4,19 +4,16 @@ import {
   Column,
   Paging,
   Pager,
-  FilterRow,
   HeaderFilter,
   ColumnChooser,
   ColumnFixing,
-  Editing,
   Toolbar,
   Item,
   SearchPanel,
 } from "devextreme-react/data-grid";
 import Button from "devextreme-react/button";
-import { DropDownButton } from "devextreme-react/drop-down-button";
 import { IconButton, Tooltip } from "@mui/material";
-import { Delete, LinkOutlined, MoreVert, Storage, Cable, CheckCircle } from "@mui/icons-material";
+import { Delete, PlayArrow } from "@mui/icons-material";
 import {
   getAllEngines,
   connectToFixEngine,
@@ -77,7 +74,7 @@ export default function EnginesGrid({ handleEngineConnected, connectedEngines, s
   const [isFormLoading, setIsFormLoading] = useState(false);
   const [popupVisible, setPopupVisible] = useState(false);
   const [addFormData, setAddFormData] = useState({ ...addFormDefaultData });
-  const { showLoader, hideLoader, isLoading } = useLoader();
+  const { showLoader, hideLoader } = useLoader();
 
   const getData = async () => {
     fixEngineRef?.current?.instance?.beginCustomLoading?.();
@@ -184,7 +181,7 @@ export default function EnginesGrid({ handleEngineConnected, connectedEngines, s
               {isBusy ? (
                 <i className="fas fa-spinner fa-spin" style={{ fontSize: '16px' }} />
               ) : (
-                <Cable sx={{ fontSize: '18px' }} />
+                <PlayArrow sx={{ width: '18px', height: '18px' }} />
               )}
             </IconButton>
           </span>
@@ -199,7 +196,7 @@ export default function EnginesGrid({ handleEngineConnected, connectedEngines, s
               className="eng-action-delete"
               aria-label="Delete Engine"
             >
-              <Delete sx={{ fontSize: '18px' }} />
+              <Delete sx={{ width: '16px', height: '16px' }} />
             </IconButton>
           </span>
         </Tooltip>
@@ -278,7 +275,7 @@ export default function EnginesGrid({ handleEngineConnected, connectedEngines, s
       >
         {/* Filters */}
         <SearchPanel width={240} visible />
-        <FilterRow visible={true} applyFilter="auto" />
+        {/* <FilterRow visible={true} applyFilter="auto" /> */}
         <HeaderFilter visible={true} />
         <ColumnChooser enabled={true} mode="select" />
         <ColumnFixing enabled={true} />
@@ -288,6 +285,9 @@ export default function EnginesGrid({ handleEngineConnected, connectedEngines, s
               id="add-row-button"
               icon="add"
               name="addRowButton"
+              stylingMode="contained"
+              text="Add new"
+              type="default"
               location="after"
               onClick={() => setPopupVisible(true)}
             />

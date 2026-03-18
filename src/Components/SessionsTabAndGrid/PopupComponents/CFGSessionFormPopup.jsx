@@ -19,10 +19,10 @@ const CFGSessionFormPopup = forwardRef(({ engineID, engineName, cfgPopUpVisible,
     e?.preventDefault?.();
     let response = {};
     if (cfgPopUpVisible === cfgSessionsTypes.acceptor) {
-      const data = { ...cfgFormData, ...cfgAcceptorSessionFormOptions };
+      const data = { ...cfgAcceptorSessionFormOptions, ...cfgFormData };
       response = await addAcceptor(engineID, cfgSessionsFilesEnum.acceptor, engineName, data);
     } else if (cfgPopUpVisible === cfgSessionsTypes.initiator) {
-      const data = { ...cfgFormData, ...cfgInitiatorSessionFormOptions };
+      const data = { ...cfgInitiatorSessionFormOptions, ...cfgFormData };
       response = await addInitiator(engineID, cfgSessionsFilesEnum.initiator, engineName, data);
     }
     if (response?.isSuccessful) {
@@ -80,42 +80,41 @@ const CFGSessionFormPopup = forwardRef(({ engineID, engineName, cfgPopUpVisible,
           colCountByScreen={{ sm: 2, md: 4, lg: 4 }}
           formData={cfgFormData}
         >
-          <SimpleItem dataField="beginString" />
+          <SimpleItem dataField="beginString" editorOptions={{ placeholder: 'FIX 4.2' }} />
           <SimpleItem
             dataField="socketAcceptPort"
             visible={cfgPopUpVisible === cfgSessionsTypes.acceptor}
             editorType="dxNumberBox"
-            editorOptions={{ min: 0 }}
+            editorOptions={{ min: 0, placeholder: '3452' }}
           />
-          <SimpleItem dataField="senderCompID" />
-          <SimpleItem dataField="targetCompID" />
-          <SimpleItem dataField="fileStorePath" isRequired />
+          <SimpleItem dataField="senderCompID" editorOptions={{ placeholder: 'LINUXTESTACC' }} />
+          <SimpleItem dataField="targetCompID" editorOptions={{ placeholder: 'AWSTESTINI' }} />
+          <SimpleItem dataField="fileStorePath" isRequired editorOptions={{ placeholder: 'store' }} />
           <SimpleItem
             dataField="fileLogPath"
             isRequired
             visible={cfgPopUpVisible === cfgSessionsTypes.acceptor}
-          />
-          <SimpleItem
-            dataField="timestampPrecision"
-            isRequired
-            visible={cfgPopUpVisible === cfgSessionsTypes.acceptor}
-            editorType="dxNumberBox"
-            editorOptions={{ min: 0 }}
+            editorOptions={{ placeholder: 'log' }}
           />
           <SimpleItem
             dataField="socketConnectHost"
             isRequired
             visible={cfgPopUpVisible === cfgSessionsTypes.initiator}
+            editorOptions={{ placeholder: '34.209.141.204' }}
           />
           <SimpleItem
             dataField="socketConnectPort"
             isRequired
             visible={cfgPopUpVisible === cfgSessionsTypes.initiator}
+            editorType="dxNumberBox"
+            editorOptions={{ min: 0, placeholder: '12345' }}
           />
           <SimpleItem
             dataField="heartBtInt"
             isRequired
             visible={cfgPopUpVisible === cfgSessionsTypes.initiator}
+            editorType="dxNumberBox"
+            editorOptions={{ placeholder: '30' }}
           />
           <SimpleItem
             dataField="useDataDictionary"
@@ -179,6 +178,13 @@ const CFGSessionFormPopup = forwardRef(({ engineID, engineName, cfgPopUpVisible,
               valueExpr: "ID",
               displayExpr: "Name",
             }}
+          />
+          <SimpleItem
+            dataField="timestampPrecision"
+            isRequired
+            visible={cfgPopUpVisible === cfgSessionsTypes.acceptor}
+            editorType="dxNumberBox"
+            editorOptions={{ min: 0, placeholder: '0' }}
           />
           <SimpleItem
             dataField="requiresOrigSendingTime"
@@ -264,20 +270,20 @@ const CFGSessionFormPopup = forwardRef(({ engineID, engineName, cfgPopUpVisible,
             dataField="sendBufferSize"
             isRequired
             editorType="dxNumberBox"
-            editorOptions={{ min: 0 }}
+            editorOptions={{ min: 0, placeholder: '1048576' }}
           />
           <SimpleItem
             dataField="recvBufferSize"
             isRequired
             editorType="dxNumberBox"
-            editorOptions={{ min: 0 }}
+            editorOptions={{ min: 0, placeholder: '1048576' }}
           />
           <SimpleItem itemType="empty" colSpan={3} visible={cfgPopUpVisible === cfgSessionsTypes.initiator} />
           <ButtonItem
             itemType="button"
             verticalAlignment="bottom"
             buttonOptions={{
-              text: isEdit ? 'Update' : 'Submit',
+              text: isEdit ? 'Update' : 'Save',
               type: "default",
               useSubmitBehavior: true,
             }}

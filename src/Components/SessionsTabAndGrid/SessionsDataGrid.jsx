@@ -293,6 +293,20 @@ export default function SessionsDataGrid({
             locateInMenu="auto"
           >
             <DevBtn
+              icon="fa-solid fa-server"
+              name="Engine Details"
+              text="Engine Details"
+              stylingMode="contained"
+              type="default"
+              onClick={handleEngineDetailsPopUp}
+            />
+          </Item>
+          <Item
+            location="before"
+            visible={!!engineID || !!sessions}
+            locateInMenu="auto"
+          >
+            <DevBtn
               icon="fa-solid fa-clone"
               name="Clone GitHub File"
               text="Clone GitHub File"
@@ -329,18 +343,15 @@ export default function SessionsDataGrid({
               onClick={handleTriggerDeploymentPopUp}
             />
           </Item>
-          <Item
-            location="before"
-            visible={!!engineID || !!sessions}
-            locateInMenu="auto"
-          >
+          <Item location="before" visible={!!engineID || !!sessions}>
             <DevBtn
-              icon="fa-solid fa-server"
-              name="Engine Details"
-              text="Engine Details"
-              stylingMode="contained"
+              icon="add"
+              name="Add New Session"
+              text="Add New Session"
               type="default"
-              onClick={handleEngineDetailsPopUp}
+              onClick={() => {
+                setCfgPopUpVisible(cfgSessionsTypes.initiator);
+              }}
             />
           </Item>
           <Item
@@ -369,17 +380,6 @@ export default function SessionsDataGrid({
               stylingMode="contained"
               type="danger"
               onClick={handleStopEngine}
-            />
-          </Item>
-          <Item location="after" visible={!!engineID || !!sessions}>
-            <DevBtn
-              icon="add"
-              name="Add New Session"
-              text="Add New Session"
-              type="default"
-              onClick={() => {
-                setCfgPopUpVisible(cfgSessionsTypes.initiator);
-              }}
             />
           </Item>
           <Item name="searchPanel" location="after" />
