@@ -74,7 +74,7 @@ const SessionEditConfigPopup = forwardRef(
         showCloseButton
         width="900px"
         maxWidth="85vw"
-        maxHeight="710px"
+        maxHeight="750px"
       >
         <Form
           formData={editSessionsRowState?.data || {}}
