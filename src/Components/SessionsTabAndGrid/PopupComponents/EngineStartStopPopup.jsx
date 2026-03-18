@@ -5,12 +5,14 @@ import { startFixEngine, stopFixEngine } from "../../../Services/JenkinsConfigSe
 import { showErrorToast, showSuccessToast } from "../../../utils/toastsService";
 import { reValidateSignedInUser } from "../../../Services/AccountService";
 import { textMessages } from "../../../utils/constants";
+import { useLoader } from "../../../Provider/LoaderContext";
 
 const EngineStartStopPopup = forwardRef(
   ({ action, engineID, onSuccess }, ref) => {
     const [isVisible, setIsVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState({ password: "" });
+    const { showLoader, hideLoader } = useLoader();
 
     useImperativeHandle(ref, () => ({
       handleOpenPopup: () => {
@@ -32,6 +34,7 @@ const EngineStartStopPopup = forwardRef(
       }
 
       setIsLoading(true);
+      showLoader();
       try {
         // Step 1: Validate signed-in user with password
         const username = localStorage.getItem("username") || "";
@@ -65,6 +68,7 @@ const EngineStartStopPopup = forwardRef(
         showErrorToast(`An error occurred while ${action}ing engine`);
       } finally {
         setIsLoading(false);
+        hideLoader();
       }
     };
 

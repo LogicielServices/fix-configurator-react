@@ -11,13 +11,16 @@ import { addAcceptor, addInitiator } from "../../../Services/GithubService";
 import { showErrorToast, showSuccessToast } from "../../../utils/toastsService";
 import { textMessages } from "../../../utils/constants";
 import { booleanEnum, enumToList } from "../../../utils/helper";
+import { useLoader } from "../../../Provider/LoaderContext.jsx";
 
 const CFGSessionFormPopup = forwardRef(({ engineID, engineName, cfgPopUpVisible, setCfgPopUpVisible }, ref) => {
   const [isEdit, setIsEdit] = useState(false);
+  const { showLoader, hideLoader } = useLoader();
   const [cfgFormData, setCfgFormData] = useState([]);
   const addNewSessionSubmit = async (e) => {
     e?.preventDefault?.();
     let response = {};
+    showLoader();
     if (cfgPopUpVisible === cfgSessionsTypes.acceptor) {
       const data = { ...cfgAcceptorSessionFormOptions, ...cfgFormData };
       response = await addAcceptor(engineID, cfgSessionsFilesEnum.acceptor, engineName, data);
@@ -25,6 +28,7 @@ const CFGSessionFormPopup = forwardRef(({ engineID, engineName, cfgPopUpVisible,
       const data = { ...cfgInitiatorSessionFormOptions, ...cfgFormData };
       response = await addInitiator(engineID, cfgSessionsFilesEnum.initiator, engineName, data);
     }
+    hideLoader();
     if (response?.isSuccessful) {
       showSuccessToast(response?.message || textMessages.sessionCreatedSuccessfully)
     } else {

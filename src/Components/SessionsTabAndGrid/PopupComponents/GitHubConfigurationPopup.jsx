@@ -4,6 +4,7 @@ import { getConfigDetails, updateCfgIni } from "../../../Services/GithubService"
 import { showErrorToast, showSuccessToast } from "../../../utils/toastsService";
 import { clonableGitFilesEnum } from "../handler.jsx";
 import { textMessages } from "../../../utils/constants";
+import { useLoader } from "../../../Provider/LoaderContext.jsx";
 
 const GitHubConfigurationPopup = ({
   engineID,
@@ -15,12 +16,15 @@ const GitHubConfigurationPopup = ({
   storeIni,
   setStoreIni,
 }) => {
+  const { showLoader, hideLoader } = useLoader();
   const handleSelectConfigJson = async () => {
+    showLoader();
     const response = await getConfigDetails(
       engineID,
       clonableGitFilesEnum.config,
       engineName
     );
+    hideLoader();
     if (response?.title === "Error") {
       showErrorToast(response?.detail || textMessages?.anErrorOccurred);
       return;
@@ -30,11 +34,13 @@ const GitHubConfigurationPopup = ({
   };
 
   const handleSelectStoreIni = async () => {
+    showLoader();
     const response = await getConfigDetails(
       engineID,
       clonableGitFilesEnum.store,
       engineName
     );
+    hideLoader();
     if (response?.title === "Error") {
       showErrorToast(response?.detail || textMessages?.anErrorOccurred);
       return;
@@ -44,13 +50,15 @@ const GitHubConfigurationPopup = ({
   };
 
   const handleConfigSubmit = async () => {
+    showLoader();
     const response = await updateCfgIni(
       engineID,
       clonableGitFilesEnum.config,
       engineName,
       configJson
     );
-    if (response?.isSuccess) {
+    hideLoader();
+    if (response?.isSuccessful) {
       showSuccessToast(response?.message);
       setCloneGitHubFilePopupVisible(false);
       return;
@@ -59,13 +67,15 @@ const GitHubConfigurationPopup = ({
   };
 
   const handleStoreSubmit = async () => {
+    showLoader();
     const response = await updateCfgIni(
       engineID,
       clonableGitFilesEnum.store,
       engineName,
       storeIni
     );
-    if (response?.isSuccess) {
+    hideLoader();
+    if (response?.isSuccessful) {
       showSuccessToast(response?.message);
       setCloneGitHubFilePopupVisible(false);
       return;

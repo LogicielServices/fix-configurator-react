@@ -2,20 +2,24 @@ import { Form, Popup } from "devextreme-react";
 import { ButtonItem, SimpleItem } from "devextreme-react/form";
 import { setSequenceFixSession } from "../../../Services/FixSessionService";
 import { forwardRef, useImperativeHandle } from "react";
+import { useLoader } from "../../../Provider/LoaderContext";
 
 const SequenceNumbersPopup = forwardRef(({
   engineID,
   seqNumPopUpData,
   setSeqNumPopUpData,
 }, ref) => {
+  const { showLoader, hideLoader } = useLoader();
   const seqInOutSubmit = async (e) => {
     e?.preventDefault?.();
+    showLoader();
     await setSequenceFixSession(
       engineID,
       seqNumPopUpData?.connectionID,
       seqNumPopUpData?.inSeqNum,
       seqNumPopUpData?.outSeqNum
     );
+    hideLoader();
     setSeqNumPopUpData(null);
   };
 

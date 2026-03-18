@@ -4,6 +4,7 @@ import { deleteJenkinsConfig, upsertJenkinsConfig } from "../../../Services/Jenk
 import { showErrorToast, showSuccessToast } from "../../../utils/toastsService";
 import { textMessages } from "../../../utils/constants";
 import { jenkinsConfigFormOptions } from "../handler.jsx";
+import { useLoader } from "../../../Provider/LoaderContext.jsx";
 
 const JenkinsConfigPopup = ({
   engineID,
@@ -15,12 +16,15 @@ const JenkinsConfigPopup = ({
   jenkinsAgents,
   gitHubBranches,
 }) => {
+  const { showLoader, hideLoader } = useLoader();
   const addJenkinsConfig = async (e) => {
     e?.preventDefault?.();
     jenkinsConfigFormData.engineName = undefined;
+    showLoader();
     const response = await upsertJenkinsConfig({
       ...jenkinsConfigFormData,
     });
+    hideLoader();
     if (response?.isSuccess) {
       showSuccessToast(
         response?.message ||
@@ -36,7 +40,9 @@ const JenkinsConfigPopup = ({
 
   const handleDeleteJenkinsConfig = async (e) => {
     e?.preventDefault?.();
+    showLoader();
     const response = await deleteJenkinsConfig(engineID);
+    hideLoader();
     if (response?.isSuccess) {
       showSuccessToast(response?.message);
       setJenkinsConfigPopUpVisible(false);

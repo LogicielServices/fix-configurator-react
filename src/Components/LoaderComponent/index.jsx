@@ -16,7 +16,8 @@ export const Loader = () => {
         width: "100%",
         backgroundColor: "rgba(255, 255, 255, 0.75)",
         backdropFilter: "blur(2px)",
-        zIndex: (t) => (t?.zIndex?.modal || 0) + 1,
+        // zIndex: (t) => (t?.zIndex?.modal || 0) + 1,
+        zIndex: 9999,
         transform: "translateZ(0)",
         willChange: "opacity, transform",
       }}

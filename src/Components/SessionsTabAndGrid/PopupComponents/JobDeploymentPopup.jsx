@@ -4,6 +4,7 @@ import { getJobStatus, triggerJenkins } from "../../../Services/JenkinsConfigSer
 import { showErrorToast, showSuccessToast } from "../../../utils/toastsService";
 import { textMessages } from "../../../utils/constants";
 import { jobConfigFormOptions, osList } from "../handler.jsx";
+import { useLoader } from "../../../Provider/LoaderContext.jsx";
 
 const JobDeploymentPopup = ({
   engineID,
@@ -15,13 +16,16 @@ const JobDeploymentPopup = ({
   jenkinsAgents,
   gitHubBranches,
 }) => {
+  const { showLoader, hideLoader } = useLoader();
   const triggerJob = async (e) => {
     e?.preventDefault?.();
+    showLoader();
     const response = await triggerJenkins(
       jobConfigFormData?.githubBranch,
       jobConfigFormData?.environment,
       engineID
     );
+    hideLoader();
     if (response?.isSuccess) {
       showSuccessToast(response?.message);
       return;
@@ -30,19 +34,22 @@ const JobDeploymentPopup = ({
   };
 
   const checkJobStatus = async () => {
+    showLoader();
     const response = await getJobStatus(jobConfigFormData?.jenkinsAgentName);
+    hideLoader();
     if (response?.id) {
-      showSuccessToast(
-        <div style={{ lineHeight: 1.4 }}>
-          <div style={{ fontWeight: 600, marginBottom: 4 }}>Action Completed</div>
-          <div><strong>ID:</strong> {response?.id}</div>
-          <div><strong>Status:</strong> {response?.inProgress ? "In Progress" : "Completed"}</div>
-          <div>
-            <strong>Result:</strong>{" "}
-            <span style={{ color: "#16a34a", fontWeight: 600 }}>✅ {response?.result}</span>
-          </div>
+      const content = <div style={{ lineHeight: 1.4 }}>
+        <div style={{ fontWeight: 600, marginBottom: 4 }}>Action Completed</div>
+        <div><strong>ID:</strong> {response?.id}</div>
+        <div><strong>Status:</strong> {response?.inProgress ? "In Progress" : "Completed"}</div>
+        <div>
+          <strong>Result:</strong>{" "}
+          <span style={{ fontWeight: 600 }}>
+            {response?.result}
+          </span>
         </div>
-      );
+      </div>;
+      response?.result === "SUCCESS" ? showSuccessToast(content) : showErrorToast(content);
       return;
     }
     showErrorToast(response?.message || textMessages?.anErrorOccurred);

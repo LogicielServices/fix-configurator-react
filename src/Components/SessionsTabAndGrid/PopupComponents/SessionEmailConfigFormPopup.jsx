@@ -13,6 +13,7 @@ import { enumToList } from "../../../utils/helper";
 import { deleteSessionEmailConfig, saveSessionEmailConfig } from "../../../Services/FixSessionService";
 import { showErrorToast, showSuccessToast } from "../../../utils/toastsService";
 import { textMessages } from "../../../utils/constants";
+import { useLoader } from "../../../Provider/LoaderContext.jsx";
 
 const SequenceEmailConfigFormPopup = ({
   engineID,
@@ -22,6 +23,7 @@ const SequenceEmailConfigFormPopup = ({
   sessionEmailConfigFormData,
   setSessionEmailConfigFormData,
 }) => {
+  const { showLoader, hideLoader } = useLoader();
   const formRef = useRef();
   const addEmail = (key) => {
     formRef?.current?.instance?.focus();
@@ -36,7 +38,9 @@ const SequenceEmailConfigFormPopup = ({
     if (!sessionEmailConfigFormData?.ccEmails?.length) {
       sessionEmailConfigFormData.ccEmails = [];
     }
+    showLoader();
     const response = await saveSessionEmailConfig(engineID, sessionEmailConfigFormData);
+    hideLoader();
     if (response?.isSuccess) {
       showSuccessToast(response?.message);
       setSessionEmailConfigPopUpVisible(false);
@@ -46,7 +50,9 @@ const SequenceEmailConfigFormPopup = ({
   };
   const deleteConfig = async (e) => {
     e?.preventDefault?.();
+    showLoader();
     const response = await deleteSessionEmailConfig(engineID, sessionEmailConfigFormData?.sessionId);
+    hideLoader();
     if (!response?.isSuccess) {
       showErrorToast(response?.message || textMessages.anErrorOccurred);
       return;
