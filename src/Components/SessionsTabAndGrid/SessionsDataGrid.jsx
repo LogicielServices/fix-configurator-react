@@ -224,8 +224,8 @@ export default function SessionsDataGrid({
       row?.data?.senderCompID,
       row?.data?.targetCompID
     );
-    if (response?.isError) {
-      showErrorToast(textMessages?.anErrorOccurred);
+    if (response?.isError || response?.title === "Error") {
+      showErrorToast(response?.detail || textMessages?.anErrorOccurred);
       return;
     }
     cfgSessionFormPopupRef?.current?.handleSetFormData?.(response);
