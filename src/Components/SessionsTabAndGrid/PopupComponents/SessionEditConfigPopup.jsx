@@ -3,6 +3,12 @@ import { SimpleItem } from "devextreme-react/form";
 import { forwardRef, useImperativeHandle, useState } from "react";
 import { editSessionRowFields } from "../handler.jsx";
 
+const customLabelsEnum = {
+  senderCompID: "Sender Comp ID",
+  targetCompID: "Target Comp ID",
+  internalFIXVersion: "Internal FIX Version",
+}
+
 // Helper function to determine field data type based on field name
 const getFieldDataType = (fieldName) => {
   // Boolean fields
@@ -47,6 +53,9 @@ const getFieldDataType = (fieldName) => {
 
 // Helper function to format field label
 const formatFieldLabel = (fieldName) => {
+  if (customLabelsEnum?.[fieldName]) {
+    return customLabelsEnum[fieldName];
+  }
   return fieldName
     .replace(/([A-Z])/g, " $1")
     .replace(/^./, (str) => str.toUpperCase());
