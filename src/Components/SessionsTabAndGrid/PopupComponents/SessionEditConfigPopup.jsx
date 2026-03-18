@@ -3,6 +3,7 @@ import { SimpleItem } from "devextreme-react/form";
 import { forwardRef, useImperativeHandle, useState } from "react";
 import { editSessionRowFields } from "../handler.jsx";
 
+// Custom labels for specific fields
 const customLabelsEnum = {
   senderCompID: "Sender Comp ID",
   targetCompID: "Target Comp ID",
