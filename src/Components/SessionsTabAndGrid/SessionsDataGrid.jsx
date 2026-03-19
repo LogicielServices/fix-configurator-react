@@ -251,7 +251,7 @@ export default function SessionsDataGrid({
         showColumnLines={false}
         showRowLines={false}
         noDataText="No sessions to display"
-        style={{ maxHeight: 'calc(100vh - 320px)', minHeight: 280 }}
+        style={{ maxHeight: 'calc(100vh - 320px)', minHeight: 124 }}
         width="100%"
         selection={{ mode: "single" }}
         onCellPrepared={(e) => {
@@ -444,8 +444,8 @@ export default function SessionsDataGrid({
           <Column
             type="buttons"
             caption="Actions"
-            width={180}
-            minWidth={180}
+            width={200}
+            minWidth={200}
             fixed
             fixedPosition="right"
             alignment="center"
