@@ -3,7 +3,7 @@ import * as signalR from "@microsoft/signalr";
 import { getApiUrl } from "../utils/helper";
 import { fixSessionHistory } from "../Services/FixSessionHistory";
 
-export default function useFixSessionStatusFeed(maxItems = 200) {
+export default function useFixSessionStatusFeed() {
   const connectionRef = useRef(null);
   const isConnectedRef = useRef(false);
   const [updates, setUpdates] = useState(null);
@@ -61,7 +61,7 @@ export default function useFixSessionStatusFeed(maxItems = 200) {
       setUpdates((prev) => {
         const newList = [...prev, message];
         // optional limit to prevent unbounded memory growth
-        return newList.slice(-maxItems);
+        return newList
       });
     });
 
