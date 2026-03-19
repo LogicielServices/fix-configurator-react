@@ -1,4 +1,4 @@
-import { Drawer, IconButton, Menu, MenuItem, Typography, Tooltip } from "@mui/material";
+import { Drawer, IconButton, Menu, MenuItem, Typography, Tooltip, Badge } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import BreadCrumbs from "../BreadCrumbsComponent/BreadCrumbs";
 import { authConstants } from "../../utils/constants";
@@ -10,10 +10,12 @@ import { logout } from "../../utils/helper";
 import SessionStatusGrid from "../SessionStatusGrid";
 import TelnetComponent from "../TelnetComponent";
 import GlobalContext from "../../Provider/GlobalProvider";
+import useFixSessionStatusFeed from "../../SignalR/useFixSessionStatusFeed";
 
 const MenuBar = ({ handleDrawerToggle }) => {
   const { appConfig } = useContext(GlobalContext);
   const [openSessionStatuses, setOpenSessionStatuses] = useState(false);
+  const { updates, clearHistory } = useFixSessionStatusFeed()
   const menuItems = [
     {
       onClick: () => createUserRef?.current?.handleOpenCreateUserDialog?.(),
@@ -85,7 +87,7 @@ const MenuBar = ({ handleDrawerToggle }) => {
         onClose={() => setOpenSessionStatuses(false)}
         ModalProps={{ keepMounted: true }}
       >
-        <SessionStatusGrid />
+        <SessionStatusGrid updates={updates} clearHistory={clearHistory} />
       </Drawer>
       <div className="col-12 col-md-10 d-flex gap-1">
         <IconButton
@@ -135,7 +137,9 @@ const MenuBar = ({ handleDrawerToggle }) => {
               },
             }}
           >
-            <History fontSize="20" />
+            <Badge badgeContent={updates?.length} color="error">
+              <History fontSize="20" />
+            </Badge>
           </IconButton>
         </Tooltip>
         <Tooltip title={localStorage.getItem(authConstants.username)} arrow placement="bottom">

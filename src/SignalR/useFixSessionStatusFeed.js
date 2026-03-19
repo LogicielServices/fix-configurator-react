@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import * as signalR from "@microsoft/signalr";
 import { getApiUrl } from "../utils/helper";
-import { fixSessionHistory } from "../Services/FixSessionHistory";
+import { deleteFixSessionsHistory, getFixSessionHistory } from "../Services/FixSessionHistory";
 
 export default function useFixSessionStatusFeed() {
   const connectionRef = useRef(null);
@@ -12,7 +12,7 @@ export default function useFixSessionStatusFeed() {
   useEffect(() => {
     (async () => {
       try {
-        const response = await fixSessionHistory();
+        const response = await getFixSessionHistory();
         setUpdates(response || []);
       } catch (err) {
         setUpdates([]);
@@ -35,6 +35,13 @@ export default function useFixSessionStatusFeed() {
       console.error("SignalR connection failed. Retrying...", err);
 
       setTimeout(startConnection, 3000);
+    }
+  };
+
+  const clearHistory = async () => {
+    const response = await deleteFixSessionsHistory();
+    if (response?.isSuccessfull) {
+      setUpdates([]);
     }
   };
 
@@ -80,5 +87,5 @@ export default function useFixSessionStatusFeed() {
     };
   }, []);
 
-  return updates;
+  return { updates, clearHistory };
 }

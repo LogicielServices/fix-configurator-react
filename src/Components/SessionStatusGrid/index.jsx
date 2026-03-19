@@ -1,11 +1,10 @@
 import { useCallback, useMemo } from 'react';
 import { DataGrid, Column, Paging, Pager } from 'devextreme-react/data-grid';
 import { ConnectionCard, EmptyState, LoadingSkeleton } from './handler';
+import { Button } from 'devextreme-react';
 import './index.css';
-import useFixSessionStatusFeed from '../../SignalR/useFixSessionStatusFeed';
 
-export default function SessionStatusGrid() {
-  const updates = useFixSessionStatusFeed();
+export default function SessionStatusGrid({ updates, clearHistory }) {
   const cellRender = useCallback((cellData) => <ConnectionCard data={cellData.data} />, []);
 
   /* Determine loading vs empty vs data state */
@@ -22,11 +21,22 @@ export default function SessionStatusGrid() {
           <h2 className="dxl-h2">Session Status History</h2>
           <p className="dxl-subtitle">Real-time connection activity</p>
         </div>
-        {Array.isArray(updates) && updates.length > 0 && (
-          <span className="dxl-count-chip" aria-label={`${updates.length} sessions`}>
-            {updates.length} session{updates.length !== 1 ? 's' : ''}
-          </span>
-        )}
+        <div className="dxl-head-right" style={{ display: "flex", gap: "12px", alignItems: "center" }}>
+          {Array.isArray(updates) && updates.length > 0 && (
+            <span className="dxl-count-chip" aria-label={`${updates.length} sessions`}>
+              {updates.length} session{updates.length !== 1 ? 's' : ''}
+            </span>
+          )}
+          <Button
+            text="Clear"
+            type="danger"
+            stylingMode="contained"
+            disabled={!updates?.length}
+            onClick={clearHistory}
+            icon="trash"
+            width={100}
+          />
+        </div>
       </div>
 
       <div className="dxl-surface">
