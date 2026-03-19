@@ -1,17 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import TabPanel from 'devextreme-react/tab-panel';
 import SessionsGrid from './SessionsGridsComponent';
-import { Monitor, Add, Storage } from '@mui/icons-material';
+import { Add, Storage } from '@mui/icons-material';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import { Popup } from 'devextreme-react';
-import SessionsDataGrid from './SessionsDataGrid';
 
 export default function SessionsTabs({ tabs, activeEngineID, onActivate, onCloseTab, showEnginesConfig }) {
   const [items, setItems] = useState([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [showSessionMonitorScreen, setShowSessionMonitorScreen] = useState(false);
   const [previousItemsLength, setPreviousItemsLength] = useState(0);
   const tabPanelRef = useRef();
 
@@ -88,36 +85,6 @@ export default function SessionsTabs({ tabs, activeEngineID, onActivate, onClose
 
   return (
     <div className="sess-wrap">
-      <Popup
-        visible={showSessionMonitorScreen}
-        onHiding={() => setShowSessionMonitorScreen(false)}
-        fullScreen
-        title="Sessions Monitoring Screen"
-        showCloseButton
-      >
-        <div className="sess-wrap"><SessionsDataGrid /></div>
-      </Popup>
-      
-      {/* Modern Header Section - Clean Title and Action */}
-      <div className="sess-header-modern">
-        <div className="sess-header-left">
-          <div className="sess-header-content">
-            <h3 className="sess-title">Engine Sessions</h3>
-            <p className="sess-sub">Manage and monitor FIX engine sessions in real-time</p>
-          </div>
-        </div>
-        <div className="sess-header-right">
-          <Button
-            variant="contained"
-            startIcon={<Monitor />}
-            onClick={() => setShowSessionMonitorScreen(true)}
-            className="sess-header-action-btn"
-          >
-            Session Monitoring Screen
-          </Button>
-        </div>
-      </div>
-      
       {/* Tabs or Empty State */}
       {
         !tabs || !tabs?.length ? (

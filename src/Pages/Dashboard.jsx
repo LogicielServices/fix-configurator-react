@@ -7,7 +7,7 @@ import { confirm } from "devextreme/ui/dialog";
 import { textMessages } from "../utils/constants.js";
 import { disconnectFixEngine, getConnectedEngines } from "../Services/FixSessionService.js";
 
-export default function FixDashboard() {
+export default function SessionDetails() {
   const [tabs, setTabs] = useState([]);
   const [activeEngineID, setActiveEngineID] = useState(null);
   const [showPopup, setShowPopup] = useState(false);

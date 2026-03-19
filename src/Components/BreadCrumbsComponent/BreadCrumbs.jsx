@@ -60,19 +60,19 @@ const StylishBreadcrumbs = () => {
       aria-label="breadcrumb"
       separator={<NavigateNextIcon fontSize="small" sx={{ transition: "all 0.2s ease" }} />}
       sx={{
-        fontSize: "0.95rem",
+        fontSize: "0.9rem",
         alignContent: "center",
-        padding: "12px 16px",
+        padding: "8px 12px",
         background: "linear-gradient(to right, #ffffff, #f8fafc)",
         borderRadius: "8px",
         border: "1px solid #e2e8f0",
         boxShadow: "0 2px 8px rgba(33, 150, 243, 0.05)",
         "& .MuiBreadcrumbs-ol": {
-          gap: "12px",
+          gap: "8px",
         },
         "& .MuiBreadcrumbs-separator": {
           color: "#cbd5e1",
-          fontSize: "18px",
+          fontSize: "16px",
         },
       }}
     >

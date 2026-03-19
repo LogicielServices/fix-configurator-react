@@ -5,7 +5,7 @@ import { useEffect, Suspense, lazy } from "react";
 import { Box } from "@mui/material";
 import Loader from "./../LoaderComponent";
 import MenuBar from "../MenuBarComponent/MenuBar.jsx";
-const Dashboard = lazy(() => import("../../Pages/Dashboard"));
+const SessionDetails = lazy(() => import("../../Pages/Dashboard"));
 
 const SecuredRoutes = () => {
 
@@ -27,7 +27,7 @@ const SecuredRoutes = () => {
             />
             <Route
               path={pathConstants.dashboard}
-              element={<Dashboard />}
+              element={<SessionDetails />}
             />
           </Routes>
         </Box>

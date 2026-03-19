@@ -2,7 +2,7 @@ import { Drawer, IconButton, Menu, MenuItem, Typography, Tooltip, Badge } from "
 import MenuIcon from "@mui/icons-material/Menu";
 import BreadCrumbs from "../BreadCrumbsComponent/BreadCrumbs";
 import { authConstants } from "../../utils/constants";
-import { AccountCircle, ArrowDropDown, Dashboard, GitHub, Logout, Person, Terminal, History } from "@mui/icons-material";
+import { AccountCircle, ArrowDropDown, Dashboard, GitHub, Logout, Person, Terminal, History, Monitor } from "@mui/icons-material";
 import { useContext, useRef, useState } from "react";
 import { iconButtonOptions, menuOptions } from "./MenuBarHandler";
 import CreateUser from "../CreateUser";
@@ -11,10 +11,13 @@ import SessionStatusGrid from "../SessionStatusGrid";
 import TelnetComponent from "../TelnetComponent";
 import GlobalContext from "../../Provider/GlobalProvider";
 import useFixSessionStatusFeed from "../../SignalR/useFixSessionStatusFeed";
+import { Popup } from 'devextreme-react';
+import SessionsDataGrid from "../SessionsTabAndGrid/SessionsDataGrid";
 
 const MenuBar = ({ handleDrawerToggle }) => {
   const { appConfig } = useContext(GlobalContext);
   const [openSessionStatuses, setOpenSessionStatuses] = useState(false);
+  const [showSessionMonitorScreen, setShowSessionMonitorScreen] = useState(false);
   const { updates, clearHistory } = useFixSessionStatusFeed()
   const menuItems = [
     {
@@ -80,6 +83,15 @@ const MenuBar = ({ handleDrawerToggle }) => {
     <div className="row w-100 mb-2">
       <CreateUser ref={createUserRef} />
       <TelnetComponent ref={telnetPopUpRef} />
+      <Popup
+        visible={showSessionMonitorScreen}
+        onHiding={() => setShowSessionMonitorScreen(false)}
+        fullScreen
+        title="Sessions Monitoring Screen"
+        showCloseButton
+      >
+        <div className="sess-wrap"><SessionsDataGrid /></div>
+      </Popup>
       <Drawer
         animationDuration={300}
         anchor="right"
@@ -119,6 +131,25 @@ const MenuBar = ({ handleDrawerToggle }) => {
             }}
           >
             <Terminal fontSize="20" />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Session Monitoring Screen" arrow placement="bottom">
+          <IconButton
+            color="primary"
+            onClick={() => setShowSessionMonitorScreen(true)}
+            aria-label="session monitoring"
+            className="nav-icon-modern"
+            sx={{
+              transition: "all 0.2s ease",
+              "&:hover": {
+                transform: "scale(1.1)",
+              },
+              "&:active": {
+                transform: "scale(0.95)",
+              },
+            }}
+          >
+            <Monitor fontSize="20" />
           </IconButton>
         </Tooltip>
         <Tooltip title="Session Status History" arrow placement="bottom">

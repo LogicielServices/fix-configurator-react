@@ -6,7 +6,7 @@
 .fx-dashboard {
   background: #f8fafc;
   min-height: calc(100vh - 108px);
-  padding: 13px;
+  padding: 8px;
 }
 
 /* Two-pane layout (legacy support) */
@@ -69,8 +69,8 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 24px;
-  gap: 24px;
+  margin-bottom: 0;
+  gap: 12px;
 }
 
 /* Left section - Title and subtitle */
@@ -180,7 +180,7 @@
   border-radius: 12px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
   overflow: hidden;
-  margin-top: 20px;
+  margin-top: 8px;
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
@@ -377,12 +377,13 @@
 
 .sess-wrap .dx-tabpanel .dx-tab {
   border-radius: 0;
-  padding: 10px 16px;
-  margin: 0 4px;
+  padding: 7px 12px;
+  margin: 0 2px;
   font-weight: 500;
   color: #64748b;
   transition: all 0.2s ease;
   border-bottom: 2px solid transparent;
+  font-size: 13px;
 }
 
 .sess-wrap .dx-tabpanel .dx-tab:hover {
@@ -447,12 +448,12 @@
    ───────────────────────────────────────────────────────────────────────── */
 .sess-wrap .sg-surface {
   background: transparent;
-  padding: 16px;
+  padding: 8px;
 }
 
 .sess-wrap .sg-surface .dx-datagrid {
   background: transparent;
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .sess-wrap .sg-surface .dx-datagrid-headers {
@@ -463,18 +464,22 @@
 .sess-wrap .sg-surface .dx-header-row > td {
   font-weight: 600;
   color: #475569;
-  font-size: 13px;
+  font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.025em;
-  padding: 12px 16px;
+  padding: 8px 10px;
   border-right: 1px solid #f1f5f9;
 }
 
 /* Modern table rows with better spacing */
 .sess-wrap .dx-datagrid-rowsview .dx-row > td {
-  padding: 14px 16px;
+  padding: 7px 10px;
   border-bottom: 1px solid #f1f5f9;
   border-right: 1px solid #f8fafc;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 0;
 }
 
 .sess-wrap .dx-datagrid-rowsview .dx-row:nth-child(even) > td {
@@ -501,11 +506,11 @@
 .sess-wrap .sg-mode {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px 14px;
-  font-size: 12px;
+  gap: 5px;
+  padding: 3px 9px;
+  font-size: 11px;
   font-weight: 600;
-  border-radius: 8px;
+  border-radius: 6px;
   line-height: 1.3;
   transition: all 0.2s ease;
 }
@@ -600,14 +605,14 @@
    Action Buttons & Status Icons - Modern Design
    ───────────────────────────────────────────────────────────────────────── */
 .sess-wrap .sg-actions-col {
-  padding: 8px 12px !important;
+  padding: 4px 8px !important;
   background: transparent !important;
-  min-width: 220px !important;
-  width: 220px !important;
+  min-width: 180px !important;
+  width: 180px !important;
 }
 
 .sess-wrap .dx-data-row .sg-actions-col {
-  height: 58.59px !important;
+  height: auto !important;
 }
 
 .sess-wrap .sg-actions-col .dx-command-buttons {
@@ -623,10 +628,10 @@
 /* Modern icon buttons - cleaner, more grouped appearance */
 .sess-wrap .sg-action-btn,
 .sess-wrap .sg-status-btn {
-  width: 28px;
-  height: 28px;
-  min-width: 28px;
-  border-radius: 6px;
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  border-radius: 5px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -696,7 +701,7 @@
 /* Icon sizing */
 .sess-wrap .sg-action-btn i,
 .sess-wrap .sg-status-btn i {
-  font-size: 13px;
+  font-size: 11px;
   line-height: 1;
 }
 
@@ -719,7 +724,7 @@
 .sess-wrap .dx-toolbar {
   background: #f8fafc;
   border-bottom: 1px solid #e2e8f0;
-  padding: 12px 16px;
+  padding: 6px 10px;
 }
 
 .sess-wrap .dx-toolbar .dx-button {
@@ -782,7 +787,7 @@
    Filter & Search Panel - Modern Styling
    ───────────────────────────────────────────────────────────────────────── */
 .sess-wrap .dx-datagrid .dx-datagrid-filter-row > td {
-  padding: 10px 16px;
+  padding: 4px 10px;
   background: #f8fafc;
   border-bottom: 1px solid #e2e8f0;
 }
@@ -814,8 +819,9 @@
 .sess-wrap .dx-datagrid .dx-pager {
   background: #f8fafc;
   border-top: 1px solid #e2e8f0;
-  padding: 12px 16px;
+  padding: 6px 10px;
   color: #475569;
+  font-size: 12px;
 }
 
 .sess-wrap .dx-pages .dx-page,

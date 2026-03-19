@@ -9,14 +9,14 @@ import FixMessageDescriptionPopup from "./FixMessageDescriptionPopup";
 import ConfiguredFixMessagesPopup from "./ConfiguredFixMessagesPopup";
 import MessageEmailConfigurationsPopup from "./MessageEmailConfigurationsPopup";
 
-const GRID_ROW_HEIGHT = 52; // Approximate height of one row in pixels
-const GRID_HEADER_HEIGHT = 90; // Approximate height of header + pager
+const GRID_ROW_HEIGHT = 44; // Approximate height of one row in pixels
+const GRID_HEADER_HEIGHT = 80; // Approximate height of header + pager
 
 export default function FixMessagesPanel({ engineID, engineName, sessionID }) {
   const [selectedMessagePairs, setSelectedMessagePairs] = useState([]);
   const [datasource, setDataSource] = useState([]);
-  const [messagesGridHeight, setMessagesGridHeight] = useState(280);
-  const [descriptionGridHeight, setDescriptionGridHeight] = useState(280);
+  const [messagesGridHeight, setMessagesGridHeight] = useState(220);
+  const [descriptionGridHeight, setDescriptionGridHeight] = useState(220);
   const [messagesPageSize, setMessagesPageSize] = useState(4);
   const [descriptionPageSize, setDescriptionPageSize] = useState(4);
   const [isResizingMessages, setIsResizingMessages] = useState(false);
@@ -55,7 +55,7 @@ export default function FixMessagesPanel({ engineID, engineName, sessionID }) {
         const container = messagesGridRef.current;
         const rect = container.getBoundingClientRect();
         const newHeight = e.clientY - rect.top;
-        if (newHeight > 250) {
+        if (newHeight > 180) {
           setMessagesGridHeight(newHeight);
           setMessagesPageSize(calculatePageSize(newHeight));
         }
@@ -65,7 +65,7 @@ export default function FixMessagesPanel({ engineID, engineName, sessionID }) {
         const container = descriptionGridRef.current;
         const rect = container.getBoundingClientRect();
         const newHeight = e.clientY - rect.top;
-        if (newHeight > 250) {
+        if (newHeight > 180) {
           setDescriptionGridHeight(newHeight);
           setDescriptionPageSize(calculatePageSize(newHeight));
         }

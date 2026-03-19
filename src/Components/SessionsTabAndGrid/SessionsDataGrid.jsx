@@ -244,16 +244,22 @@ export default function SessionsDataGrid({
         rowAlternationEnabled={false}
         hoverStateEnabled={true}
         columnAutoWidth={true}
-        wordWrapEnabled={true}
+        wordWrapEnabled={false}
         allowColumnReordering={true}
         allowColumnResizing={true}
         columnResizingMode="widget"
         showColumnLines={false}
         showRowLines={false}
         noDataText="No sessions to display"
-        style={{ maxHeight: 500 }}
+        style={{ maxHeight: 'calc(100vh - 320px)', minHeight: 280 }}
         width="100%"
         selection={{ mode: "single" }}
+        onCellPrepared={(e) => {
+          if (e.rowType === 'data' && e.cellElement && e.column?.dataField) {
+            const text = e.text ?? e.value ?? '';
+            if (text) e.cellElement.title = String(text);
+          }
+        }}
         onSelectionChanged={(e) => {
           if (!engineID && !sessions) return;
           const row = e.selectedRowsData?.[0];
@@ -295,7 +301,7 @@ export default function SessionsDataGrid({
             <DevBtn
               icon="fa-solid fa-server"
               name="Engine Details"
-              text="Engine Details"
+              hint="Engine Details"
               stylingMode="contained"
               type="default"
               onClick={handleEngineDetailsPopUp}
@@ -309,7 +315,7 @@ export default function SessionsDataGrid({
             <DevBtn
               icon="fa-solid fa-clone"
               name="Clone GitHub File"
-              text="Clone GitHub File"
+              hint="Clone GitHub File"
               type="default"
               stylingMode="contained"
               onClick={handleJenkinsConfigPopup}
@@ -323,7 +329,7 @@ export default function SessionsDataGrid({
             <DevBtn
               icon="fa-solid fa-sliders"
               name="Jenkins Configuration"
-              text="Jenkins Configuration"
+              hint="Jenkins Configuration"
               stylingMode="contained"
               type="default"
               onClick={handleJenkinsConfigPopUp}
@@ -337,7 +343,7 @@ export default function SessionsDataGrid({
             <DevBtn
               icon="fa-solid fa-cloud-arrow-up"
               name="Trigger Deployment"
-              text="Trigger Deployment"
+              hint="Trigger Deployment"
               stylingMode="contained"
               type="default"
               onClick={handleTriggerDeploymentPopUp}
@@ -347,7 +353,7 @@ export default function SessionsDataGrid({
             <DevBtn
               icon="add"
               name="Add New Session"
-              text="Add New Session"
+              text="New Session"
               type="default"
               onClick={() => {
                 setCfgPopUpVisible(cfgSessionsTypes.initiator);
@@ -362,7 +368,7 @@ export default function SessionsDataGrid({
             <DevBtn
               icon="fa-solid fa-power-off"
               name="Start Engine"
-              text="Start Engine"
+              hint="Start Engine"
               stylingMode="contained"
               type="success"
               onClick={handleStartEngine}
@@ -376,7 +382,7 @@ export default function SessionsDataGrid({
             <DevBtn
               icon="fa-solid fa-stop"
               name="Stop Engine"
-              text="Stop Engine"
+              hint="Stop Engine"
               stylingMode="contained"
               type="danger"
               onClick={handleStopEngine}
@@ -438,8 +444,8 @@ export default function SessionsDataGrid({
           <Column
             type="buttons"
             caption="Actions"
-            width={220}
-            minWidth={220}
+            width={180}
+            minWidth={180}
             fixed
             fixedPosition="right"
             alignment="center"
