@@ -926,10 +926,6 @@ p {
   box-shadow: 0 0 0 4px rgba(33, 150, 243, 0.2);
 }
 
-.dx-checkbox.dx-state-focused .dx-checkbox-icon::after {
-  background-color: #2196F3;
-}
-
 .dx-checkbox.dx-state-hover .dx-checkbox-icon {
   border-color: #2196F3;
 }
