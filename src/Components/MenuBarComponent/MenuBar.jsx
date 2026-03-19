@@ -83,6 +83,7 @@ const MenuBar = ({ handleDrawerToggle }) => {
         anchor="right"
         open={openSessionStatuses}
         onClose={() => setOpenSessionStatuses(false)}
+        ModalProps={{ keepMounted: true }}
       >
         <SessionStatusGrid />
       </Drawer>
