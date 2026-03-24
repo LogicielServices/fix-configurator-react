@@ -15,7 +15,7 @@ export const authConstants = Object.freeze({
 
 export const pathConstants = Object.freeze({
   login: "/login",
-  dashboard: "/session-details",
+  dashboard: "/fix-sessions",
 });
 
 export const REFRESH_INTERVAL = 60 * 1000; // 1 minute
