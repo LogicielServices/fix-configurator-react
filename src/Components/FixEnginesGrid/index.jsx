@@ -165,8 +165,7 @@ export default function EnginesGrid({ handleEngineConnected, connectedEngines, s
       }
       setActionLoading((s) => ({ ...s, [key]: false }));
     }
-    
-    // Option 1: Individual modern buttons (recommended)
+
     return (
       <div className="eng-actions-modern">
         <Tooltip title="Connect Engine" arrow placement="top">
@@ -202,52 +201,6 @@ export default function EnginesGrid({ handleEngineConnected, connectedEngines, s
         </Tooltip>
       </div>
     );
-    
-    // Option 2: 3-dot menu (uncomment to use)
-    /*
-    const menuItems = [
-      {
-        text: "Connect Engine",
-        icon: "fas fa-plug",
-        onClick: handleConnectEngine,
-        disabled: isBusy,
-      },
-      {
-        text: "Open Redis",
-        icon: "fas fa-database",
-        onClick: () => {
-          window.open(`redis://${data?.redisIpAddress}:${data?.redisIpPort}/${data?.redisDB}`, '_blank');
-        },
-      },
-      {
-        text: "Test Connection",
-        icon: "fas fa-check-circle",
-        onClick: async () => {
-          // Add test connection logic
-        },
-      },
-      {
-        text: "Delete",
-        icon: "fas fa-trash",
-        onClick: handleDelete,
-        disabled: isBusy,
-      },
-    ];
-    
-    return (
-      <DropDownButton
-        text=""
-        icon="more"
-        dropDownOptions={{ width: 200 }}
-        items={menuItems}
-        displayExpr="text"
-        keyExpr="text"
-        onItemClick={(e) => e?.itemData?.onClick?.()}
-        stylingMode="text"
-        className="eng-action-menu"
-      />
-    );
-    */
   }, [actionLoading]);
 
   const enginesConfGrid = useMemo(() => {
