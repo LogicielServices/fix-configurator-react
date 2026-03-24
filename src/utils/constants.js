@@ -16,6 +16,8 @@ export const authConstants = Object.freeze({
 export const pathConstants = Object.freeze({
   login: "/login",
   dashboard: "/fix-sessions",
+  roles: "/roles",
+  assignedUsersByRole: "/roles/assigned-users-by-role",
 });
 
 export const REFRESH_INTERVAL = 60 * 1000; // 1 minute
@@ -32,6 +34,7 @@ export const textMessages = Object.freeze({
   connectionSuccessful: "The connection was made successfully.",
   userWasCreatedSuccessfully: "User was created successfully.",
   userCanNotBeCreated: "User can not be created.",
+  userCanNotBeUpdated: "User can not be updated.",
   areYouSure: "<i>Are you sure?</i>",
   sessionCreatedSuccessfully: "Session created successfully!",
   unableToCreateSession: "Unable to create session!",

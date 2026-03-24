@@ -68,9 +68,9 @@ export const validateFields = (formType, fieldsData) => {
       ) {
         errors.lastName = `Last Name ${firstAndLastNameValidation?.message}`;
       }
-      if (!fieldsData?.username?.trim()) {
+      if (!fieldsData?.userName?.trim()) {
         errors.username = isRequiredValidationMessages.username;
-      } else if (!userNameValidation?.pattern?.test(fieldsData?.username)) {
+      } else if (!userNameValidation?.pattern?.test(fieldsData?.userName)) {
         errors.username = userNameValidation?.message;
       }
       if (!fieldsData?.email?.trim()) {
@@ -78,18 +78,20 @@ export const validateFields = (formType, fieldsData) => {
       } else if (!emailValidation?.pattern?.test(fieldsData?.email)) {
         errors.email = emailValidation?.message;
       }
-      if (!fieldsData?.password?.trim()) {
-        errors.password = isRequiredValidationMessages.password;
-      } else if (!passwordValidation?.pattern?.test(fieldsData?.password)) {
-        errors.password = passwordValidation?.message;
-      } else if (fieldsData?.password !== fieldsData?.confirmPassword) {
-        errors.password = passwordValidation?.unmatchedPasswordAndConfirmPassword;
-        errors.confirmPassword = passwordValidation?.unmatchedPasswordAndConfirmPassword;
-      }
-      if (!fieldsData?.confirmPassword?.trim()) {
-        errors.confirmPassword = isRequiredValidationMessages.confirmPassword;
-      } else if (!passwordValidation?.pattern?.test(fieldsData?.confirmPassword)) {
-        errors.confirmPassword = passwordValidation?.message;
+      if (!fieldsData?.isEdit) {
+        if (!fieldsData?.password?.trim()) {
+          errors.password = isRequiredValidationMessages.password;
+        } else if (!passwordValidation?.pattern?.test(fieldsData?.password)) {
+          errors.password = passwordValidation?.message;
+        } else if (fieldsData?.password !== fieldsData?.confirmPassword) {
+          errors.password = passwordValidation?.unmatchedPasswordAndConfirmPassword;
+          errors.confirmPassword = passwordValidation?.unmatchedPasswordAndConfirmPassword;
+        }
+        if (!fieldsData?.confirmPassword?.trim()) {
+          errors.confirmPassword = isRequiredValidationMessages.confirmPassword;
+        } else if (!passwordValidation?.pattern?.test(fieldsData?.confirmPassword)) {
+          errors.confirmPassword = passwordValidation?.message;
+        }
       }
       break;
     case "Telnet":

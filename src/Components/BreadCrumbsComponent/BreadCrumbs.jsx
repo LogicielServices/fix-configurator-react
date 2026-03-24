@@ -40,15 +40,12 @@ const StylishBreadcrumbs = () => {
       ?.map((key) => key.charAt(0).toUpperCase() + key.slice(1))
       ?.join(" ");
 
-  const getHostname = useMemo(() => {
-    const hostName = queryParams.get("id") ?? null;
-    if (
-      hostName &&
-      location?.pathname.includes(pathConstants.systemsMonitorServices)
-    ) {
+  const getId = useMemo(() => {
+    const id = queryParams.get("id") ?? null;
+    if (id) {
       return (
         <Typography fontWeight="bold" sx={{ color: "primary.main" }}>
-          {hostName}
+          {id}
         </Typography>
       );
     }
@@ -151,7 +148,7 @@ const StylishBreadcrumbs = () => {
         );
       })}
 
-      {getHostname && (
+      {getId && (
         <Typography
           sx={{
             fontWeight: 600,

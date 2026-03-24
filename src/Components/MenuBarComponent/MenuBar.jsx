@@ -2,7 +2,7 @@ import { Drawer, IconButton, Menu, MenuItem, Typography, Tooltip, Badge } from "
 import MenuIcon from "@mui/icons-material/Menu";
 import BreadCrumbs from "../BreadCrumbsComponent/BreadCrumbs";
 import { authConstants } from "../../utils/constants";
-import { AccountCircle, ArrowDropDown, Dashboard, GitHub, Logout, Person, Terminal, History, Monitor } from "@mui/icons-material";
+import { AccountCircle, ArrowDropDown, Dashboard, GitHub, Logout, Person, Terminal, History, Monitor, Settings } from "@mui/icons-material";
 import { useContext, useRef, useState } from "react";
 import { iconButtonOptions, menuOptions } from "./MenuBarHandler";
 import CreateUser from "../CreateUser";
@@ -13,9 +13,11 @@ import GlobalContext from "../../Provider/GlobalProvider";
 import useFixSessionStatusFeed from "../../SignalR/useFixSessionStatusFeed";
 import { Popup } from 'devextreme-react';
 import SessionsDataGrid from "../SessionsTabAndGrid/SessionsDataGrid";
+import { useNavigate } from "react-router-dom";
 
 const MenuBar = ({ handleDrawerToggle }) => {
   const { appConfig } = useContext(GlobalContext);
+  const navigateTo = useNavigate();
   const [openSessionStatuses, setOpenSessionStatuses] = useState(false);
   const [showSessionMonitorScreen, setShowSessionMonitorScreen] = useState(false);
   const { updates, clearHistory } = useFixSessionStatusFeed()
@@ -24,6 +26,11 @@ const MenuBar = ({ handleDrawerToggle }) => {
       onClick: () => createUserRef?.current?.handleOpenCreateUserDialog?.(),
       icon: <Person className="me-3" fontSize="small" />,
       text: "Create User",
+    },
+    {
+      onClick: () => navigateTo?.('/roles'),
+      icon: <Settings className="me-3" fontSize="small" />,
+      text: "Roles Screen",
     },
     {
       onClick: () => window.open(appConfig?.GITHUB_REPO_URL, '_blank'),
@@ -66,8 +73,8 @@ const MenuBar = ({ handleDrawerToggle }) => {
             key={index}
             sx={{ color: "#4d4d4d", minWidth: "180px" }}
             onClick={() => {
-              item?.onClick?.();
               handleClose?.();
+              setTimeout(() => item?.onClick?.(), 0);
             }}
             disabled={!!item?.disabled}
           >

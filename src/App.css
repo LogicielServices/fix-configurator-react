@@ -715,6 +715,10 @@ p {
   margin: 0 0 0 2px !important;
 }
 
+.dx-datagrid-header-panel {
+  padding: 0;
+}
+
 /* ═══════════════════════════════════════════════════════════════════════════
    Modern Navigation Icons - Enterprise Design System
    ═══════════════════════════════════════════════════════════════════════════ */
@@ -1420,7 +1424,7 @@ p {
    Material-UI TextField Styling
    ───────────────────────────────────────────────────────────────────────── */
 
-.MuiTextField-root .MuiOutlinedInput-root {
+/* .MuiTextField-root .MuiOutlinedInput-root {
   border-radius: 8px;
   border: 2px solid #e2e8f0;
   font-size: 14px;
@@ -1435,8 +1439,8 @@ p {
 .MuiTextField-root .MuiOutlinedInput-root.Mui-focused {
   border-color: #2196F3;
   box-shadow: 0 0 0 4px rgba(33, 150, 243, 0.15), 0 2px 12px rgba(33, 150, 243, 0.2);
-}
-
+} */
+/* 
 .MuiTextField-root .MuiInputLabel-root {
   font-weight: 600;
   font-size: 13px;
@@ -1447,7 +1451,7 @@ p {
 
 .MuiTextField-root .MuiInputLabel-root.Mui-focused {
   color: #2196F3;
-}
+} */
 
 /* ─────────────────────────────────────────────────────────────────────────
    Material-UI FormHelperText

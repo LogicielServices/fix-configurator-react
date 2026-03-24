@@ -1,7 +1,6 @@
 import {
   forwardRef,
   useCallback,
-  useContext,
   useEffect,
   useImperativeHandle,
   useMemo,
@@ -31,19 +30,24 @@ import {
   FormHelperText,
 } from "@mui/material";
 import { Close, PersonAddRounded } from "@mui/icons-material";
-import GlobalContext from "../../Provider/GlobalProvider.jsx";
-import { severities, textMessages } from "../../utils/constants.js";
+import { textMessages } from "../../utils/constants.js";
 // import { addUser } from "../../services/userService.js";
 import { validateFields } from "../../utils/formValidator.jsx";
-import { getAllUserRoles, registerUser } from "../../Services/AccountService.js";
+import {
+  getAllUserRoles,
+  getUserById,
+  registerUser,
+  updateUser,
+} from "../../Services/AccountService.js";
 import { showErrorToast, showSuccessToast } from "../../utils/toastsService.js";
-import { LoadIndicator } from "devextreme-react";
 import { GlobalLoaderComponent } from "../../utils/GlobalHandler.jsx";
+import { useLoader } from "../../Provider/LoaderContext.jsx";
+import { useLocation } from "react-router-dom";
 
 const defaultData = Object.freeze({
   firstName: "",
   lastName: "",
-  username: "",
+  userName: "",
   email: "",
   allowTFA: false,
   role: "",
@@ -57,18 +61,23 @@ const Transition = forwardRef(function Transition(props, ref) {
 });
 
 const CreateUser = forwardRef((props, ref) => {
+  const { showLoader, hideLoader } = useLoader();
+  const [userId, setUserId] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [fieldsData, setFieldsData] = useState({ ...defaultData });
   const [roles, setRoles] = useState([]);
   const [errors, setErrors] = useState({});
   const [dataLoading, setDataLoading] = useState({ roles: false });
+  const location = useLocation();
+  const urlSearchParams = new URLSearchParams(location?.search);
 
   const closeDirPopup = () => setIsOpen(false);
 
   useImperativeHandle(ref, () => ({
-    handleOpenCreateUserDialog: () => {
-      setFieldsData({ ...defaultData });
+    handleOpenCreateUserDialog: (id) => {
+      if (!id) setFieldsData({ ...defaultData });
+      setUserId(id);
       setErrors({});
       setIsOpen(true);
     },
@@ -77,29 +86,67 @@ const CreateUser = forwardRef((props, ref) => {
   const getRoles = async () => {
     setDataLoading((dl) => ({ ...dl, roles: true }));
     const response = await getAllUserRoles();
-    const roleDTOs = response?.roleDTOs?.map(x => x?.roleName);
+    const roleDTOs = response?.roleDTOs?.map((x) => x?.roleName);
     setRoles(roleDTOs || []);
     setDataLoading((dl) => ({ ...dl, roles: false }));
-  }
+  };
+
+  const getUserDetails = async () => {
+    showLoader();
+    if (userId) {
+      const response = await getUserById(userId);
+      if (response?.isSuccess) {
+        setFieldsData({
+          ...response?.data,
+          role: urlSearchParams?.get("id"),
+        });
+      }
+    }
+    if (isOpen) await getRoles();
+    hideLoader();
+  };
 
   useEffect(() => {
-    if (isOpen) getRoles();
-  }, [isOpen])
+    getUserDetails();
+  }, [userId]);
 
   const handleSubmitData = useCallback(async () => {
-    const newErrors = validateFields("Users", fieldsData);
+    const newErrors = validateFields("Users", {
+      ...fieldsData,
+      isEdit: !!userId,
+    });
     setErrors(newErrors);
+    console.log(newErrors);
     if (!Object.keys(newErrors)?.length) {
       setIsLoading(true);
       fieldsData.allowTFA = undefined;
-      const response = await registerUser(fieldsData);
+      let response;
+      if (userId) {
+        const details = {
+          firstName: fieldsData?.firstName,
+          middleName: "",
+          lastName: fieldsData?.lastName,
+          userName: fieldsData?.userName,
+          email: fieldsData?.email,
+          role: fieldsData?.role,
+        };
+        response = await updateUser(details);
+      } else {
+        response = await registerUser(fieldsData);
+      }
       setIsLoading(false);
       if (response?.isSuccess) {
-        showSuccessToast(response?.message || textMessages?.userWasCreatedSuccessfully);
+        showSuccessToast(
+          response?.message || textMessages?.userWasCreatedSuccessfully,
+        );
         closeDirPopup();
         return;
       } else {
-        showErrorToast(response?.message || textMessages?.userCanNotBeCreated);
+        showErrorToast(
+          response?.message || userId
+            ? textMessages?.userCanNotBeUpdated
+            : textMessages?.userCanNotBeCreated,
+        );
       }
     }
   }, [fieldsData]);
@@ -110,11 +157,10 @@ const CreateUser = forwardRef((props, ref) => {
   const allowSubmit =
     fieldsData?.firstName &&
     fieldsData?.lastName &&
-    fieldsData?.username &&
+    fieldsData?.userName &&
     fieldsData?.email &&
     fieldsData?.role &&
-    fieldsData?.password &&
-    fieldsData?.confirmPassword &&
+    ((fieldsData?.password && fieldsData?.confirmPassword) || userId) &&
     !isLoading;
 
   const AddUserForm = useMemo(() => {
@@ -129,7 +175,7 @@ const CreateUser = forwardRef((props, ref) => {
       >
         <Stack spacing={2}>
           <Typography variant="h5" sx={{ fontWeight: 700 }}>
-            Create a new user!
+            {userId ? "Edit the user details!" : "Create a new user!"}
           </Typography>
 
           <Grid container columnGap={1}>
@@ -174,11 +220,11 @@ const CreateUser = forwardRef((props, ref) => {
             size="small"
             fullWidth
             required
-            value={fieldsData?.username}
-            onChange={({ target }) => handleChange("username", target?.value)}
-            error={!!errors?.username}
-            helperText={errors?.username}
-            autoComplete="username"
+            value={fieldsData?.userName}
+            onChange={({ target }) => handleChange("userName", target?.value)}
+            error={!!errors?.userName}
+            helperText={errors?.userName}
+            autoComplete="userName"
           />
 
           <TextField
@@ -194,42 +240,53 @@ const CreateUser = forwardRef((props, ref) => {
             helperText={errors?.email}
             autoComplete="email"
           />
-          
-          <Grid container columnGap={1}>
-            <Grid item xs={12} sm={5.8}>
-              <TextField
-                label="Password"
-                variant="outlined"
-                type="password"
-                size="small"
-                fullWidth
-                required
-                value={fieldsData?.password}
-                onChange={({ target }) => handleChange("password", target?.value)}
-                error={!!errors?.password}
-                helperText={errors?.password}
-                autoComplete="password"
-              />
-            </Grid>
-              
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label="Confirm Password"
-                variant="outlined"
-                type="password"
-                size="small"
-                fullWidth
-                required
-                value={fieldsData?.confirmPassword}
-                onChange={({ target }) => handleChange("confirmPassword", target?.value)}
-                error={!!errors?.confirmPassword}
-                helperText={errors?.confirmPassword}
-                autoComplete="confirmPassword"
-              />
-            </Grid>
-          </Grid>
 
-          <FormControl sx={{ width: "100%" }} size="small" required error={!!errors?.role}>
+          {!userId && (
+            <Grid container columnGap={1}>
+              <Grid item xs={12} sm={5.8}>
+                <TextField
+                  label="Password"
+                  variant="outlined"
+                  type="password"
+                  size="small"
+                  fullWidth
+                  required
+                  value={fieldsData?.password}
+                  onChange={({ target }) =>
+                    handleChange("password", target?.value)
+                  }
+                  error={!!errors?.password}
+                  helperText={errors?.password}
+                  autoComplete="password"
+                />
+              </Grid>
+
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label="Confirm Password"
+                  variant="outlined"
+                  type="password"
+                  size="small"
+                  fullWidth
+                  required
+                  value={fieldsData?.confirmPassword}
+                  onChange={({ target }) =>
+                    handleChange("confirmPassword", target?.value)
+                  }
+                  error={!!errors?.confirmPassword}
+                  helperText={errors?.confirmPassword}
+                  autoComplete="confirmPassword"
+                />
+              </Grid>
+            </Grid>
+          )}
+
+          <FormControl
+            sx={{ width: "100%" }}
+            size="small"
+            required
+            error={!!errors?.role}
+          >
             <InputLabel>Role</InputLabel>
             <Select
               label="Role"
@@ -237,51 +294,56 @@ const CreateUser = forwardRef((props, ref) => {
               MenuProps={{ sx: { height: 300 } }}
               onChange={({ target }) => handleChange("role", target?.value)}
             >
-              {
-                dataLoading?.roles ? <GlobalLoaderComponent /> :
+              {dataLoading?.roles ? (
+                <GlobalLoaderComponent />
+              ) : (
                 (roles || []).map((x) => (
                   <MenuItem key={x} value={x}>
                     {x}
                   </MenuItem>
                 ))
-              }
+              )}
             </Select>
             {!!errors?.role && <FormHelperText>{errors?.role}</FormHelperText>}
           </FormControl>
 
-          <FormControlLabel
-            control={
-              <Switch
-                checked={fieldsData?.allowTFA || false}
-                onChange={({ target }) =>
-                  handleChange("allowTFA", target.checked)
-                }
-                color="primary"
-                sx={{
-                  "& .MuiSwitch-switchBase.Mui-checked": { color: "#2196F3" },
-                  "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
-                    backgroundColor: "#2196F3",
-                  },
-                  "& .MuiSwitch-track": { backgroundColor: "#ccc" },
-                }}
-                inputProps={{ "aria-label": "Allow Two-Factor Authentication" }}
-              />
-            }
-            label="Allow Two-Factor Authentication"
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              width: "100%",
-              color: "rgba(0, 0, 0, 0.6)",
-              p: 0.3,
-              pr: 2,
-              border: "1px solid #e0e0e0",
-              borderRadius: "8px",
-              backgroundColor: "#fafafa",
-              m: 0,
-            }}
-          />
+          {!userId && (
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={fieldsData?.allowTFA || false}
+                  onChange={({ target }) =>
+                    handleChange("allowTFA", target.checked)
+                  }
+                  color="primary"
+                  sx={{
+                    "& .MuiSwitch-switchBase.Mui-checked": { color: "#2196F3" },
+                    "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
+                      backgroundColor: "#2196F3",
+                    },
+                    "& .MuiSwitch-track": { backgroundColor: "#ccc" },
+                  }}
+                  inputProps={{
+                    "aria-label": "Allow Two-Factor Authentication",
+                  }}
+                />
+              }
+              label="Allow Two-Factor Authentication"
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                width: "100%",
+                color: "rgba(0, 0, 0, 0.6)",
+                p: 0.3,
+                pr: 2,
+                border: "1px solid #e0e0e0",
+                borderRadius: "8px",
+                backgroundColor: "#fafafa",
+                m: 0,
+              }}
+            />
+          )}
 
           <Divider sx={{ my: 1.5 }} />
 
@@ -294,7 +356,11 @@ const CreateUser = forwardRef((props, ref) => {
             disabled={!allowSubmit}
             endIcon={
               isLoading && (
-                <CircularProgress className="d-flex" size="15px" color="inherit" />
+                <CircularProgress
+                  className="d-flex"
+                  size="15px"
+                  color="inherit"
+                />
               )
             }
             sx={{
@@ -305,7 +371,7 @@ const CreateUser = forwardRef((props, ref) => {
               boxShadow: "0 8px 20px rgba(25,118,210,0.3)",
             }}
           >
-            Create
+            {userId ? "Update" : "Create"}
           </Button>
         </Stack>
       </Box>
@@ -390,18 +456,18 @@ const CreateUser = forwardRef((props, ref) => {
                   textShadow: "0 4px 18px rgba(0,0,0,0.25)",
                 }}
               >
-                Create User
+                {userId ? "Update User" : "Create User"}
               </Typography>
               <Typography
+                hidden={!!userId}
                 variant="body1"
                 sx={{
-                  display: 'block',
+                  display: "block",
                   mt: 1.5,
                   opacity: 0.9,
                 }}
               >
-                Create a new user, and optionally enable 2FA for
-                added security.
+                Create a new user, and optionally enable 2FA for added security.
               </Typography>
 
               {/* Decorative soft blobs */}

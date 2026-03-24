@@ -5,6 +5,8 @@ import { useEffect, Suspense, lazy } from "react";
 import { Box } from "@mui/material";
 import Loader from "./../LoaderComponent";
 import MenuBar from "../MenuBarComponent/MenuBar.jsx";
+const RolesByUser = lazy(() => import("../../Pages/RolesByUser"));
+const Roles = lazy(() => import("../../Pages/Roles"));
 const SessionDetails = lazy(() => import("../../Pages/Dashboard"));
 
 const SecuredRoutes = () => {
@@ -28,6 +30,14 @@ const SecuredRoutes = () => {
             <Route
               path={pathConstants.dashboard}
               element={<SessionDetails />}
+            />
+            <Route
+              path={pathConstants.roles}
+              element={<Roles />}
+            />
+            <Route
+              path={pathConstants.assignedUsersByRole}
+              element={<RolesByUser />}
             />
           </Routes>
         </Box>
