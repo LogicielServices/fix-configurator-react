@@ -4,7 +4,10 @@ import react from '@vitejs/plugin-react'
 import path from 'node:path'
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react({
+    // Ensures proper JSX transformation for Material-UI compatibility
+    jsxImportSource: '@emotion/react',
+  })],
   resolve: {
     alias: {
       // Optional: align with your old Webpack aliases

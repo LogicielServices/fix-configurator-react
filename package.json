@@ -7,6 +7,7 @@
     "@emotion/styled": "^11.11.5",
     "@fortawesome/fontawesome-free": "^6.5.2",
     "@microsoft/signalr": "^8.0.7",
+    "@mui/base": "^5.0.0-beta.40",
     "@mui/icons-material": "^5.15.15",
     "@mui/material": "^5.15.15",
     "@mui/styles": "^5.15.15",
@@ -52,7 +53,7 @@
     ]
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^6.0.1",
-    "vite": "^8.0.0"
+    "@vitejs/plugin-react": "^4.2.1",
+    "vite": "^7.0.0"
   }
 }
