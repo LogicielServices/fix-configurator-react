@@ -76,7 +76,7 @@ const StylishBreadcrumbs = () => {
       <Link
         underline="hover"
         color="inherit"
-        href="./"
+        href="/"
         sx={{
           display: "flex",
           alignItems: "center",
