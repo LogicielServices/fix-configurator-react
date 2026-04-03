@@ -5,6 +5,7 @@ import { useEffect, Suspense, lazy } from "react";
 import { Box } from "@mui/material";
 import Loader from "./../LoaderComponent";
 import MenuBar from "../MenuBarComponent/MenuBar.jsx";
+import Footer from "../Footer/Footer.jsx";
 import { useCategoryAccess } from "../../hooks/usePermissions";
 
 const RolesByUser = lazy(() => import("../../Pages/RolesByUser"));
@@ -25,7 +26,7 @@ const SecuredRoutes = () => {
   return (
     <div className="m-4 d-flex">
       <Suspense fallback={<Loader />}>
-        <Box className="w-100">
+        <Box className="w-100" sx={{ display: "flex", flexDirection: "column", minHeight: "calc(100vh - 3rem)" }}>
           <MenuBar />
           <Routes>
             <Route
@@ -49,6 +50,7 @@ const SecuredRoutes = () => {
               element={canAccessRoles ? <RolesByUser /> : <Navigate to={pathConstants.unauthorized} />}
             />
           </Routes>
+          <Footer />
         </Box>
       </Suspense>
     </div>
