@@ -1,0 +1,115 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Unauthorized Page - Modern Enterprise Design
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.unauthorized-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 75vh;
+  padding: 2rem;
+}
+
+.unauthorized-card {
+  text-align: center;
+  max-width: 480px;
+  width: 100%;
+  background: var(--panel);
+  border-radius: var(--radius-lg);
+  padding: 3rem 2.5rem;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border-light);
+  animation: unauthorized-fadeIn 0.4s ease-out;
+}
+
+@keyframes unauthorized-fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.unauthorized-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.08), rgba(239, 68, 68, 0.15));
+  color: var(--danger);
+  margin-bottom: 1.5rem;
+}
+
+.unauthorized-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.02em;
+}
+
+.unauthorized-message {
+  font-size: 15px;
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+.unauthorized-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.unauthorized-btn {
+  padding: 10px 24px;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  letter-spacing: 0.01em;
+}
+
+.unauthorized-btn:active {
+  transform: scale(0.97);
+}
+
+.unauthorized-btn-primary {
+  background: var(--primary);
+  color: var(--primary-contrast);
+  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.25);
+}
+
+.unauthorized-btn-primary:hover {
+  background: var(--primary-hover);
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.35);
+}
+
+.unauthorized-btn-secondary {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+
+.unauthorized-btn-secondary:hover {
+  background: var(--bg);
+  color: var(--text);
+  border-color: var(--text-muted);
+}
+
+.unauthorized-hint {
+  margin-top: 2rem;
+  font-size: 12px;
+  color: var(--border);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-weight: 600;
+}

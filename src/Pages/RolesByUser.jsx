@@ -4,6 +4,8 @@ import DataGrid, { Button, Column, Item, Pager, Paging, SearchPanel, Toolbar } f
 import { getAllUsersAgainstClientById } from "../Services/AccountService";
 import { useLocation, useNavigate } from "react-router-dom";
 import CreateUser from "../Components/CreateUser";
+import { usePermission } from "../hooks/usePermissions.js";
+import { pathConstants } from "../utils/constants.js";
 
 const RolesByUser = () => {
   const [roles, setRoles] = useState([]);
@@ -12,6 +14,16 @@ const RolesByUser = () => {
   const gridRef = useRef();
   const location = useLocation();
   const urlSearchParams = new URLSearchParams(location?.search);
+
+  // Permission check
+  const { hasAccess: canViewRoleUsers } = usePermission("Role", "RoleUsers");
+
+  // Redirect if no permission
+  useEffect(() => {
+    if (!canViewRoleUsers) {
+      navigateTo(pathConstants.unauthorized, { replace: true });
+    }
+  }, [canViewRoleUsers, navigateTo]);
 
   const getRolesData = async () => {
     gridRef?.current?.instance?.beginCustomLoading?.();

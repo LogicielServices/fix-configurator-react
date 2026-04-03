@@ -18,6 +18,7 @@ export const pathConstants = Object.freeze({
   dashboard: "/fix-sessions",
   roles: "/roles",
   assignedUsersByRole: "/roles/assigned-users-by-role",
+  unauthorized: "/unauthorized",
 });
 
 export const REFRESH_INTERVAL = 60 * 1000; // 1 minute

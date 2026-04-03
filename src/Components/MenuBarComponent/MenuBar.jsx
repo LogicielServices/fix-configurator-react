@@ -14,6 +14,7 @@ import useFixSessionStatusFeed from "../../SignalR/useFixSessionStatusFeed";
 import { Popup } from 'devextreme-react';
 import SessionsDataGrid from "../SessionsTabAndGrid/SessionsDataGrid";
 import { useNavigate } from "react-router-dom";
+import { usePermission } from "../../hooks/usePermissions";
 
 const MenuBar = ({ handleDrawerToggle }) => {
   const { appConfig } = useContext(GlobalContext);
@@ -21,31 +22,43 @@ const MenuBar = ({ handleDrawerToggle }) => {
   const [openSessionStatuses, setOpenSessionStatuses] = useState(false);
   const [showSessionMonitorScreen, setShowSessionMonitorScreen] = useState(false);
   const { updates, clearHistory } = useFixSessionStatusFeed()
+  
+  // Permission checks
+  const { hasAccess: canCreateUser } = usePermission("Account", "EditUser");
+  const { hasAccess: canManageRoles } = usePermission("Role", "Index");
+  const { hasAccess: canTelnet } = usePermission("Tcp", "Telnet");
+  const { hasAccess: canViewSessions } = usePermission("FixSession", "GetSessionConfiguration");
+  
   const menuItems = [
     {
       onClick: () => createUserRef?.current?.handleOpenCreateUserDialog?.(),
       icon: <Person className="me-3" fontSize="small" />,
       text: "Create User",
+      visible: canCreateUser,
     },
     {
       onClick: () => navigateTo?.('/roles'),
       icon: <Settings className="me-3" fontSize="small" />,
       text: "Roles Screen",
+      visible: canManageRoles,
     },
     {
       onClick: () => window.open(appConfig?.GITHUB_REPO_URL, '_blank'),
       icon: <GitHub className="me-3" fontSize="small" />,
       text: "Open GitHub",
+      visible: true, // Always visible
     },
     {
       onClick: () => window.open(appConfig?.GRAFANA_URL, '_blank'),
       icon: <Dashboard className="me-3" fontSize="small" />,
       text: "Open Grafana",
+      visible: true, // Always visible
     },
     {
       onClick: () => logout(),
       icon: <Logout className="me-3" fontSize="small" />,
       text: "Logout",
+      visible: true, // Always visible
     },
   ];
   const [anchorEl, setAnchorEl] = useState(null);
@@ -68,7 +81,7 @@ const MenuBar = ({ handleDrawerToggle }) => {
           if (target?.classList?.contains?.("MuiModal-backdrop")) handleClose();
         }}
       >
-        {menuItems?.map((item, index) => (
+        {menuItems?.filter(item => item.visible !== false)?.map((item, index) => (
           <MenuItem
             key={index}
             sx={{ color: "#4d4d4d", minWidth: "180px" }}
@@ -121,65 +134,71 @@ const MenuBar = ({ handleDrawerToggle }) => {
         <BreadCrumbs />
       </div>
       <div className="col-12 col-md-2 d-flex justify-content-end gap-2">
-        <Tooltip title="Connection Checker (Telnet)" arrow placement="bottom">
-          <IconButton
-            color="primary"
-            onClick={() => telnetPopUpRef?.current?.handleOpenTelnetDialog?.()}
-            aria-label="telnet"
-            className="nav-icon-modern"
-            sx={{
-              transition: "all 0.2s ease",
-              "&:hover": {
-                transform: "scale(1.1)",
-              },
-              "&:active": {
-                transform: "scale(0.95)",
-              },
-            }}
-          >
-            <Terminal fontSize="20" />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="Session Monitoring Screen" arrow placement="bottom">
-          <IconButton
-            color="primary"
-            onClick={() => setShowSessionMonitorScreen(true)}
-            aria-label="session monitoring"
-            className="nav-icon-modern"
-            sx={{
-              transition: "all 0.2s ease",
-              "&:hover": {
-                transform: "scale(1.1)",
-              },
-              "&:active": {
-                transform: "scale(0.95)",
-              },
-            }}
-          >
-            <Monitor fontSize="20" />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="Session Status History" arrow placement="bottom">
-          <IconButton
-            color="primary"
-            onClick={() => setOpenSessionStatuses(true)}
-            aria-label="session statuses"
-            className="nav-icon-modern"
-            sx={{
-              transition: "all 0.2s ease",
-              "&:hover": {
-                transform: "scale(1.1)",
-              },
-              "&:active": {
-                transform: "scale(0.95)",
-              },
-            }}
-          >
-            <Badge badgeContent={updates?.length} color="error">
-              <History fontSize="20" />
-            </Badge>
-          </IconButton>
-        </Tooltip>
+        {canTelnet && (
+          <Tooltip title="Connection Checker (Telnet)" arrow placement="bottom">
+            <IconButton
+              color="primary"
+              onClick={() => telnetPopUpRef?.current?.handleOpenTelnetDialog?.()}
+              aria-label="telnet"
+              className="nav-icon-modern"
+              sx={{
+                transition: "all 0.2s ease",
+                "&:hover": {
+                  transform: "scale(1.1)",
+                },
+                "&:active": {
+                  transform: "scale(0.95)",
+                },
+              }}
+            >
+              <Terminal fontSize="20" />
+            </IconButton>
+          </Tooltip>
+        )}
+        {canViewSessions && (
+          <Tooltip title="Session Monitoring Screen" arrow placement="bottom">
+            <IconButton
+              color="primary"
+              onClick={() => setShowSessionMonitorScreen(true)}
+              aria-label="session monitoring"
+              className="nav-icon-modern"
+              sx={{
+                transition: "all 0.2s ease",
+                "&:hover": {
+                  transform: "scale(1.1)",
+                },
+                "&:active": {
+                  transform: "scale(0.95)",
+                },
+              }}
+            >
+              <Monitor fontSize="20" />
+            </IconButton>
+          </Tooltip>
+        )}
+        {canViewSessions && (
+          <Tooltip title="Session Status History" arrow placement="bottom">
+            <IconButton
+              color="primary"
+              onClick={() => setOpenSessionStatuses(true)}
+              aria-label="session statuses"
+              className="nav-icon-modern"
+              sx={{
+                transition: "all 0.2s ease",
+                "&:hover": {
+                  transform: "scale(1.1)",
+                },
+                "&:active": {
+                  transform: "scale(0.95)",
+                },
+              }}
+            >
+              <Badge badgeContent={updates?.length} color="error">
+                <History fontSize="20" />
+              </Badge>
+            </IconButton>
+          </Tooltip>
+        )}
         <Tooltip title={localStorage.getItem(authConstants.username)} arrow placement="bottom">
           <IconButton
             {...iconButtonOptions}

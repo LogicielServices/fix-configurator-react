@@ -24,6 +24,7 @@ import { severities, textMessages } from "../../utils/constants";
 import { ipv4Regex, validateFields } from "../../utils/formValidator.jsx";
 import { checkConnectivity } from "../../Services/TelnetService.js";
 import { showErrorToast } from "../../utils/toastsService.js";
+import PermissionService from "../../Services/PermissionService";
 
 const defaultData = Object.freeze({
   destinationIP: "",
@@ -41,6 +42,11 @@ const TelnetComponent = forwardRef((props, ref) => {
 
   useImperativeHandle(ref, () => ({
     handleOpenTelnetDialog: () => {
+      // Check permission before opening
+      if (!PermissionService.hasPermission("Tcp", "Telnet")) {
+        showErrorToast("You don't have permission to access Telnet console");
+        return;
+      }
       setFieldsData({ ...defaultData });
       setResult(null);
       setIsOpen(true);

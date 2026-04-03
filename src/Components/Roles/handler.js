@@ -14,6 +14,17 @@ export const rolesAccessesList = {
   Tcp: ["Telnet"],
 }
 
+export const rolesTests = [
+  { cat: "Account", action: "Register", expected: true },
+  { cat: "Account", action: "EditUser", expected: true },
+  { cat: "Home", action: "Index", expected: true },
+  { cat: "Role", action: "Index", expected: true },
+  { cat: "Tcp", action: "Telnet", expected: true },
+  { cat: "FixSession", action: "ConnectDisconnectFIX", expected: false },
+  { cat: "GitHub", action: "CloneGithubRepoBranch", expected: false },
+  { cat: "JenkinsConfiguration", action: "JenkinsTrigger", expected: false },
+];
+
 export const buildTreeData = () => {
   let id = 1;
   const tree = [];

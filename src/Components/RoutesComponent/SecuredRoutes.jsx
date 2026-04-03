@@ -5,11 +5,16 @@ import { useEffect, Suspense, lazy } from "react";
 import { Box } from "@mui/material";
 import Loader from "./../LoaderComponent";
 import MenuBar from "../MenuBarComponent/MenuBar.jsx";
+import { useCategoryAccess } from "../../hooks/usePermissions";
+
 const RolesByUser = lazy(() => import("../../Pages/RolesByUser"));
 const Roles = lazy(() => import("../../Pages/Roles"));
 const SessionDetails = lazy(() => import("../../Pages/Dashboard"));
+const Unauthorized = lazy(() => import("../../Pages/Unauthorized"));
 
 const SecuredRoutes = () => {
+  // Check permissions for restricted routes
+  const { hasAccess: canAccessRoles } = useCategoryAccess("Role");
 
   useEffect(() => {
     checkExpirationTime();
@@ -28,16 +33,20 @@ const SecuredRoutes = () => {
               element={<Navigate to={pathConstants.dashboard} />}
             />
             <Route
+              path={pathConstants.unauthorized}
+              element={<Unauthorized />}
+            />
+            <Route
               path={pathConstants.dashboard}
               element={<SessionDetails />}
             />
             <Route
               path={pathConstants.roles}
-              element={<Roles />}
+              element={canAccessRoles ? <Roles /> : <Navigate to={pathConstants.unauthorized} />}
             />
             <Route
               path={pathConstants.assignedUsersByRole}
-              element={<RolesByUser />}
+              element={canAccessRoles ? <RolesByUser /> : <Navigate to={pathConstants.unauthorized} />}
             />
           </Routes>
         </Box>

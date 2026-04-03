@@ -1,18 +1,35 @@
 import { useState, useCallback, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import FixEnginesGrid from "../Components/FixEnginesGrid/index.jsx";
 import SessionsTabs from "../Components/SessionsTabAndGrid/SessionsTab.jsx";
 import "../Components/Dashboard/index.css";
 import { Dialog } from "@mui/material";
 import { confirm } from "devextreme/ui/dialog";
-import { textMessages } from "../utils/constants.js";
+import { textMessages, pathConstants } from "../utils/constants.js";
 import { disconnectFixEngine, getConnectedEngines } from "../Services/FixSessionService.js";
+import { usePermission } from "../hooks/usePermissions.js";
 
 export default function SessionDetails() {
   const [tabs, setTabs] = useState([]);
   const [activeEngineID, setActiveEngineID] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
+  const navigateTo = useNavigate();
+
+  // Permission checks
+  const { hasAccess: canAccessEngines } = usePermission("FixEngineConfiguration", "ConnectToFixEngine");
+  const { hasAccess: canAccessSessions } = usePermission("FixSession", "GetSessionConfiguration");
+
+  // Redirect if no permissions at all
+  useEffect(() => {
+    if (!canAccessEngines && !canAccessSessions) {
+      navigateTo(pathConstants.unauthorized, { replace: true });
+    }
+  }, [canAccessEngines, canAccessSessions, navigateTo]);
 
   const getConnectedEnginesData = async () => {
+    // Only fetch if user has access
+    if (!canAccessEngines && !canAccessSessions) return;
+
     const response = await getConnectedEngines();
     if (response?.length) {
       setTabs(response || []);
@@ -21,7 +38,7 @@ export default function SessionDetails() {
 
   useEffect(() => {
     getConnectedEnginesData();
-  }, [])
+  }, [canAccessEngines, canAccessSessions])
 
   const handleEngineConnected = useCallback(async (engineDetail) => {
     const engineID = engineDetail?.engineID;
@@ -77,23 +94,28 @@ export default function SessionDetails() {
 
   return (
     <div className="fx-dashboard">
-      <Dialog
-        open={showPopup}
-        onClose={() => setShowPopup(false)}
-        maxWidth="md"
-        fullWidth={true}
-      >
-        <FixEnginesGrid handleEngineConnected={handleEngineConnected} connectedEngines={tabs} setShowPopup={setShowPopup} />
-      </Dialog>
-      <div className="fx-tabs-area">
-        <SessionsTabs
-          tabs={tabs}
-          activeEngineID={activeEngineID}
-          onActivate={setActiveEngineID}
-          onCloseTab={handleCloseTab}
-          showEnginesConfig={showEnginesConfig}
-        />
-      </div>
+      {canAccessEngines && (
+        <Dialog
+          open={showPopup}
+          onClose={() => setShowPopup(false)}
+          maxWidth="md"
+          fullWidth={true}
+        >
+          <FixEnginesGrid handleEngineConnected={handleEngineConnected} connectedEngines={tabs} setShowPopup={setShowPopup} />
+        </Dialog>
+      )}
+
+      {canAccessSessions && (
+        <div className="fx-tabs-area">
+          <SessionsTabs
+            tabs={tabs}
+            activeEngineID={activeEngineID}
+            onActivate={setActiveEngineID}
+            onCloseTab={handleCloseTab}
+            showEnginesConfig={showEnginesConfig}
+          />
+        </div>
+      )}
     </div>
   );
 }

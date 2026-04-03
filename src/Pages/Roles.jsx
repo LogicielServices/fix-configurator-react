@@ -6,12 +6,28 @@ import { useNavigate } from "react-router-dom";
 import Popup from "devextreme-react/popup";
 import RoleForm from "../Components/Roles/RoleForm.jsx";
 import { isBoolean } from "lodash";
+import { usePermission } from "../hooks/usePermissions.js";
+import { Alert } from "@mui/material";
+import { pathConstants } from "../utils/constants.js";
 
 const Roles = () => {
   const [roles, setRoles] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const navigateTo = useNavigate();
   const gridRef = useRef();
+
+  // Permission check
+  const { hasAccess: canViewRoles } = usePermission("Role", "Index");
+  const { hasAccess: canCreateRole } = usePermission("Role", "Create");
+  const { hasAccess: canEditRole } = usePermission("Role", "EditRole");
+  const { hasAccess: canManageRoleUsers } = usePermission("Role", "RoleUsers");
+
+  // Redirect if no permission
+  useEffect(() => {
+    if (!canViewRoles) {
+      navigateTo(pathConstants.unauthorized, { replace: true });
+    }
+  }, [canViewRoles, navigateTo]);
 
   const getRolesData = async () => {
     gridRef?.current?.instance?.beginCustomLoading?.();
@@ -53,6 +69,7 @@ const Roles = () => {
               type="default"
               location="after"
               onClick={() => setShowPopup(true)}
+              disabled={!canCreateRole}
             />
           </Item>
           <Item name="searchPanel" location="after" />
@@ -76,6 +93,7 @@ const Roles = () => {
                 hint="View Users"
                 icon="group"
                 onClick={() => navigateTo(`./assigned-users-by-role?id=${data?.roleName}`)}
+                disabled={!canManageRoleUsers}
               />
               <Button
                 type="default"
@@ -83,6 +101,7 @@ const Roles = () => {
                 hint="Edit Role"
                 icon="edit"
                 onClick={() => setShowPopup({ roleName: data?.roleName, rolePermissions: data?.rolePermissions })}
+                disabled={!canEditRole}
               />
             </div>
           )}
@@ -101,7 +120,13 @@ const Roles = () => {
         width="420px"
         title={`${isBoolean(showPopup) ? 'CREATE' : 'UPDATE'} ROLE`}
       >
-        <RoleForm showPopup={showPopup} setShowPopup={setShowPopup} />
+        {canEditRole ? (
+          <RoleForm showPopup={showPopup} setShowPopup={setShowPopup} />
+        ) : (
+          <Alert severity="warning">
+            You don't have permission to edit roles.
+          </Alert>
+        )}
       </Popup>
     </div>
   );
