@@ -1,6 +1,7 @@
 import { authConstants } from "../utils/constants";
 import { getRefreshToken, logout } from "../utils/helper";
 import { Post } from "./ApiService.js";
+import { invalidateCache } from "./PermissionService.js";
 
 export const refreshAccessToken = async () => {
   const refreshToken = getRefreshToken();
@@ -15,6 +16,8 @@ export const refreshAccessToken = async () => {
     authConstants.accessTokenExpiration,
     response?.data?.accessTokenExpiration
   );
+  // Invalidate permission cache so hooks pick up new token permissions
+  invalidateCache();
 };
 
 export const login = async (apiUrl, username, password, rememberMe) => {

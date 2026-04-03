@@ -1,6 +1,5 @@
 export const authConstants = Object.freeze({
   username: "username",
-  password: "password",
   accessToken: "accessToken",
   refreshToken: "refreshToken",
   role: "role",

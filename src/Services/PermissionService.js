@@ -1,36 +1,58 @@
-import { parseJwt } from "../utils/helper";
+import { getAccessToken, parseJwt } from "../utils/helper";
 import { rolesAccessesList } from "../Components/Roles/handler";
 
 /**
  * Permission Service - Manages role-based access control
- * Compares user permissions from JWT token with the complete permissions list
+ * Caches parsed permissions to avoid redundant JWT parsing per render cycle.
  */
 
+// Module-level cache
+let _cachedToken = null;
+let _cachedPermissions = [];
+
+const PERMISSIONS_UPDATED_EVENT = "permissions-updated";
+
 /**
- * Get user's permissions from JWT token
+ * Invalidate the permission cache.
+ * Call this after token refresh so hooks and components pick up new permissions.
+ */
+export const invalidateCache = () => {
+  _cachedToken = null;
+  _cachedPermissions = [];
+  window.dispatchEvent(new Event(PERMISSIONS_UPDATED_EVENT));
+};
+
+/**
+ * Get user's permissions from JWT token (cached).
  * @returns {Array} Array of permission objects with structure {c: "category", a: ["action1", "action2"]}
  */
 export const getUserPermissions = () => {
   try {
+    const currentToken = getAccessToken();
+    if (!currentToken) return [];
+
+    // Return cached result if token hasn't changed
+    if (currentToken === _cachedToken) return _cachedPermissions;
+
     const tokenData = parseJwt();
     const rolePermission = tokenData?.role_permission;
-    
+
     if (!rolePermission) {
-      console.warn("No role_permission found in JWT token");
+      _cachedToken = currentToken;
+      _cachedPermissions = [];
       return [];
     }
 
-    // If it's a string, parse it
+    let permissions = [];
     if (typeof rolePermission === "string") {
-      return JSON.parse(rolePermission);
+      permissions = JSON.parse(rolePermission);
+    } else if (Array.isArray(rolePermission)) {
+      permissions = rolePermission;
     }
 
-    // If it's already an array, return it
-    if (Array.isArray(rolePermission)) {
-      return rolePermission;
-    }
-
-    return [];
+    _cachedToken = currentToken;
+    _cachedPermissions = permissions;
+    return permissions;
   } catch (error) {
     console.error("Error parsing user permissions:", error);
     return [];
@@ -39,30 +61,19 @@ export const getUserPermissions = () => {
 
 /**
  * Check if user has a specific action in a category
- * @param {string} category - The permission category (e.g., "Account", "FixSession")
- * @param {string} action - The specific action (e.g., "Register", "EditUser")
- * @returns {boolean} True if user has permission
  */
 export const hasPermission = (category, action) => {
-  if (!category || !action) {
-    console.warn("Category and action are required for permission check");
-    return false;
-  }
+  if (!category || !action) return false;
 
   const userPermissions = getUserPermissions();
   const categoryPermission = userPermissions.find((p) => p.c === category);
-
-  if (!categoryPermission) {
-    return false;
-  }
+  if (!categoryPermission) return false;
 
   return categoryPermission.a.includes(action);
 };
 
 /**
  * Check if user has all actions in a category
- * @param {string} category - The permission category
- * @returns {boolean} True if user has all actions in category
  */
 export const hasFullCategoryAccess = (category) => {
   if (!category) return false;
@@ -70,10 +81,7 @@ export const hasFullCategoryAccess = (category) => {
   const userPermissions = getUserPermissions();
   const allActionsInCategory = rolesAccessesList[category] || [];
   const categoryPermission = userPermissions.find((p) => p.c === category);
-
-  if (!categoryPermission) {
-    return false;
-  }
+  if (!categoryPermission) return false;
 
   return allActionsInCategory.every((action) =>
     categoryPermission.a.includes(action)
@@ -82,8 +90,6 @@ export const hasFullCategoryAccess = (category) => {
 
 /**
  * Check if user has any action in a category
- * @param {string} category - The permission category
- * @returns {boolean} True if user has at least one action in category
  */
 export const hasCategoryAccess = (category) => {
   if (!category) return false;
@@ -94,21 +100,17 @@ export const hasCategoryAccess = (category) => {
 
 /**
  * Get user's accessible actions in a category
- * @param {string} category - The permission category
- * @returns {Array} Array of accessible actions
  */
 export const getCategoryPermissions = (category) => {
   if (!category) return [];
 
   const userPermissions = getUserPermissions();
   const categoryPermission = userPermissions.find((p) => p.c === category);
-
   return categoryPermission?.a || [];
 };
 
 /**
  * Get all user accessible categories
- * @returns {Array} Array of categories user has access to
  */
 export const getAccessibleCategories = () => {
   const userPermissions = getUserPermissions();
@@ -116,9 +118,8 @@ export const getAccessibleCategories = () => {
 };
 
 /**
- * Compare user permissions with complete permissions list
- * Returns missing permissions
- * @returns {Object} Object with categories and their missing permissions
+ * Compare user permissions with complete permissions list.
+ * Returns missing permissions.
  */
 export const getMissingPermissions = () => {
   const userPermissions = getUserPermissions();
@@ -138,8 +139,6 @@ export const getMissingPermissions = () => {
 
 /**
  * Get visibility map for all features
- * Returns which features should be visible based on user permissions
- * @returns {Object} Object with feature visibility status
  */
 export const getFeatureVisibilityMap = () => {
   const userPermissions = getUserPermissions();
@@ -167,13 +166,9 @@ export const getFeatureVisibilityMap = () => {
 
 /**
  * Check multiple permissions (ANY) - returns true if user has ANY of the permissions
- * @param {Array} permissions - Array of {category, action} objects
- * @returns {boolean}
  */
 export const hasAnyPermission = (permissions) => {
-  if (!Array.isArray(permissions) || permissions.length === 0) {
-    return false;
-  }
+  if (!Array.isArray(permissions) || permissions.length === 0) return false;
 
   return permissions.some(({ category, action }) =>
     hasPermission(category, action)
@@ -182,18 +177,16 @@ export const hasAnyPermission = (permissions) => {
 
 /**
  * Check multiple permissions (ALL) - returns true if user has ALL of the permissions
- * @param {Array} permissions - Array of {category, action} objects
- * @returns {boolean}
  */
 export const hasAllPermissions = (permissions) => {
-  if (!Array.isArray(permissions) || permissions.length === 0) {
-    return false;
-  }
+  if (!Array.isArray(permissions) || permissions.length === 0) return false;
 
   return permissions.every(({ category, action }) =>
     hasPermission(category, action)
   );
 };
+
+export { PERMISSIONS_UPDATED_EVENT };
 
 export default {
   getUserPermissions,
@@ -206,4 +199,5 @@ export default {
   getFeatureVisibilityMap,
   hasAnyPermission,
   hasAllPermissions,
+  invalidateCache,
 };

@@ -1,80 +1,74 @@
-import { useState, useEffect } from "react";
-import PermissionService from "../Services/PermissionService";
+import { useState, useEffect, useCallback } from "react";
+import PermissionService, { PERMISSIONS_UPDATED_EVENT } from "../Services/PermissionService";
+
+/**
+ * Internal hook that re-evaluates when the "permissions-updated" event fires.
+ * This ensures all permission hooks react to token refreshes.
+ */
+const usePermissionRefresh = (evaluator) => {
+  const [result, setResult] = useState(() => evaluator());
+  const [isLoading, setIsLoading] = useState(false);
+
+  const reEvaluate = useCallback(() => {
+    setIsLoading(true);
+    try {
+      setResult(evaluator());
+    } catch (error) {
+      console.error("Error checking permission:", error);
+      setResult(evaluator.fallback ?? false);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [evaluator]);
+
+  useEffect(() => {
+    reEvaluate();
+  }, [reEvaluate]);
+
+  useEffect(() => {
+    window.addEventListener(PERMISSIONS_UPDATED_EVENT, reEvaluate);
+    return () => window.removeEventListener(PERMISSIONS_UPDATED_EVENT, reEvaluate);
+  }, [reEvaluate]);
+
+  return { result, isLoading };
+};
 
 /**
  * Custom hook for permission-based component visibility
  * Usage: const { hasAccess, isLoading } = usePermission("Account", "Register");
  */
 export const usePermission = (category, action) => {
-  const [hasAccess, setHasAccess] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    try {
-      const access = PermissionService.hasPermission(category, action);
-      setHasAccess(access);
-    } catch (error) {
-      console.error("Error checking permission:", error);
-      setHasAccess(false);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [category, action]);
-
+  const evaluator = useCallback(
+    () => PermissionService.hasPermission(category, action),
+    [category, action]
+  );
+  const { result: hasAccess, isLoading } = usePermissionRefresh(evaluator);
   return { hasAccess, isLoading };
 };
 
 /**
  * Hook to check multiple permissions (ANY)
  * Returns true if user has ANY of the permissions
- * Usage: const { hasAccess } = useAnyPermission([
- *   {category: "Account", action: "Register"},
- *   {category: "Account", action: "EditUser"}
- * ]);
  */
 export const useAnyPermission = (permissions) => {
-  const [hasAccess, setHasAccess] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    try {
-      const access = PermissionService.hasAnyPermission(permissions);
-      setHasAccess(access);
-    } catch (error) {
-      console.error("Error checking permissions:", error);
-      setHasAccess(false);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [permissions]);
-
+  const evaluator = useCallback(
+    () => PermissionService.hasAnyPermission(permissions),
+    [permissions]
+  );
+  const { result: hasAccess, isLoading } = usePermissionRefresh(evaluator);
   return { hasAccess, isLoading };
 };
 
 /**
  * Hook to check multiple permissions (ALL)
  * Returns true if user has ALL of the permissions
- * Usage: const { hasAccess } = useAllPermissions([
- *   {category: "Account", action: "Register"},
- *   {category: "FixSession", action: "ConnectDisconnectFIX"}
- * ]);
  */
 export const useAllPermissions = (permissions) => {
-  const [hasAccess, setHasAccess] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    try {
-      const access = PermissionService.hasAllPermissions(permissions);
-      setHasAccess(access);
-    } catch (error) {
-      console.error("Error checking permissions:", error);
-      setHasAccess(false);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [permissions]);
-
+  const evaluator = useCallback(
+    () => PermissionService.hasAllPermissions(permissions),
+    [permissions]
+  );
+  const { result: hasAccess, isLoading } = usePermissionRefresh(evaluator);
   return { hasAccess, isLoading };
 };
 
@@ -83,21 +77,11 @@ export const useAllPermissions = (permissions) => {
  * Usage: const { hasAccess } = useCategoryAccess("FixSession");
  */
 export const useCategoryAccess = (category) => {
-  const [hasAccess, setHasAccess] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    try {
-      const access = PermissionService.hasCategoryAccess(category);
-      setHasAccess(access);
-    } catch (error) {
-      console.error("Error checking category access:", error);
-      setHasAccess(false);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [category]);
-
+  const evaluator = useCallback(
+    () => PermissionService.hasCategoryAccess(category),
+    [category]
+  );
+  const { result: hasAccess, isLoading } = usePermissionRefresh(evaluator);
   return { hasAccess, isLoading };
 };
 
@@ -106,67 +90,35 @@ export const useCategoryAccess = (category) => {
  * Usage: const { permissions, isLoading } = useCategoryPermissions("FixSession");
  */
 export const useCategoryPermissions = (category) => {
-  const [permissions, setPermissions] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    try {
-      const perms = PermissionService.getCategoryPermissions(category);
-      setPermissions(perms);
-    } catch (error) {
-      console.error("Error fetching category permissions:", error);
-      setPermissions([]);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [category]);
-
+  const evaluator = useCallback(
+    () => PermissionService.getCategoryPermissions(category),
+    [category]
+  );
+  const { result: permissions, isLoading } = usePermissionRefresh(evaluator);
   return { permissions, isLoading };
 };
 
 /**
  * Hook to get feature visibility map
- * Usage: const { visibilityMap, isLoading } = useFeatureVisibilityMap();
  */
 export const useFeatureVisibilityMap = () => {
-  const [visibilityMap, setVisibilityMap] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    try {
-      const map = PermissionService.getFeatureVisibilityMap();
-      setVisibilityMap(map);
-    } catch (error) {
-      console.error("Error fetching visibility map:", error);
-      setVisibilityMap({});
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
+  const evaluator = useCallback(
+    () => PermissionService.getFeatureVisibilityMap(),
+    []
+  );
+  const { result: visibilityMap, isLoading } = usePermissionRefresh(evaluator);
   return { visibilityMap, isLoading };
 };
 
 /**
  * Hook to get user's accessible categories
- * Usage: const { categories, isLoading } = useAccessibleCategories();
  */
 export const useAccessibleCategories = () => {
-  const [categories, setCategories] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    try {
-      const cats = PermissionService.getAccessibleCategories();
-      setCategories(cats);
-    } catch (error) {
-      console.error("Error fetching accessible categories:", error);
-      setCategories([]);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
+  const evaluator = useCallback(
+    () => PermissionService.getAccessibleCategories(),
+    []
+  );
+  const { result: categories, isLoading } = usePermissionRefresh(evaluator);
   return { categories, isLoading };
 };
 
